@@ -87,7 +87,14 @@ contract LockedFund is ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
 	 */
-	event VestedDeposited(address indexed _initiator, address indexed _userAddress, uint256 _amount, uint256 _cliff, uint256 _duration, uint256 _basisPoint);
+	event VestedDeposited(
+		address indexed _initiator,
+		address indexed _userAddress,
+		uint256 _amount,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _basisPoint
+	);
 
 	/**
 	 * @notice Emitted when a user withdraws the fund.
@@ -223,7 +230,7 @@ contract LockedFund is ILockedFund {
 	function createVestingAndStake() external {
 		_createVestingAndStake(msg.sender);
 	}
-	
+
 	/**
 	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
 	 * @return _vestingAddress The New Vesting Contract Created.
@@ -238,7 +245,7 @@ contract LockedFund is ILockedFund {
 	 */
 	function stakeTokens() external {
 		IVestingLogic vesting = IVestingLogic(_getVesting(msg.sender));
-		
+
 		require(cliff[msg.sender] == vesting.cliff() && duration[msg.sender] == vesting.duration(), "LockedFund: Wrong Vesting Schedule.");
 
 		_stakeTokens(msg.sender, address(vesting));
@@ -434,7 +441,7 @@ contract LockedFund is ILockedFund {
 	 * @notice Function to read the token on sale.
 	 * @return The Token contract address which is being sold in the contract.
 	 */
-	function getToken() public view returns(address) {
+	function getToken() public view returns (address) {
 		return address(token);
 	}
 
@@ -442,7 +449,7 @@ contract LockedFund is ILockedFund {
 	 * @notice Function to read the vesting registry.
 	 * @return Address of Vesting Registry.
 	 */
-	function getVestingDetails() public view returns(address) {
+	function getVestingDetails() public view returns (address) {
 		return address(vestingRegistry);
 	}
 
@@ -497,7 +504,7 @@ contract LockedFund is ILockedFund {
 	 * @return The cliff of the user vesting/lock.
 	 * @return The duration of the user vesting/lock.
 	 */
-	function getCliffAndDuration(address _addr) external view returns(uint256, uint256) {
+	function getCliffAndDuration(address _addr) external view returns (uint256, uint256) {
 		return (cliff[_addr], duration[_addr]);
 	}
 }

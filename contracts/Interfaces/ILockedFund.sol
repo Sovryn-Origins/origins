@@ -5,7 +5,6 @@ pragma solidity ^0.5.17;
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  */
 contract ILockedFund {
-
 	/* Functions */
 
 	/**
@@ -62,7 +61,7 @@ contract ILockedFund {
 	 * @dev Only use this function if the `duration` is small.
 	 */
 	function createVestingAndStake() external;
-	
+
 	/**
 	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
 	 * @return _vestingAddress The New Vesting Contract Created.
@@ -86,5 +85,4 @@ contract ILockedFund {
 	 * @param _userAddress The address of user tokens will be withdrawn.
 	 */
 	function withdrawAndStakeTokensFrom(address _userAddress) external;
-
 }

@@ -9,7 +9,6 @@ import "./Interfaces/IOrigins.sol";
  *  @notice You can use this contract for creating a sale in the Origins Platform.
  */
 contract OriginsBase is IOrigins, OriginsEvents {
-
 	/* Functions */
 
 	/**
@@ -18,7 +17,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _depositAddress The address of deposit address where all the raised fund will go. (Optional)
 	 */
 	constructor(address[] memory _owners, address payable _depositAddress) public OriginsAdmin(_owners) {
-		if(_depositAddress != address(0)){
+		if (_depositAddress != address(0)) {
 			depositAddress = _depositAddress;
 			emit DepositAddressUpdated(msg.sender, address(0), _depositAddress);
 		}
@@ -60,7 +59,21 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return _tierID The newly created tier ID.
 	 * @dev In the future this should be decoupled.
 	 */
-	function createTier(uint256 _remainingTokens, uint256 _saleStartTS, uint256 _saleEnd, uint256 _unlockedTokenWithdrawTS,  uint256 _unlockedBP, uint256 _vestOrLockCliff, uint256 _vestOrLockDuration, uint256 _depositRate, address _depositToken, DepositType _depositType, VerificationType _verificationType, SaleEndDurationOrTS _saleEndDurationOrTS, TransferType _transferType)  external onlyOwner returns(uint256 _tierID){
+	function createTier(
+		uint256 _remainingTokens,
+		uint256 _saleStartTS,
+		uint256 _saleEnd,
+		uint256 _unlockedTokenWithdrawTS,
+		uint256 _unlockedBP,
+		uint256 _vestOrLockCliff,
+		uint256 _vestOrLockDuration,
+		uint256 _depositRate,
+		address _depositToken,
+		DepositType _depositType,
+		VerificationType _verificationType,
+		SaleEndDurationOrTS _saleEndDurationOrTS,
+		TransferType _transferType
+	) external onlyOwner returns (uint256 _tierID) {
 		/// @notice `tierCount` should always start at 1, because else default value zero will result in verification process.
 		tierCount++;
 
@@ -79,7 +92,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @dev This is not set here due to stack too deep error.
 		//_setTierTokenLimit(_tierID, _minAmount, _maxAmount);
 		// @dev Corresponding _minAmount and _maxAmount parameters has been removed.
-		
+
 		/// @notice Tier Token Amount Parameters.
 		_setTierTokenAmount(_tierID, _remainingTokens);
 
@@ -106,7 +119,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _depositToken The token for that particular Tier Sale.
 	 * @param _depositType The type of deposit for the particular sale.
 	 */
-	function setTierDeposit(uint256 _tierID, uint256 _depositRate, address _depositToken, DepositType _depositType) external onlyOwner {
+	function setTierDeposit(
+		uint256 _tierID,
+		uint256 _depositRate,
+		address _depositToken,
+		DepositType _depositType
+	) external onlyOwner {
 		_setTierDeposit(_tierID, _depositRate, _depositToken, _depositType);
 	}
 
@@ -116,7 +134,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _minAmount The minimum asset amount required to participate in that tier.
 	 * @param _maxAmount The maximum asset amount allowed to participate in that tier.
 	 */
-	function setTierTokenLimit(uint256 _tierID, uint256 _minAmount, uint256 _maxAmount) external onlyOwner {
+	function setTierTokenLimit(
+		uint256 _tierID,
+		uint256 _minAmount,
+		uint256 _maxAmount
+	) external onlyOwner {
 		_setTierTokenLimit(_tierID, _minAmount, _maxAmount);
 	}
 
@@ -138,7 +160,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
-	function setTierVestOrLock(uint256 _tierID, uint256 _vestOrLockCliff, uint256 _vestOrLockDuration, uint256 _unlockedTokenWithdrawTS, uint256 _unlockedBP, TransferType _transferType) external onlyOwner {
+	function setTierVestOrLock(
+		uint256 _tierID,
+		uint256 _vestOrLockCliff,
+		uint256 _vestOrLockDuration,
+		uint256 _unlockedTokenWithdrawTS,
+		uint256 _unlockedBP,
+		TransferType _transferType
+	) external onlyOwner {
 		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedTokenWithdrawTS, _unlockedBP, _transferType);
 	}
 
@@ -149,7 +178,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _saleEnd The Tier Sale End Duration or Timestamp.
 	 * @param _saleEndDurationOrTS The Tier Sale End Type for the Tier.
 	 */
-	function setTierTime(uint256 _tierID, uint256 _saleStartTS, uint256 _saleEnd, SaleEndDurationOrTS _saleEndDurationOrTS) external onlyOwner {
+	function setTierTime(
+		uint256 _tierID,
+		uint256 _saleStartTS,
+		uint256 _saleEnd,
+		SaleEndDurationOrTS _saleEndDurationOrTS
+	) external onlyOwner {
 		_setTierTime(_tierID, _saleStartTS, _saleEnd, _saleEndDurationOrTS);
 	}
 
@@ -159,7 +193,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The tier for which the address has to be verified.
 	 */
 	function addressVerification(address _addressToBeVerified, uint256 _tierID) external onlyVerifier {
-		_addressVerification(_addressToBeVerified, _tierID);		
+		_addressVerification(_addressToBeVerified, _tierID);
 	}
 
 	/**
@@ -258,9 +292,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _depositToken The token for that particular Tier Sale.
 	 * @param _depositType The type of deposit for the particular sale.
 	 */
-	function _setTierDeposit(uint256 _tierID, uint256 _depositRate, address _depositToken, DepositType _depositType) internal {
+	function _setTierDeposit(
+		uint256 _tierID,
+		uint256 _depositRate,
+		address _depositToken,
+		DepositType _depositType
+	) internal {
 		require(_depositRate > 0, "OriginsBase: Deposit Rate cannot be zero.");
-		if(_depositType == DepositType.Token){
+		if (_depositType == DepositType.Token) {
 			require(_depositToken != address(0), "OriginsBase: Deposit Token Address cannot be zero.");
 		}
 
@@ -277,9 +316,13 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _minAmount The minimum asset amount required to participate in that tier.
 	 * @param _maxAmount The maximum asset amount allowed to participate in that tier.
 	 */
-	function _setTierTokenLimit(uint256 _tierID, uint256 _minAmount, uint256 _maxAmount) internal {
+	function _setTierTokenLimit(
+		uint256 _tierID,
+		uint256 _minAmount,
+		uint256 _maxAmount
+	) internal {
 		require(_minAmount <= _maxAmount, "OriginsBase: Min Amount cannot be higher than Max Amount.");
-		
+
 		tiers[_tierID].minAmount = _minAmount;
 		tiers[_tierID].maxAmount = _maxAmount;
 
@@ -290,7 +333,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 @notice Internal Function to returns the total remaining tokens in all tier.
 	 @return _totalBal The total balance of tokens in all tier.
 	 */
-	function _getTotalRemainingTokens() internal view returns(uint256 _totalBal) {
+	function _getTotalRemainingTokens() internal view returns (uint256 _totalBal) {
 		/// @notice Starting with 1 as Tier Count always starts from 1.
 		for (uint256 index = 1; index <= tierCount; index++) {
 			_totalBal = _totalBal.add(tiers[index].remainingTokens);
@@ -305,17 +348,19 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function _setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens) internal {
 		require(_remainingTokens > 0, "OriginsBase: Total token to sell should be higher than zero.");
-		require(tiers[_tierID].maxAmount.mul(tiers[_tierID].depositRate) <= _remainingTokens, "OriginsBase: Max Amount to buy should not be higher than token availability.");
-		
+		require(
+			tiers[_tierID].maxAmount.mul(tiers[_tierID].depositRate) <= _remainingTokens,
+			"OriginsBase: Max Amount to buy should not be higher than token availability."
+		);
+
 		uint256 currentBal = token.balanceOf(address(this));
 		uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
 
 		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
-		if(requiredBal > currentBal){
+		if (requiredBal > currentBal) {
 			bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
 			require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
-		}
-		else{
+		} else {
 			bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
 			require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
 		}
@@ -334,7 +379,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
-	function _setTierVestOrLock(uint256 _tierID, uint256 _vestOrLockCliff, uint256 _vestOrLockDuration, uint256 _unlockedTokenWithdrawTS, uint256 _unlockedBP, TransferType _transferType) internal {
+	function _setTierVestOrLock(
+		uint256 _tierID,
+		uint256 _vestOrLockCliff,
+		uint256 _vestOrLockDuration,
+		uint256 _unlockedTokenWithdrawTS,
+		uint256 _unlockedBP,
+		TransferType _transferType
+	) internal {
 		/// @notice The below is mainly for TransferType of Vested and Locked, but should not hinder for other types as well.
 		require(_vestOrLockCliff <= _vestOrLockDuration, "OriginsBase: Cliff has to be <= duration.");
 		require(_unlockedBP <= MAX_BASIS_POINT, "OriginsBase: The basis point cannot be higher than 10K.");
@@ -346,7 +398,15 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		tiers[_tierID].unlockedBP = _unlockedBP;
 		tiers[_tierID].transferType = _transferType;
 
-		emit TierVestOrLockUpdated(msg.sender, _tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedTokenWithdrawTS, _unlockedBP, _transferType);
+		emit TierVestOrLockUpdated(
+			msg.sender,
+			_tierID,
+			_vestOrLockCliff,
+			_vestOrLockDuration,
+			_unlockedTokenWithdrawTS,
+			_unlockedBP,
+			_transferType
+		);
 	}
 
 	/**
@@ -356,11 +416,15 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _saleEnd The Tier Sale End Duration or Timestamp.
 	 * @param _saleEndDurationOrTS The Tier Sale End Type for the Tier.
 	 */
-	function _setTierTime(uint256 _tierID, uint256 _saleStartTS, uint256 _saleEnd, SaleEndDurationOrTS _saleEndDurationOrTS) internal {
-		if(_saleStartTS !=0 && _saleEnd != 0 && _saleEndDurationOrTS == SaleEndDurationOrTS.Duration) {
+	function _setTierTime(
+		uint256 _tierID,
+		uint256 _saleStartTS,
+		uint256 _saleEnd,
+		SaleEndDurationOrTS _saleEndDurationOrTS
+	) internal {
+		if (_saleStartTS != 0 && _saleEnd != 0 && _saleEndDurationOrTS == SaleEndDurationOrTS.Duration) {
 			require(_saleStartTS.add(_saleEnd) > block.timestamp, "OriginsBase: The sale end duration cannot be past already.");
-		}
-		else if((_saleStartTS !=0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
+		} else if ((_saleStartTS != 0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
 			require(_saleStartTS < _saleEnd, "OriginsBase: The sale start TS cannot be after sale end TS.");
 			require(_saleEnd > block.timestamp, "OriginsBase: The sale end time cannot be past already.");
 		}
@@ -392,21 +456,21 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _id The Tier ID whose sale status has to be checked.
 	 * @return True if the sale is allowed on that tier, False otherwise.
 	 */
-	function _saleAllowed(uint256 _id) internal returns(bool) {
+	function _saleAllowed(uint256 _id) internal returns (bool) {
 		require(tiers[_id].saleStartTS != 0, "OriginsBase: Sale has not started yet.");
 		require(!tierSaleEnded[_id], "OriginsBase: Sale ended.");
-		if(tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None){
+		if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None) {
 			return false;
-		}
-		else if(tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.UntilSupply && tiers[_id].remainingTokens == 0) {
+		} else if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.UntilSupply && tiers[_id].remainingTokens == 0) {
 			tierSaleEnded[_id] = true;
 			return false;
-		}
-		else if(tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp && tiers[_id].saleEnd < block.timestamp) {
+		} else if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp && tiers[_id].saleEnd < block.timestamp) {
 			tierSaleEnded[_id] = true;
 			return false;
-		}
-		else if(tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.Duration && tiers[_id].saleStartTS.add(tiers[_id].saleEnd) < block.timestamp) {
+		} else if (
+			tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.Duration &&
+			tiers[_id].saleStartTS.add(tiers[_id].saleEnd) < block.timestamp
+		) {
 			tierSaleEnded[_id] = true;
 			return false;
 		}
@@ -423,9 +487,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	function _updateTierTokenDetailsAfterBuy(uint256 _tierID) internal {
 		Tier memory tierDetails = tiers[_tierID];
 
-		if(tierDetails.remainingTokens < tierDetails.maxAmount) {
-			if(tierDetails.remainingTokens < tierDetails.minAmount) {
-				if(tierDetails.remainingTokens == 0) {
+		if (tierDetails.remainingTokens < tierDetails.maxAmount) {
+			if (tierDetails.remainingTokens < tierDetails.minAmount) {
+				if (tierDetails.remainingTokens == 0) {
 					tierSaleEnded[_tierID] = true;
 					emit TierSaleEnded(msg.sender, _tierID);
 				}
@@ -447,19 +511,22 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		require(tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner");
 
-		if(tierDetails.transferType == TransferType.Unlocked){
+		if (tierDetails.transferType == TransferType.Unlocked) {
 			tierDetails.depositToken.transfer(msg.sender, _tokensBought);
-		}
-		else if(tierDetails.transferType == TransferType.WaitedUnlock) {
+		} else if (tierDetails.transferType == TransferType.WaitedUnlock) {
 			/// TODO Call LockedFund Contract to release the token after a certain period.
 			/// TODO approve LockedFund
 			revert("Not implemented yet.");
-		}
-		else if(tierDetails.transferType == TransferType.Vested) {
+		} else if (tierDetails.transferType == TransferType.Vested) {
 			token.approve(address(lockedFund), _tokensBought);
-			lockedFund.depositVested(msg.sender, _tokensBought, tierDetails.vestOrLockCliff, tierDetails.vestOrLockDuration, tierDetails.unlockedBP);
-		}
-		else if(tierDetails.transferType == TransferType.Locked) {
+			lockedFund.depositVested(
+				msg.sender,
+				_tokensBought,
+				tierDetails.vestOrLockCliff,
+				tierDetails.vestOrLockDuration,
+				tierDetails.unlockedBP
+			);
+		} else if (tierDetails.transferType == TransferType.Locked) {
 			/// TODO Call the LockedFund Contract with simple lock on the received token.
 			/// Don't forget the immediate unlocked amount after the unlockTimestamp.
 			/// TODO approve LockedFund
@@ -474,9 +541,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice _tokensBoughtByAddress The amount of tokens bought by the user previously.
 	 * @notice _tokensBought The amount of tokens bought during the current buy.
 	 */
-	function _updateWalletCount(uint256 _tierID, uint256 _deposit, uint256 _tokensBoughtByAddress, uint256 _tokensBought) internal {
-		if(_deposit > 0) {
-			if(_tokensBoughtByAddress == 0){
+	function _updateWalletCount(
+		uint256 _tierID,
+		uint256 _deposit,
+		uint256 _tokensBoughtByAddress,
+		uint256 _tokensBought
+	) internal {
+		if (_deposit > 0) {
+			if (_tokensBoughtByAddress == 0) {
 				participatingWalletCountPerTier[_tierID]++;
 			}
 			tokensSoldPerTier[_tierID] = tokensSoldPerTier[_tierID].add(_tokensBought);
@@ -496,10 +568,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		Tier memory tierDetails = tiers[_tierID];
 
 		/// @notice Checking if verification is set and if user has permission.
-		if(tierDetails.verificationType == VerificationType.None) {
+		if (tierDetails.verificationType == VerificationType.None) {
 			revert("OriginsBase: No one is allowed for sale.");
-		}
-		else if(tierDetails.verificationType == VerificationType.ByAddress) {
+		} else if (tierDetails.verificationType == VerificationType.ByAddress) {
 			/// @notice Checking if user is verified based on address.
 			require(addressApproved[msg.sender][_tierID], "OriginsBase: User not approved for sale.");
 		}
@@ -512,10 +583,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		/// @notice Checking which deposit type is selected.
 		uint256 deposit;
-		if(tierDetails.depositType == DepositType.RBTC) {
+		if (tierDetails.depositType == DepositType.RBTC) {
 			deposit = msg.value;
-		}
-		else {
+		} else {
 			require(_amount != 0, "OriginsBase: Amount cannot be zero.");
 			require(address(tierDetails.depositToken) != address(0), "OriginsBase: Deposit Token not set by owner.");
 			bool txStatus = tierDetails.depositToken.transferFrom(msg.sender, address(this), _amount);
@@ -526,7 +596,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Checking what should be the allowed deposit amount.
 		uint256 refund;
 		require(deposit >= tierDetails.minAmount, "OriginsBase: Deposit is less than minimum allowed.");
-		if(tierDetails.maxAmount.sub(tokensBoughtByAddress) <= deposit) {
+		if (tierDetails.maxAmount.sub(tokensBoughtByAddress) <= deposit) {
 			refund = deposit.add(tokensBoughtByAddress).sub(tierDetails.maxAmount);
 			deposit = tierDetails.maxAmount.sub(tokensBoughtByAddress);
 		}
@@ -546,13 +616,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		_updateWalletCount(_tierID, deposit, tokensBoughtByAddress, tokensBought);
 
 		/// @notice Refunding the excess funds.
-		if(refund > 0) {
+		if (refund > 0) {
 			bool txStatus = tierDetails.depositToken.transfer(msg.sender, refund);
-			require(txStatus, "OriginsBase: Token refund not received by user correctly.");			
+			require(txStatus, "OriginsBase: Token refund not received by user correctly.");
 		}
 
 		emit TokenBuy(msg.sender, _tierID, tokensBought);
-
 	}
 
 	/**
@@ -564,15 +633,15 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Checks if deposit address is set or not.
 		address payable receiver = msg.sender;
 		if (depositAddress != address(0)) {
-			receiver = depositAddress;			
+			receiver = depositAddress;
 		}
 
 		/// @notice Only withdraw is allowed where sale is ended. Premature withdraw is not allowed.
 		for (uint256 index = 1; index <= tierCount; index++) {
-			if(tierSaleEnded[index]){
+			if (tierSaleEnded[index]) {
 				uint256 amount = tokensSoldPerTier[index].div(tiers[index].depositRate);
 				if (tiers[index].depositType == DepositType.RBTC) {
-				    receiver.transfer(amount);
+					receiver.transfer(amount);
 					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.RBTC, amount);
 				} else {
 					tiers[index].depositToken.transfer(receiver, amount);
@@ -588,7 +657,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice Function to read the tier count.
 	 * @return The number of tiers present in the contract.
 	 */
-	function getTierCount() public view returns(uint256) {
+	function getTierCount() public view returns (uint256) {
 		return tierCount;
 	}
 
@@ -597,7 +666,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return The address of the deposit address.
 	 * @dev If zero is returned, any of the owners can withdraw the raised funds.
 	 */
-	function getDepositAddress() public view returns(address) {
+	function getDepositAddress() public view returns (address) {
 		return depositAddress;
 	}
 
@@ -605,7 +674,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice Function to read the token on sale.
 	 * @return The Token contract address which is being sold in the contract.
 	 */
-	function getToken() public view returns(address) {
+	function getToken() public view returns (address) {
 		return address(token);
 	}
 
@@ -613,7 +682,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice Function to read the locked fund contract address.
 	 * @return Address of Locked Fund Contract.
 	 */
-	function getLockDetails() public view returns(address) {
+	function getLockDetails() public view returns (address) {
 		return address(lockedFund);
 	}
 
@@ -631,9 +700,35 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return _vestOrLockDuration Contains the duration of the vesting/lock for distribution.
 	 * @return _depositRate Contains the rate of the token w.r.t. the depositing asset.
 	 */
-	function readTierPartA(uint256 _tierID) public view returns(uint256 _minAmount, uint256 _maxAmount, uint256 _remainingTokens, uint256 _saleStartTS, uint256 _saleEnd, uint256 _unlockedTokenWithdrawTS,  uint256 _unlockedBP, uint256 _vestOrLockCliff, uint256 _vestOrLockDuration, uint256 _depositRate) {
+	function readTierPartA(uint256 _tierID)
+		public
+		view
+		returns (
+			uint256 _minAmount,
+			uint256 _maxAmount,
+			uint256 _remainingTokens,
+			uint256 _saleStartTS,
+			uint256 _saleEnd,
+			uint256 _unlockedTokenWithdrawTS,
+			uint256 _unlockedBP,
+			uint256 _vestOrLockCliff,
+			uint256 _vestOrLockDuration,
+			uint256 _depositRate
+		)
+	{
 		Tier memory tier = tiers[_tierID];
-		return (tier.minAmount, tier.maxAmount, tier.remainingTokens, tier.saleStartTS, tier.saleEnd, tier.unlockedTokenWithdrawTS, tier.unlockedBP, tier.vestOrLockCliff, tier.vestOrLockDuration, tier.depositRate);
+		return (
+			tier.minAmount,
+			tier.maxAmount,
+			tier.remainingTokens,
+			tier.saleStartTS,
+			tier.saleEnd,
+			tier.unlockedTokenWithdrawTS,
+			tier.unlockedBP,
+			tier.vestOrLockCliff,
+			tier.vestOrLockDuration,
+			tier.depositRate
+		);
 	}
 
 	/**
@@ -645,7 +740,17 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return _saleEndDurationOrTS Contains whether end of sale is by Duration or Timestamp.
 	 * @return _transferType Contains the type of token transfer after a user buys to get the tokens.
 	 */
-	function readTierPartB(uint256 _tierID) public view returns(address _depositToken, DepositType _depositType, VerificationType _verificationType, SaleEndDurationOrTS _saleEndDurationOrTS, TransferType _transferType) {
+	function readTierPartB(uint256 _tierID)
+		public
+		view
+		returns (
+			address _depositToken,
+			DepositType _depositType,
+			VerificationType _verificationType,
+			SaleEndDurationOrTS _saleEndDurationOrTS,
+			TransferType _transferType
+		)
+	{
 		Tier memory tier = tiers[_tierID];
 		return (address(tier.depositToken), tier.depositType, tier.verificationType, tier.saleEndDurationOrTS, tier.transferType);
 	}
@@ -656,7 +761,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The tier ID for which the address has to be checked.
 	 * @return The amount of tokens bought by the address.
 	 */
-	function getTokensBoughtByAddressOnTier(address _addr, uint256 _tierID) public view returns(uint256) {
+	function getTokensBoughtByAddressOnTier(address _addr, uint256 _tierID) public view returns (uint256) {
 		return tokensBoughtByAddressOnTier[_addr][_tierID];
 	}
 
@@ -668,7 +773,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * A user can participate on one round and not on other.
 	 * In the future maybe a count on that can be created.
 	 */
-	function getParticipatingWalletCountPerTier(uint256 _tierID) public view returns(uint256) {
+	function getParticipatingWalletCountPerTier(uint256 _tierID) public view returns (uint256) {
 		return participatingWalletCountPerTier[_tierID];
 	}
 
@@ -677,7 +782,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param  _tierID The tier ID for which the sold metrics has to be checked.
 	 * @return The amount of tokens sold on that tier.
 	 */
-	function getTokensSoldPerTier(uint256 _tierID) public view returns(uint256) {
+	function getTokensSoldPerTier(uint256 _tierID) public view returns (uint256) {
 		return tokensSoldPerTier[_tierID];
 	}
 
@@ -687,7 +792,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return True is sale ended, False otherwise.
 	 * @dev A return of false does not necessary mean the sale is active. It can also be in inactive state.
 	 */
-	function checkSaleEnded(uint256 _tierID) public view returns(bool _status) {
+	function checkSaleEnded(uint256 _tierID) public view returns (bool _status) {
 		return tierSaleEnded[_tierID];
 	}
 
@@ -697,8 +802,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The tier ID for which the address has to be checked.
 	 * @return True is allowed, False otherwise.
 	 */
-	function isAddressApproved(address _addr, uint256 _tierID) public view returns(bool) {
+	function isAddressApproved(address _addr, uint256 _tierID) public view returns (bool) {
 		return addressApproved[_addr][_tierID];
 	}
-
 }

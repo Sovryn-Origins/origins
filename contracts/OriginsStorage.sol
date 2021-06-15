@@ -10,7 +10,7 @@ import "./Interfaces/ILockedFund.sol";
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice This plays as the harddisk for the Origins Platform.
  */
-contract OriginsStorage is OriginsAdmin{
+contract OriginsStorage is OriginsAdmin {
 	using SafeMath for uint256;
 
 	/* Storage */
@@ -32,7 +32,10 @@ contract OriginsStorage is OriginsAdmin{
 	 * RBTC - The deposit will be made in RBTC.
 	 * Token - The deposit will be made in any ERC20 Token set in depositToken in Tier Struct.
 	 */
-	enum DepositType { RBTC, Token }
+	enum DepositType {
+		RBTC,
+		Token
+	}
 	/**
 	 * @notice The method by which we determine whether the sale ended or not.
 	 * None - This type is not set, so no one is allowed for sale yet.
@@ -40,14 +43,23 @@ contract OriginsStorage is OriginsAdmin{
 	 * Duration - This type is set to allow sale until a particular duration.
 	 * Timestamp - This type is set to allow sale until a particular timestamp.
 	 */
-	enum SaleEndDurationOrTS { None, UntilSupply, Duration, Timestamp }
+	enum SaleEndDurationOrTS {
+		None,
+		UntilSupply,
+		Duration,
+		Timestamp
+	}
 	/**
 	 * @notice The method by which the verification is happening.
 	 * None - The type is not set, so no one is approved for sale.
 	 * Everyone - This type is set to allow everyone.
 	 * ByAddress - This type is set to allow only verified addresses.
 	 */
-	enum VerificationType { None, Everyone, ByAddress }
+	enum VerificationType {
+		None,
+		Everyone,
+		ByAddress
+	}
 	/**
 	 * @notice The method by which the distribution is happening.
 	 * None - The distribution is not set yet, so tokens remain in the contract.
@@ -56,7 +68,13 @@ contract OriginsStorage is OriginsAdmin{
 	 * Vested - The tokens are vested (based on the contracts from Sovryn) for a certain period.
 	 * Locked - The tokens are locked without any benefit based on cliff and duration.
 	 */
-	enum TransferType { None, Unlocked, WaitedUnlock, Vested, Locked }
+	enum TransferType {
+		None,
+		Unlocked,
+		WaitedUnlock,
+		Vested,
+		Locked
+	}
 
 	/// @notice The tiers based on the tier id, taken from tier count.
 	mapping(uint256 => Tier) internal tiers;
@@ -71,8 +89,8 @@ contract OriginsStorage is OriginsAdmin{
 	/// @notice Contains if a tier sale ended or not.
 	mapping(uint256 => bool) internal tierSaleEnded;
 
-    /// @notice The address to uint to bool mapping to see if the particular address is eligible or not for a tier.
-    mapping(address => mapping(uint256 => bool)) internal addressApproved;
+	/// @notice The address to uint to bool mapping to see if the particular address is eligible or not for a tier.
+	mapping(address => mapping(uint256 => bool)) internal addressApproved;
 
 	/**
 	 * @notice The Tier Structure.
@@ -104,9 +122,8 @@ contract OriginsStorage is OriginsAdmin{
 		uint256 depositRate;
 		IERC20 depositToken;
 		DepositType depositType;
-	    VerificationType verificationType;
+		VerificationType verificationType;
 		SaleEndDurationOrTS saleEndDurationOrTS;
 		TransferType transferType;
-		}
-
+	}
 }

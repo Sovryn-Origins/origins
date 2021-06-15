@@ -7,14 +7,13 @@ pragma solidity ^0.5.17;
  *  @dev To add a new role, add the corresponding array and mapping, along with add, remove and get functions.
  */
 contract OriginsAdmin {
-
 	/* Storage */
 
-    address[] private owners;
-    address[] private verifiers;
+	address[] private owners;
+	address[] private verifiers;
 
-    mapping(address => bool) private isOwner;
-    mapping(address => bool) private isVerifier;
+	mapping(address => bool) private isOwner;
+	mapping(address => bool) private isVerifier;
 	/**
 	 * @notice In the future new list can be added based on the required limit.
 	 * When adding a new list, a new array & mapping has to be created.
@@ -145,8 +144,8 @@ contract OriginsAdmin {
 		require(isOwner[_ownerToRemove], "OriginsAdmin: Address is not an owner.");
 		isOwner[_ownerToRemove] = false;
 		uint256 len = owners.length;
-		for(uint256 index = 0; index < len; index++) {
-			if(_ownerToRemove == owners[index]) {
+		for (uint256 index = 0; index < len; index++) {
+			if (_ownerToRemove == owners[index]) {
 				owners[index] = owners[len - 1];
 				break;
 			}
@@ -177,8 +176,8 @@ contract OriginsAdmin {
 		require(isVerifier[_verifierToRemove], "OriginsAdmin: Address is not a verifier.");
 		isVerifier[_verifierToRemove] = false;
 		uint256 len = verifiers.length;
-		for(uint256 index = 0; index < len; index++) {
-			if(_verifierToRemove == verifiers[index]) {
+		for (uint256 index = 0; index < len; index++) {
+			if (_verifierToRemove == verifiers[index]) {
 				verifiers[index] = verifiers[len - 1];
 				break;
 			}
@@ -210,7 +209,7 @@ contract OriginsAdmin {
 
 	/**
 	 * @dev Returns the address array of the owners.
-     * @return The list of owners.
+	 * @return The list of owners.
 	 */
 	function getOwners() public view returns (address[] memory) {
 		return owners;
@@ -218,10 +217,9 @@ contract OriginsAdmin {
 
 	/**
 	 * @dev Returns the address array of the verifier.
-     * @return The list of verifiers.
+	 * @return The list of verifiers.
 	 */
 	function getVerifiers() public view returns (address[] memory) {
 		return verifiers;
 	}
-
 }

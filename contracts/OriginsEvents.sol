@@ -7,8 +7,7 @@ import "./OriginsStorage.sol";
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice You can use this contract for adding events into Origins Base.
  */
-contract OriginsEvents is OriginsStorage{
-
+contract OriginsEvents is OriginsStorage {
 	/* Events */
 
 	/**
@@ -22,7 +21,7 @@ contract OriginsEvents is OriginsStorage{
 	/**
 	 * @notice Emitted when the Deposit Address is updated.
 	 * @param _initiator The one who initiates this event.
-	 * @param _oldDepositAddr The address of the old deposit address. 
+	 * @param _oldDepositAddr The address of the old deposit address.
 	 * @param _newDepositAddr The address of the new deposit address.
 	 */
 	event DepositAddressUpdated(address indexed _initiator, address indexed _oldDepositAddr, address indexed _newDepositAddr);
@@ -30,7 +29,7 @@ contract OriginsEvents is OriginsStorage{
 	/**
 	 * @notice Emitted when the Locked Fund is updated.
 	 * @param _initiator The one who initiates this event.
-	 * @param _oldLockedFund The address of the old locked fund address. 
+	 * @param _oldLockedFund The address of the old locked fund address.
 	 * @param _newLockedFund The address of the new locked fund address.
 	 */
 	event LockedFundUpdated(address indexed _initiator, address indexed _oldLockedFund, address indexed _newLockedFund);
@@ -67,7 +66,13 @@ contract OriginsEvents is OriginsStorage{
 	 * @param _saleEnd The Tier Sale End Duration or Timestamp.
 	 * @param _saleEndDurationOrTS The Tier Sale End Type for the Tier.
 	 */
-	event TierTimeUpdated(address indexed _initiator, uint256 _tierID, uint256 _saleStartTS, uint256 _saleEnd, SaleEndDurationOrTS indexed _saleEndDurationOrTS);
+	event TierTimeUpdated(
+		address indexed _initiator,
+		uint256 _tierID,
+		uint256 _saleStartTS,
+		uint256 _saleEnd,
+		SaleEndDurationOrTS indexed _saleEndDurationOrTS
+	);
 
 	/**
 	 * @notice Emitted when Tier Vesting/Lock Parameters are updated.
@@ -79,7 +84,15 @@ contract OriginsEvents is OriginsStorage{
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
-	event TierVestOrLockUpdated(address indexed _initiator, uint256 _tierID, uint256 _vestOrLockCliff, uint256 _vestOrLockDuration, uint256 _unlockedTokenWithdrawTS, uint256 _unlockedBP, TransferType indexed _transferType);
+	event TierVestOrLockUpdated(
+		address indexed _initiator,
+		uint256 _tierID,
+		uint256 _vestOrLockCliff,
+		uint256 _vestOrLockDuration,
+		uint256 _unlockedTokenWithdrawTS,
+		uint256 _unlockedBP,
+		TransferType indexed _transferType
+	);
 
 	/**
 	 * @notice Emitted when Tier Deposit Parameters are updated.
@@ -89,7 +102,13 @@ contract OriginsEvents is OriginsStorage{
 	 * @param _depositToken The token for that particular Tier Sale.
 	 * @param _depositType The type of deposit for the particular sale.
 	 */
-	event TierDepositUpdated(address indexed _initiator, uint256 _tierID, uint256 _depositRate, address _depositToken, DepositType indexed _depositType);
+	event TierDepositUpdated(
+		address indexed _initiator,
+		uint256 _tierID,
+		uint256 _depositRate,
+		address _depositToken,
+		DepositType indexed _depositType
+	);
 
 	/**
 	 * @notice Emitted when the Tier Verification are updated.
@@ -137,6 +156,11 @@ contract OriginsEvents is OriginsStorage{
 	 * @param _depositType The type of withdraw (RBTC or Token).
 	 * @param _amount The amount of withdraw.
 	 */
-	event ProceedingWithdrawn(address indexed _initiator, address indexed _receiver, uint256 _tierID, DepositType _depositType, uint256 _amount);
-
+	event ProceedingWithdrawn(
+		address indexed _initiator,
+		address indexed _receiver,
+		uint256 _tierID,
+		DepositType _depositType,
+		uint256 _amount
+	);
 }
