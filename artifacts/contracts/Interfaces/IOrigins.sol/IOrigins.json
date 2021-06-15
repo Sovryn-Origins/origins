@@ -1,0 +1,10 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IOrigins",
+  "sourceName": "contracts/Interfaces/IOrigins.sol",
+  "abi": [],
+  "bytecode": "0x6080604052348015600f57600080fd5b50603e80601d6000396000f3fe6080604052600080fdfea265627a7a72315820563c295cb97e14be9c42083c5236cc9c95740e44c4382c01325b5405c18549eb64736f6c63430005110032",
+  "deployedBytecode": "0x6080604052600080fdfea265627a7a72315820563c295cb97e14be9c42083c5236cc9c95740e44c4382c01325b5405c18549eb64736f6c63430005110032",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}
