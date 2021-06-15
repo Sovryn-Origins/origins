@@ -8,6 +8,21 @@
       "payable": false,
       "stateMutability": "nonpayable",
       "type": "constructor"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "c__0xdb7cf3fd",
+          "type": "bytes32"
+        }
+      ],
+      "name": "c_0xdb7cf3fd",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
     }
   ],
   "bytecode": "0x",

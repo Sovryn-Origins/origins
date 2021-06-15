@@ -128,6 +128,21 @@
     },
     {
       "constant": true,
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "c__0x1be38b5b",
+          "type": "bytes32"
+        }
+      ],
+      "name": "c_0x1be38b5b",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "pure",
+      "type": "function"
+    },
+    {
+      "constant": true,
       "inputs": [],
       "name": "decimals",
       "outputs": [
