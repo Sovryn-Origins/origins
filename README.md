@@ -1,4 +1,4 @@
-# Origins
+# Origins [![Node.js CI](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml) [![Build Status](https://travis-ci.org/DistributedCollective/origins.svg?branch=main)](https://travis-ci.org/DistributedCollective/origins) [![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=initial)](https://coveralls.io/github/DistributedCollective/origins?branch=initial)
 
 The Origins Platform Smart Contracts
 
