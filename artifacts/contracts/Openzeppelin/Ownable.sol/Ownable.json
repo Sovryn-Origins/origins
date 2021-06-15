@@ -30,36 +30,6 @@
     },
     {
       "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0xd8e745d9",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0xd8e745d9",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0xdb7cf3fd",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0xdb7cf3fd",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [],
       "name": "isOwner",
       "outputs": [

@@ -4,21 +4,6 @@
   "sourceName": "contracts/Interfaces/IVestingRegistry.sol",
   "abi": [
     {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0x8a4aab55",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0x8a4aab55",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
       "constant": false,
       "inputs": [
         {

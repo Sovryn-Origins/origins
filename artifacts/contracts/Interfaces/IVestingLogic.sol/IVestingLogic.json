@@ -5,36 +5,6 @@
   "abi": [
     {
       "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0xa1e8758b",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0xa1e8758b",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "c__0xd266dec3",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0xd266dec3",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
       "inputs": [],
       "name": "cliff",
       "outputs": [

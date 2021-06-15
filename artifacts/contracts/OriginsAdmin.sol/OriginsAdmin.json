@@ -125,21 +125,6 @@
       "constant": true,
       "inputs": [
         {
-          "internalType": "bytes32",
-          "name": "c__0x55aecb26",
-          "type": "bytes32"
-        }
-      ],
-      "name": "c_0x55aecb26",
-      "outputs": [],
-      "payable": false,
-      "stateMutability": "pure",
-      "type": "function"
-    },
-    {
-      "constant": true,
-      "inputs": [
-        {
           "internalType": "address",
           "name": "_addr",
           "type": "address"
