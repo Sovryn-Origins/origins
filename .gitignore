@@ -109,3 +109,5 @@ build
 *.dbg.json
 artifacts/build-info
 .vscode
+coverage
+coverage.json
