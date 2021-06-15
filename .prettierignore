@@ -1,0 +1,12 @@
+__pycache__
+.DS_Store
+.history
+.hypothesis/
+artifacts/
+build/
+reports/
+node_modules/
+!.solhint.json
+package-lock.json
+coverage
+coverage.json
