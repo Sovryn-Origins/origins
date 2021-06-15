@@ -106,8 +106,8 @@ dist
 # Custom
 cache
 build
-*.dbg.json
-artifacts/build-info
+artifacts
 .vscode
 coverage
 coverage.json
+.DS_Store
