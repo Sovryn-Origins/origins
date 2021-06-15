@@ -23,6 +23,6 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm ci
-    - npm: npm run lint
+    - run: npm run lint
     - run: npm run coverage
     - run: cat coverage/lcov.info | coveralls
