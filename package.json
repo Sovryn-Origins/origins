@@ -71,7 +71,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "yarn prettier && yarn lint",
-      "pre-push": "yarn test"
+      "pre-push": "yarn prettier-check && yarn test"
     }
   },
   "dependencies": {
