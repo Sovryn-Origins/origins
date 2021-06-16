@@ -1,6 +1,5 @@
 pragma solidity ^0.5.17;
 
-import "./OriginsAdmin.sol";
 import "./Interfaces/IERC20.sol";
 import "./Openzeppelin/SafeMath.sol";
 import "./Interfaces/ILockedFund.sol";
@@ -10,7 +9,7 @@ import "./Interfaces/ILockedFund.sol";
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice This plays as the harddisk for the Origins Platform.
  */
-contract OriginsStorage is OriginsAdmin {
+contract OriginsStorage {
 	using SafeMath for uint256;
 
 	/* Storage */

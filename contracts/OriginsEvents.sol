@@ -1,13 +1,11 @@
 pragma solidity ^0.5.17;
 
-import "./OriginsStorage.sol";
-
 /**
  *  @title A contract containing all the events of Origins Base.
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice You can use this contract for adding events into Origins Base.
  */
-contract OriginsEvents is OriginsStorage {
+contract OriginsEvents {
 	/* Events */
 
 	/**
@@ -71,7 +69,7 @@ contract OriginsEvents is OriginsStorage {
 		uint256 _tierID,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
-		SaleEndDurationOrTS indexed _saleEndDurationOrTS
+		uint256 indexed _saleEndDurationOrTS
 	);
 
 	/**
@@ -91,7 +89,7 @@ contract OriginsEvents is OriginsStorage {
 		uint256 _vestOrLockDuration,
 		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
-		TransferType indexed _transferType
+		uint256 _transferType
 	);
 
 	/**
@@ -106,8 +104,8 @@ contract OriginsEvents is OriginsStorage {
 		address indexed _initiator,
 		uint256 _tierID,
 		uint256 _depositRate,
-		address _depositToken,
-		DepositType indexed _depositType
+		address indexed _depositToken,
+		uint256 _depositType
 	);
 
 	/**
@@ -116,7 +114,7 @@ contract OriginsEvents is OriginsStorage {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _verificationType The type of verification for the particular sale.
 	 */
-	event TierVerificationUpdated(address indexed _initiator, uint256 _tierID, VerificationType _verificationType);
+	event TierVerificationUpdated(address indexed _initiator, uint256 _tierID, uint256 _verificationType);
 
 	/**
 	 * @notice Emitted when the Tier Sale Ends.
@@ -160,7 +158,7 @@ contract OriginsEvents is OriginsStorage {
 		address indexed _initiator,
 		address indexed _receiver,
 		uint256 _tierID,
-		DepositType _depositType,
+		uint256 _depositType,
 		uint256 _amount
 	);
 }

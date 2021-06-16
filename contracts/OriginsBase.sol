@@ -1,6 +1,8 @@
 pragma solidity ^0.5.17;
 
+import "./OriginsAdmin.sol";
 import "./OriginsEvents.sol";
+import "./OriginsStorage.sol";
 import "./Interfaces/IOrigins.sol";
 
 /**
@@ -8,7 +10,7 @@ import "./Interfaces/IOrigins.sol";
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice You can use this contract for creating a sale in the Origins Platform.
  */
-contract OriginsBase is IOrigins, OriginsEvents {
+contract OriginsBase is IOrigins, OriginsAdmin, OriginsEvents, OriginsStorage {
 	/* Functions */
 
 	/**
@@ -69,10 +71,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _vestOrLockDuration,
 		uint256 _depositRate,
 		address _depositToken,
-		DepositType _depositType,
-		VerificationType _verificationType,
-		SaleEndDurationOrTS _saleEndDurationOrTS,
-		TransferType _transferType
+		uint256 _depositType,
+		uint256 _verificationType,
+		uint256 _saleEndDurationOrTS,
+		uint256 _transferType
 	) external onlyOwner returns (uint256 _tierID) {
 		/// @notice `tierCount` should always start at 1, because else default value zero will result in verification process.
 		tierCount++;
@@ -108,7 +110,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _verificationType The type of verification for the particular sale.
 	 */
-	function setTierVerification(uint256 _tierID, VerificationType _verificationType) external onlyOwner {
+	function setTierVerification(uint256 _tierID, uint256 _verificationType) external onlyOwner {
 		_setTierVerification(_tierID, _verificationType);
 	}
 
@@ -123,7 +125,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _tierID,
 		uint256 _depositRate,
 		address _depositToken,
-		DepositType _depositType
+		uint256 _depositType
 	) external onlyOwner {
 		_setTierDeposit(_tierID, _depositRate, _depositToken, _depositType);
 	}
@@ -166,7 +168,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _vestOrLockDuration,
 		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
-		TransferType _transferType
+		uint256 _transferType
 	) external onlyOwner {
 		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedTokenWithdrawTS, _unlockedBP, _transferType);
 	}
@@ -182,7 +184,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _tierID,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
-		SaleEndDurationOrTS _saleEndDurationOrTS
+		uint256 _saleEndDurationOrTS
 	) external onlyOwner {
 		_setTierTime(_tierID, _saleStartTS, _saleEnd, _saleEndDurationOrTS);
 	}
@@ -279,8 +281,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _verificationType The type of verification for the particular sale.
 	 */
-	function _setTierVerification(uint256 _tierID, VerificationType _verificationType) internal {
-		tiers[_tierID].verificationType = _verificationType;
+	function _setTierVerification(uint256 _tierID, uint256 _verificationType) internal {
+		tiers[_tierID].verificationType = VerificationType(_verificationType);
 
 		emit TierVerificationUpdated(msg.sender, _tierID, _verificationType);
 	}
@@ -296,16 +298,16 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _tierID,
 		uint256 _depositRate,
 		address _depositToken,
-		DepositType _depositType
+		uint256 _depositType
 	) internal {
 		require(_depositRate > 0, "OriginsBase: Deposit Rate cannot be zero.");
-		if (_depositType == DepositType.Token) {
+		if (DepositType(_depositType) == DepositType.Token) {
 			require(_depositToken != address(0), "OriginsBase: Deposit Token Address cannot be zero.");
 		}
 
 		tiers[_tierID].depositRate = _depositRate;
 		tiers[_tierID].depositToken = IERC20(_depositToken);
-		tiers[_tierID].depositType = _depositType;
+		tiers[_tierID].depositType = DepositType(_depositType);
 
 		emit TierDepositUpdated(msg.sender, _tierID, _depositRate, _depositToken, _depositType);
 	}
@@ -385,7 +387,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _vestOrLockDuration,
 		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
-		TransferType _transferType
+		uint256 _transferType
 	) internal {
 		/// @notice The below is mainly for TransferType of Vested and Locked, but should not hinder for other types as well.
 		require(_vestOrLockCliff <= _vestOrLockDuration, "OriginsBase: Cliff has to be <= duration.");
@@ -396,7 +398,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Zero is also an accepted value, which means the unlock time is not yet decided.
 		tiers[_tierID].unlockedTokenWithdrawTS = _unlockedTokenWithdrawTS;
 		tiers[_tierID].unlockedBP = _unlockedBP;
-		tiers[_tierID].transferType = _transferType;
+		tiers[_tierID].transferType = TransferType(_transferType);
 
 		emit TierVestOrLockUpdated(
 			msg.sender,
@@ -420,18 +422,18 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _tierID,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
-		SaleEndDurationOrTS _saleEndDurationOrTS
+		uint256 _saleEndDurationOrTS
 	) internal {
-		if (_saleStartTS != 0 && _saleEnd != 0 && _saleEndDurationOrTS == SaleEndDurationOrTS.Duration) {
+		if (_saleStartTS != 0 && _saleEnd != 0 && SaleEndDurationOrTS(_saleEndDurationOrTS) == SaleEndDurationOrTS.Duration) {
 			require(_saleStartTS.add(_saleEnd) > block.timestamp, "OriginsBase: The sale end duration cannot be past already.");
-		} else if ((_saleStartTS != 0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
+		} else if ((_saleStartTS != 0 || _saleEnd != 0) && SaleEndDurationOrTS(_saleEndDurationOrTS) == SaleEndDurationOrTS.Timestamp) {
 			require(_saleStartTS < _saleEnd, "OriginsBase: The sale start TS cannot be after sale end TS.");
 			require(_saleEnd > block.timestamp, "OriginsBase: The sale end time cannot be past already.");
 		}
 
 		tiers[_tierID].saleStartTS = _saleStartTS;
 		tiers[_tierID].saleEnd = _saleEnd;
-		tiers[_tierID].saleEndDurationOrTS = _saleEndDurationOrTS;
+		tiers[_tierID].saleEndDurationOrTS = SaleEndDurationOrTS(_saleEndDurationOrTS);
 
 		emit TierTimeUpdated(msg.sender, _tierID, _saleStartTS, _saleEnd, _saleEndDurationOrTS);
 	}
@@ -642,10 +644,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 				uint256 amount = tokensSoldPerTier[index].div(tiers[index].depositRate);
 				if (tiers[index].depositType == DepositType.RBTC) {
 					receiver.transfer(amount);
-					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.RBTC, amount);
+					emit ProceedingWithdrawn(msg.sender, receiver, index, uint256(DepositType.RBTC), amount);
 				} else {
 					tiers[index].depositToken.transfer(receiver, amount);
-					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.Token, amount);
+					emit ProceedingWithdrawn(msg.sender, receiver, index, uint256(DepositType.Token), amount);
 				}
 			}
 		}
@@ -745,14 +747,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		view
 		returns (
 			address _depositToken,
-			DepositType _depositType,
-			VerificationType _verificationType,
-			SaleEndDurationOrTS _saleEndDurationOrTS,
-			TransferType _transferType
+			uint256 _depositType,
+			uint256 _verificationType,
+			uint256 _saleEndDurationOrTS,
+			uint256 _transferType
 		)
 	{
 		Tier memory tier = tiers[_tierID];
-		return (address(tier.depositToken), tier.depositType, tier.verificationType, tier.saleEndDurationOrTS, tier.transferType);
+		return (address(tier.depositToken), uint256(tier.depositType), uint256(tier.verificationType), uint256(tier.saleEndDurationOrTS), uint256(tier.transferType));
 	}
 
 	/**

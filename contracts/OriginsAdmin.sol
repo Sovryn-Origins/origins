@@ -81,7 +81,7 @@ contract OriginsAdmin {
 			require(!isOwner[_owners[index]], "OriginsAdmin: Each owner can be added only once.");
 			isOwner[_owners[index]] = true;
 			owners.push(_owners[index]);
-			emit OwnerAdded(msg.sender, msg.sender);
+			emit OwnerAdded(msg.sender, _owners[index]);
 		}
 	}
 
