@@ -754,7 +754,13 @@ contract OriginsBase is IOrigins, OriginsAdmin, OriginsEvents, OriginsStorage {
 		)
 	{
 		Tier memory tier = tiers[_tierID];
-		return (address(tier.depositToken), uint256(tier.depositType), uint256(tier.verificationType), uint256(tier.saleEndDurationOrTS), uint256(tier.transferType));
+		return (
+			address(tier.depositToken),
+			uint256(tier.depositType),
+			uint256(tier.verificationType),
+			uint256(tier.saleEndDurationOrTS),
+			uint256(tier.transferType)
+		);
 	}
 
 	/**
