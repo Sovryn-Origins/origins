@@ -18,7 +18,11 @@ contract OriginsBase is IOrigins, OriginsAdmin, OriginsEvents, OriginsStorage {
 	 * @param _owners The list of owners to be added to the list.
 	 * @param _depositAddress The address of deposit address where all the raised fund will go. (Optional)
 	 */
-	constructor(address[] memory _owners, address _token, address payable _depositAddress) public OriginsAdmin(_owners) {
+	constructor(
+		address[] memory _owners,
+		address _token,
+		address payable _depositAddress
+	) public OriginsAdmin(_owners) {
 		require(_token != address(0), "Token Address cannot be zero.");
 
 		token = IERC20(token);
