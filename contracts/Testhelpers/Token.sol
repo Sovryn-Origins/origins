@@ -1,8 +1,8 @@
 pragma solidity ^0.5.17;
 
-import "../openzeppelin/ERC20Detailed.sol";
-import "../openzeppelin/ERC20.sol";
-import "../openzeppelin/Ownable.sol";
+import "../Openzeppelin/ERC20Detailed.sol";
+import "../Openzeppelin/ERC20.sol";
+import "../Openzeppelin/Ownable.sol";
 import "./IApproveAndCall.sol";
 
 /**
