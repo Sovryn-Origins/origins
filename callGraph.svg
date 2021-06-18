@@ -1,0 +1,1548 @@
+<?xml version="1.0" standalone="no"?>
+    <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" [  <!ENTITY quot "&#34;">  <!ENTITY amp "&#38;">  <!ENTITY apos "&#39;">  <!ENTITY lt "&#60;">  <!ENTITY gt "&#62;">  <!ENTITY nbsp "&#160;">  <!ENTITY iexcl "&#161;">  <!ENTITY cent "&#162;">  <!ENTITY pound "&#163;">  <!ENTITY curren "&#164;">  <!ENTITY yen "&#165;">  <!ENTITY brvbar "&#166;">  <!ENTITY sect "&#167;">  <!ENTITY uml "&#168;">  <!ENTITY copy "&#169;">  <!ENTITY ordf "&#170;">  <!ENTITY laquo "&#171;">  <!ENTITY not "&#172;">  <!ENTITY shy "&#173;">  <!ENTITY reg "&#174;">  <!ENTITY macr "&#175;">  <!ENTITY deg "&#176;">  <!ENTITY plusmn "&#177;">  <!ENTITY sup2 "&#178;">  <!ENTITY sup3 "&#179;">  <!ENTITY acute "&#180;">  <!ENTITY micro "&#181;">  <!ENTITY para "&#182;">  <!ENTITY middot "&#183;">  <!ENTITY cedil "&#184;">  <!ENTITY sup1 "&#185;">  <!ENTITY ordm "&#186;">  <!ENTITY raquo "&#187;">  <!ENTITY frac14 "&#188;">  <!ENTITY frac12 "&#189;">  <!ENTITY frac34 "&#190;">  <!ENTITY iquest "&#191;">  <!ENTITY Agrave "&#192;">  <!ENTITY Aacute "&#193;">  <!ENTITY Acirc "&#194;">  <!ENTITY Atilde "&#195;">  <!ENTITY Auml "&#196;">  <!ENTITY Aring "&#197;">  <!ENTITY AElig "&#198;">  <!ENTITY Ccedil "&#199;">  <!ENTITY Egrave "&#200;">  <!ENTITY Eacute "&#201;">  <!ENTITY Ecirc "&#202;">  <!ENTITY Euml "&#203;">  <!ENTITY Igrave "&#204;">  <!ENTITY Iacute "&#205;">  <!ENTITY Icirc "&#206;">  <!ENTITY Iuml "&#207;">  <!ENTITY ETH "&#208;">  <!ENTITY Ntilde "&#209;">  <!ENTITY Ograve "&#210;">  <!ENTITY Oacute "&#211;">  <!ENTITY Ocirc "&#212;">  <!ENTITY Otilde "&#213;">  <!ENTITY Ouml "&#214;">  <!ENTITY times "&#215;">  <!ENTITY Oslash "&#216;">  <!ENTITY Ugrave "&#217;">  <!ENTITY Uacute "&#218;">  <!ENTITY Ucirc "&#219;">  <!ENTITY Uuml "&#220;">  <!ENTITY Yacute "&#221;">  <!ENTITY THORN "&#222;">  <!ENTITY szlig "&#223;">  <!ENTITY agrave "&#224;">  <!ENTITY aacute "&#225;">  <!ENTITY acirc "&#226;">  <!ENTITY atilde "&#227;">  <!ENTITY auml "&#228;">  <!ENTITY aring "&#229;">  <!ENTITY aelig "&#230;">  <!ENTITY ccedil "&#231;">  <!ENTITY egrave "&#232;">  <!ENTITY eacute "&#233;">  <!ENTITY ecirc "&#234;">  <!ENTITY euml "&#235;">  <!ENTITY igrave "&#236;">  <!ENTITY iacute "&#237;">  <!ENTITY icirc "&#238;">  <!ENTITY iuml "&#239;">  <!ENTITY eth "&#240;">  <!ENTITY ntilde "&#241;">  <!ENTITY ograve "&#242;">  <!ENTITY oacute "&#243;">  <!ENTITY ocirc "&#244;">  <!ENTITY otilde "&#245;">  <!ENTITY ouml "&#246;">  <!ENTITY divide "&#247;">  <!ENTITY oslash "&#248;">  <!ENTITY ugrave "&#249;">  <!ENTITY uacute "&#250;">  <!ENTITY ucirc "&#251;">  <!ENTITY uuml "&#252;">  <!ENTITY yacute "&#253;">  <!ENTITY thorn "&#254;">  <!ENTITY yuml "&#255;">  <!ENTITY OElig "&#338;">  <!ENTITY oelig "&#339;">  <!ENTITY Scaron "&#352;">  <!ENTITY scaron "&#353;">  <!ENTITY Yuml "&#376;">  <!ENTITY fnof "&#402;">  <!ENTITY circ "&#710;">  <!ENTITY tilde "&#732;">  <!ENTITY Alpha "&#913;">  <!ENTITY Beta "&#914;">  <!ENTITY Gamma "&#915;">  <!ENTITY Delta "&#916;">  <!ENTITY Epsilon "&#917;">  <!ENTITY Zeta "&#918;">  <!ENTITY Eta "&#919;">  <!ENTITY Theta "&#920;">  <!ENTITY Iota "&#921;">  <!ENTITY Kappa "&#922;">  <!ENTITY Lambda "&#923;">  <!ENTITY Mu "&#924;">  <!ENTITY Nu "&#925;">  <!ENTITY Xi "&#926;">  <!ENTITY Omicron "&#927;">  <!ENTITY Pi "&#928;">  <!ENTITY Rho "&#929;">  <!ENTITY Sigma "&#931;">  <!ENTITY Tau "&#932;">  <!ENTITY Upsilon "&#933;">  <!ENTITY Phi "&#934;">  <!ENTITY Chi "&#935;">  <!ENTITY Psi "&#936;">  <!ENTITY Omega "&#937;">  <!ENTITY alpha "&#945;">  <!ENTITY beta "&#946;">  <!ENTITY gamma "&#947;">  <!ENTITY delta "&#948;">  <!ENTITY epsilon "&#949;">  <!ENTITY zeta "&#950;">  <!ENTITY eta "&#951;">  <!ENTITY theta "&#952;">  <!ENTITY iota "&#953;">  <!ENTITY kappa "&#954;">  <!ENTITY lambda "&#955;">  <!ENTITY mu "&#956;">  <!ENTITY nu "&#957;">  <!ENTITY xi "&#958;">  <!ENTITY omicron "&#959;">  <!ENTITY pi "&#960;">  <!ENTITY rho "&#961;">  <!ENTITY sigmaf "&#962;">  <!ENTITY sigma "&#963;">  <!ENTITY tau "&#964;">  <!ENTITY upsilon "&#965;">  <!ENTITY phi "&#966;">  <!ENTITY chi "&#967;">  <!ENTITY psi "&#968;">  <!ENTITY omega "&#969;">  <!ENTITY thetasym "&#977;">  <!ENTITY upsih "&#978;">  <!ENTITY piv "&#982;">  <!ENTITY ensp "&#8194;">  <!ENTITY emsp "&#8195;">  <!ENTITY thinsp "&#8201;">  <!ENTITY zwnj "&#8204;">  <!ENTITY zwj "&#8205;">  <!ENTITY lrm "&#8206;">  <!ENTITY rlm "&#8207;">  <!ENTITY ndash "&#8211;">  <!ENTITY mdash "&#8212;">  <!ENTITY lsquo "&#8216;">  <!ENTITY rsquo "&#8217;">  <!ENTITY sbquo "&#8218;">  <!ENTITY ldquo "&#8220;">  <!ENTITY rdquo "&#8221;">  <!ENTITY bdquo "&#8222;">  <!ENTITY dagger "&#8224;">  <!ENTITY Dagger "&#8225;">  <!ENTITY bull "&#8226;">  <!ENTITY hellip "&#8230;">  <!ENTITY permil "&#8240;">  <!ENTITY prime "&#8242;">  <!ENTITY Prime "&#8243;">  <!ENTITY lsaquo "&#8249;">  <!ENTITY rsaquo "&#8250;">  <!ENTITY oline "&#8254;">  <!ENTITY frasl "&#8260;">  <!ENTITY euro "&#8364;">  <!ENTITY image "&#8465;">  <!ENTITY weierp "&#8472;">  <!ENTITY real "&#8476;">  <!ENTITY trade "&#8482;">  <!ENTITY alefsym "&#8501;">  <!ENTITY larr "&#8592;">  <!ENTITY uarr "&#8593;">  <!ENTITY rarr "&#8594;">  <!ENTITY darr "&#8595;">  <!ENTITY harr "&#8596;">  <!ENTITY crarr "&#8629;">  <!ENTITY lArr "&#8656;">  <!ENTITY uArr "&#8657;">  <!ENTITY rArr "&#8658;">  <!ENTITY dArr "&#8659;">  <!ENTITY hArr "&#8660;">  <!ENTITY forall "&#8704;">  <!ENTITY part "&#8706;">  <!ENTITY exist "&#8707;">  <!ENTITY empty "&#8709;">  <!ENTITY nabla "&#8711;">  <!ENTITY isin "&#8712;">  <!ENTITY notin "&#8713;">  <!ENTITY ni "&#8715;">  <!ENTITY prod "&#8719;">  <!ENTITY sum "&#8721;">  <!ENTITY minus "&#8722;">  <!ENTITY lowast "&#8727;">  <!ENTITY radic "&#8730;">  <!ENTITY prop "&#8733;">  <!ENTITY infin "&#8734;">  <!ENTITY ang "&#8736;">  <!ENTITY and "&#8743;">  <!ENTITY or "&#8744;">  <!ENTITY cap "&#8745;">  <!ENTITY cup "&#8746;">  <!ENTITY int "&#8747;">  <!ENTITY there4 "&#8756;">  <!ENTITY sim "&#8764;">  <!ENTITY cong "&#8773;">  <!ENTITY asymp "&#8776;">  <!ENTITY ne "&#8800;">  <!ENTITY equiv "&#8801;">  <!ENTITY le "&#8804;">  <!ENTITY ge "&#8805;">  <!ENTITY sub "&#8834;">  <!ENTITY sup "&#8835;">  <!ENTITY nsub "&#8836;">  <!ENTITY sube "&#8838;">  <!ENTITY supe "&#8839;">  <!ENTITY oplus "&#8853;">  <!ENTITY otimes "&#8855;">  <!ENTITY perp "&#8869;">  <!ENTITY sdot "&#8901;">  <!ENTITY lceil "&#8968;">  <!ENTITY rceil "&#8969;">  <!ENTITY lfloor "&#8970;">  <!ENTITY rfloor "&#8971;">  <!ENTITY lang "&#9001;">  <!ENTITY rang "&#9002;">  <!ENTITY loz "&#9674;">  <!ENTITY spades "&#9824;">  <!ENTITY clubs "&#9827;">  <!ENTITY hearts "&#9829;">  <!ENTITY diams "&#9830;"> ]><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="2420pt" height="4678pt" viewBox="0.00 0.00 2419.77 4678.00">
+<g id="graph0" class="graph" transform="translate(4,4674) scale(1)" data-name="G">
+
+<polygon fill="#2e3e56" stroke="transparent" points="-4,4 -4,-4674 2415.7737,-4674 2415.7737,4 -4,4" style=""></polygon>
+<g id="clust1" class="cluster">
+<title style="">clusterOriginsBase</title>
+<path fill="#445773" stroke="#445773" d="M20,-487C20,-487 898.9355,-487 898.9355,-487 904.9355,-487 910.9355,-493 910.9355,-499 910.9355,-499 910.9355,-1956 910.9355,-1956 910.9355,-1962 904.9355,-1968 898.9355,-1968 898.9355,-1968 20,-1968 20,-1968 14,-1968 8,-1962 8,-1956 8,-1956 8,-499 8,-499 8,-493 14,-487 20,-487" style=""></path>
+<text text-anchor="middle" x="459.4677" y="-1951.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">OriginsBase</text>
+</g>
+<g id="clust3" class="cluster">
+<title style="">clusterOriginsAdmin</title>
+<path fill="#445773" stroke="#445773" d="M111.7342,-1976C111.7342,-1976 546.9476,-1976 546.9476,-1976 552.9476,-1976 558.9476,-1982 558.9476,-1988 558.9476,-1988 558.9476,-2597 558.9476,-2597 558.9476,-2603 552.9476,-2609 546.9476,-2609 546.9476,-2609 111.7342,-2609 111.7342,-2609 105.7342,-2609 99.7342,-2603 99.7342,-2597 99.7342,-2597 99.7342,-1988 99.7342,-1988 99.7342,-1982 105.7342,-1976 111.7342,-1976" style=""></path>
+<text text-anchor="middle" x="329.3409" y="-2592.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">OriginsAdmin</text>
+</g>
+<g id="clust5" class="cluster">
+<title style="">clusterIERC20</title>
+<path fill="#445773" stroke="#445773" d="M2112.6426,-933C2112.6426,-933 2227.5341,-933 2227.5341,-933 2233.5341,-933 2239.5341,-939 2239.5341,-945 2239.5341,-945 2239.5341,-1268 2239.5341,-1268 2239.5341,-1274 2233.5341,-1280 2227.5341,-1280 2227.5341,-1280 2112.6426,-1280 2112.6426,-1280 2106.6426,-1280 2100.6426,-1274 2100.6426,-1268 2100.6426,-1268 2100.6426,-945 2100.6426,-945 2100.6426,-939 2106.6426,-933 2112.6426,-933" style=""></path>
+<text text-anchor="middle" x="2170.0884" y="-1263.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">IERC20</text>
+</g>
+<g id="clust6" class="cluster">
+<title style="">clusterSafeMath</title>
+<path fill="#445773" stroke="#445773" d="M139.7383,-2617C139.7383,-2617 216.8307,-2617 216.8307,-2617 222.8307,-2617 228.8307,-2623 228.8307,-2629 228.8307,-2629 228.8307,-3078 228.8307,-3078 228.8307,-3084 222.8307,-3090 216.8307,-3090 216.8307,-3090 139.7383,-3090 139.7383,-3090 133.7383,-3090 127.7383,-3084 127.7383,-3078 127.7383,-3078 127.7383,-2629 127.7383,-2629 127.7383,-2623 133.7383,-2617 139.7383,-2617" style=""></path>
+<text text-anchor="middle" x="178.2845" y="-3073.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">SafeMath &nbsp;(lib)</text>
+</g>
+<g id="clust7" class="cluster">
+<title style="">clusterILockedFund</title>
+<path fill="#445773" stroke="#445773" d="M942.9355,-1277C942.9355,-1277 1222.9974,-1277 1222.9974,-1277 1228.9974,-1277 1234.9974,-1283 1234.9974,-1289 1234.9974,-1289 1234.9974,-1882 1234.9974,-1882 1234.9974,-1888 1228.9974,-1894 1222.9974,-1894 1222.9974,-1894 942.9355,-1894 942.9355,-1894 936.9355,-1894 930.9355,-1888 930.9355,-1882 930.9355,-1882 930.9355,-1289 930.9355,-1289 930.9355,-1283 936.9355,-1277 942.9355,-1277" style=""></path>
+<text text-anchor="middle" x="1082.9665" y="-1877.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">ILockedFund</text>
+</g>
+<g id="clust8" class="cluster">
+<title style="">clusterIOrigins</title>
+<path fill="#445773" stroke="#445773" d="M20,-3098C20,-3098 336.5691,-3098 336.5691,-3098 342.5691,-3098 348.5691,-3104 348.5691,-3110 348.5691,-3110 348.5691,-4513 348.5691,-4513 348.5691,-4519 342.5691,-4525 336.5691,-4525 336.5691,-4525 20,-4525 20,-4525 14,-4525 8,-4519 8,-4513 8,-4513 8,-3110 8,-3110 8,-3104 14,-3098 20,-3098" style=""></path>
+<text text-anchor="middle" x="178.2845" y="-4508.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">IOrigins</text>
+</g>
+<g id="clust9" class="cluster">
+<title style="">clusterLockedFund</title>
+<path fill="#445773" stroke="#445773" d="M1266.9974,-1288C1266.9974,-1288 2223.7901,-1288 2223.7901,-1288 2229.7901,-1288 2235.7901,-1294 2235.7901,-1300 2235.7901,-1300 2235.7901,-2387 2235.7901,-2387 2235.7901,-2393 2229.7901,-2399 2223.7901,-2399 2223.7901,-2399 1266.9974,-2399 1266.9974,-2399 1260.9974,-2399 1254.9974,-2393 1254.9974,-2387 1254.9974,-2387 1254.9974,-1300 1254.9974,-1300 1254.9974,-1294 1260.9974,-1288 1266.9974,-1288" style=""></path>
+<text text-anchor="middle" x="1745.3938" y="-2382.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">LockedFund</text>
+</g>
+<g id="clust11" class="cluster">
+<title style="">clusterIVestingLogic</title>
+<path fill="#445773" stroke="#445773" d="M1924.7783,-2407C1924.7783,-2407 2068.6426,-2407 2068.6426,-2407 2074.6426,-2407 2080.6426,-2413 2080.6426,-2419 2080.6426,-2419 2080.6426,-2634 2080.6426,-2634 2080.6426,-2640 2074.6426,-2646 2068.6426,-2646 2068.6426,-2646 1924.7783,-2646 1924.7783,-2646 1918.7783,-2646 1912.7783,-2640 1912.7783,-2634 1912.7783,-2634 1912.7783,-2419 1912.7783,-2419 1912.7783,-2413 1918.7783,-2407 1924.7783,-2407" style=""></path>
+<text text-anchor="middle" x="1996.7105" y="-2629.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">IVestingLogic</text>
+</g>
+<g id="clust12" class="cluster">
+<title style="">clusterIVestingRegistry</title>
+<path fill="#445773" stroke="#445773" d="M2271.5341,-1807C2271.5341,-1807 2391.7737,-1807 2391.7737,-1807 2397.7737,-1807 2403.7737,-1813 2403.7737,-1819 2403.7737,-1819 2403.7737,-1980 2403.7737,-1980 2403.7737,-1986 2397.7737,-1992 2391.7737,-1992 2391.7737,-1992 2271.5341,-1992 2271.5341,-1992 2265.5341,-1992 2259.5341,-1986 2259.5341,-1980 2259.5341,-1980 2259.5341,-1819 2259.5341,-1819 2259.5341,-1813 2265.5341,-1807 2271.5341,-1807" style=""></path>
+<text text-anchor="middle" x="2331.6539" y="-1975.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">IVestingRegistry</text>
+</g>
+<g id="clust13" class="cluster">
+<title style="">cluster_totalBal</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M1059.9665,-1902C1059.9665,-1902 1105.9665,-1902 1105.9665,-1902 1111.9665,-1902 1117.9665,-1908 1117.9665,-1914 1117.9665,-1914 1117.9665,-1967 1117.9665,-1967 1117.9665,-1973 1111.9665,-1979 1105.9665,-1979 1105.9665,-1979 1059.9665,-1979 1059.9665,-1979 1053.9665,-1979 1047.9665,-1973 1047.9665,-1967 1047.9665,-1967 1047.9665,-1914 1047.9665,-1914 1047.9665,-1908 1053.9665,-1902 1059.9665,-1902" style=""></path>
+<text text-anchor="middle" x="1082.9665" y="-1962.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">_totalBal</text>
+</g>
+<g id="clust14" class="cluster">
+<title style="">clusterrequiredBal</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M727.752,-402C727.752,-402 785.752,-402 785.752,-402 791.752,-402 797.752,-408 797.752,-414 797.752,-414 797.752,-467 797.752,-467 797.752,-473 791.752,-479 785.752,-479 785.752,-479 727.752,-479 727.752,-479 721.752,-479 715.752,-473 715.752,-467 715.752,-467 715.752,-414 715.752,-414 715.752,-408 721.752,-402 727.752,-402" style=""></path>
+<text text-anchor="middle" x="756.752" y="-462.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">requiredBal</text>
+</g>
+<g id="clust15" class="cluster">
+<title style="">clustercurrentBal</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M731.752,-317C731.752,-317 782.752,-317 782.752,-317 788.752,-317 794.752,-323 794.752,-329 794.752,-329 794.752,-382 794.752,-382 794.752,-388 788.752,-394 782.752,-394 782.752,-394 731.752,-394 731.752,-394 725.752,-394 719.752,-388 719.752,-382 719.752,-382 719.752,-329 719.752,-329 719.752,-323 725.752,-317 731.752,-317" style=""></path>
+<text text-anchor="middle" x="757.252" y="-377.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">currentBal</text>
+</g>
+<g id="clust16" class="cluster">
+<title style="">cluster_saleStartTS</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M725.752,-232C725.752,-232 788.752,-232 788.752,-232 794.752,-232 800.752,-238 800.752,-244 800.752,-244 800.752,-297 800.752,-297 800.752,-303 794.752,-309 788.752,-309 788.752,-309 725.752,-309 725.752,-309 719.752,-309 713.752,-303 713.752,-297 713.752,-297 713.752,-244 713.752,-244 713.752,-238 719.752,-232 725.752,-232" style=""></path>
+<text text-anchor="middle" x="757.252" y="-292.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">_saleStartTS</text>
+</g>
+<g id="clust17" class="cluster">
+<title style="">clusterdeposit</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M733.752,-93C733.752,-93 779.752,-93 779.752,-93 785.752,-93 791.752,-99 791.752,-105 791.752,-105 791.752,-212 791.752,-212 791.752,-218 785.752,-224 779.752,-224 779.752,-224 733.752,-224 733.752,-224 727.752,-224 721.752,-218 721.752,-212 721.752,-212 721.752,-105 721.752,-105 721.752,-99 727.752,-93 733.752,-93" style=""></path>
+<text text-anchor="middle" x="756.752" y="-207.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">deposit</text>
+</g>
+<g id="clust18" class="cluster">
+<title style="">clusterreceiver</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M720.2299,-8C720.2299,-8 793.274,-8 793.274,-8 799.274,-8 805.274,-14 805.274,-20 805.274,-20 805.274,-73 805.274,-73 805.274,-79 799.274,-85 793.274,-85 793.274,-85 720.2299,-85 720.2299,-85 714.2299,-85 708.2299,-79 708.2299,-73 708.2299,-73 708.2299,-20 708.2299,-20 708.2299,-14 714.2299,-8 720.2299,-8" style=""></path>
+<text text-anchor="middle" x="756.752" y="-68.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">receiver</text>
+</g>
+<g id="clust19" class="cluster">
+<title style="">cluster_amount</title>
+<path fill="#3b4b63" stroke="#e8726d" stroke-dasharray="5,2" d="M1712.9189,-2407C1712.9189,-2407 1758.9189,-2407 1758.9189,-2407 1764.9189,-2407 1770.9189,-2413 1770.9189,-2419 1770.9189,-2419 1770.9189,-2472 1770.9189,-2472 1770.9189,-2478 1764.9189,-2484 1758.9189,-2484 1758.9189,-2484 1712.9189,-2484 1712.9189,-2484 1706.9189,-2484 1700.9189,-2478 1700.9189,-2472 1700.9189,-2472 1700.9189,-2419 1700.9189,-2419 1700.9189,-2413 1706.9189,-2407 1712.9189,-2407" style=""></path>
+<text text-anchor="middle" x="1735.9189" y="-2467.4" font-family="Times,serif" font-size="14.00" fill="#f0f0f0" style="">_amount</text>
+</g>
+<g id="clust20" class="cluster">
+<title style="">cluster_01</title>
+<polygon fill="#2e3e56" stroke="#000000" points="105.2845,-4533 105.2845,-4662 510.5688,-4662 510.5688,-4533 105.2845,-4533" style=""></polygon>
+<text text-anchor="middle" x="307.9267" y="-4645.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">Legend</text>
+</g>
+<!-- OriginsBase.&lt;Constructor&gt; -->
+<g id="node1" class="node" data-name="OriginsBase.&lt;Constructor&gt;">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-1917" rx="67.5419" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1912.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&lt;Constructor&gt;</text>
+</g>
+<!-- OriginsBase.setDepositAddress -->
+<g id="node2" class="node" data-name="OriginsBase.setDepositAddress">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1863" rx="83.3828" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1858.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setDepositAddress</text>
+</g>
+<!-- OriginsBase._setDepositAddress -->
+<g id="node17" class="node" data-name="OriginsBase._setDepositAddress">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1863" rx="88.0403" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1858.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setDepositAddress</text>
+</g>
+<!-- OriginsBase.setDepositAddress&#45;&gt;OriginsBase._setDepositAddress -->
+<g id="edge1" class="edge" data-name="OriginsBase.setDepositAddress->OriginsBase._setDepositAddress">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M261.8859,-1863C297.5984,-1863 339.5504,-1863 376.7825,-1863" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="377.1496,-1866.5001 387.1495,-1863 377.1495,-1859.5001 377.1496,-1866.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.setLockedFund -->
+<g id="node3" class="node" data-name="OriginsBase.setLockedFund">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1809" rx="70.649" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1804.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setLockedFund</text>
+</g>
+<!-- OriginsBase._setLockedFund -->
+<g id="node18" class="node" data-name="OriginsBase._setLockedFund">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1809" rx="75.306" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1804.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setLockedFund</text>
+</g>
+<!-- OriginsBase.setLockedFund&#45;&gt;OriginsBase._setLockedFund -->
+<g id="edge2" class="edge" data-name="OriginsBase.setLockedFund->OriginsBase._setLockedFund">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M249.1138,-1809C291.3359,-1809 345.2232,-1809 389.8381,-1809" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="390.0852,-1812.5001 400.0852,-1809 390.0852,-1805.5001 390.0852,-1812.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.createTier -->
+<g id="node4" class="node" data-name="OriginsBase.createTier">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1593" rx="50.3334" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1588.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createTier</text>
+</g>
+<!-- OriginsBase._setTierVerification -->
+<g id="node19" class="node" data-name="OriginsBase._setTierVerification">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1748" rx="89.1568" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1743.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierVerification</text>
+</g>
+<!-- OriginsBase.createTier&#45;&gt;OriginsBase._setTierVerification -->
+<g id="edge3" class="edge" data-name="OriginsBase.createTier->OriginsBase._setTierVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M226.4604,-1587.9174C264.0061,-1586.6736 315.2004,-1591.3188 348.5691,-1620 379.6948,-1646.7532 348.6697,-1677.8974 376.5691,-1708 385.2691,-1717.3871 396.4774,-1724.6203 408.2081,-1730.1786" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="407.1227,-1733.5227 417.69,-1734.2864 409.9054,-1727.0995 407.1227,-1733.5227" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierDeposit -->
+<g id="node20" class="node" data-name="OriginsBase._setTierDeposit">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1681" rx="72.9276" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1676.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierDeposit</text>
+</g>
+<!-- OriginsBase.createTier&#45;&gt;OriginsBase._setTierDeposit -->
+<g id="edge4" class="edge" data-name="OriginsBase.createTier->OriginsBase._setTierDeposit">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M227.5905,-1596.9967C262.0628,-1600.7099 308.8521,-1607.6046 348.5691,-1620 379.9361,-1629.7894 413.3549,-1646.1022 438.0346,-1659.3964" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="436.59,-1662.5956 447.0429,-1664.3238 439.9492,-1656.4543 436.59,-1662.5956" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierTokenAmount -->
+<g id="node23" class="node" data-name="OriginsBase._setTierTokenAmount">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1323" rx="98.9994" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1318.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierTokenAmount</text>
+</g>
+<!-- OriginsBase.createTier&#45;&gt;OriginsBase._setTierTokenAmount -->
+<g id="edge5" class="edge" data-name="OriginsBase.createTier->OriginsBase._setTierTokenAmount">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M225.2102,-1599.481C263.836,-1601.9558 317.1695,-1598.3023 348.5691,-1566 416.0426,-1496.5868 312.9771,-1422.9857 376.5691,-1350 380.1349,-1345.9075 384.2543,-1342.4066 388.745,-1339.4146" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="390.8309,-1342.2546 397.7906,-1334.2662 387.3683,-1336.171 390.8309,-1342.2546" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierVestOrLock -->
+<g id="node24" class="node" data-name="OriginsBase._setTierVestOrLock">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1600" rx="90.3043" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1595.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierVestOrLock</text>
+</g>
+<!-- OriginsBase.createTier&#45;&gt;OriginsBase._setTierVestOrLock -->
+<g id="edge6" class="edge" data-name="OriginsBase.createTier->OriginsBase._setTierVestOrLock">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M228.3786,-1594.1795C268.4745,-1595.1237 325.9825,-1596.4778 375.4416,-1597.6424" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="375.4613,-1601.1437 385.5409,-1597.8802 375.6261,-1594.1456 375.4613,-1601.1437" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierTime -->
+<g id="node25" class="node" data-name="OriginsBase._setTierTime">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1539" rx="63.1151" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1534.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierTime</text>
+</g>
+<!-- OriginsBase.createTier&#45;&gt;OriginsBase._setTierTime -->
+<g id="edge7" class="edge" data-name="OriginsBase.createTier->OriginsBase._setTierTime">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M225.0144,-1586.2626C259.2922,-1581.1573 306.9245,-1573.7229 348.5691,-1566 370.668,-1561.9018 394.8184,-1556.9001 416.0698,-1552.3203" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="416.8982,-1555.7221 425.9288,-1550.1815 415.414,-1548.8813 416.8982,-1555.7221" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierVerification -->
+<g id="node5" class="node" data-name="OriginsBase.setTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1755" rx="84.4996" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1750.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierVerification</text>
+</g>
+<!-- OriginsBase.setTierVerification&#45;&gt;OriginsBase._setTierVerification -->
+<g id="edge8" class="edge" data-name="OriginsBase.setTierVerification->OriginsBase._setTierVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M262.2822,-1753.0221C297.7517,-1752.187 339.3202,-1751.2082 376.2921,-1750.3376" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="376.6744,-1753.8297 386.5893,-1750.0952 376.5096,-1746.8316 376.6744,-1753.8297" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierDeposit -->
+<g id="node6" class="node" data-name="OriginsBase.setTierDeposit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1701" rx="67.7702" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1696.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierDeposit</text>
+</g>
+<!-- OriginsBase.setTierDeposit&#45;&gt;OriginsBase._setTierDeposit -->
+<g id="edge9" class="edge" data-name="OriginsBase.setTierDeposit->OriginsBase._setTierDeposit">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M244.2615,-1696.5614C288.8043,-1693.5647 347.8685,-1689.5911 395.1624,-1686.4094" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="395.63,-1689.8859 405.3725,-1685.7225 395.1601,-1682.9017 395.63,-1689.8859" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierTokenLimit -->
+<g id="node7" class="node" data-name="OriginsBase.setTierTokenLimit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1377" rx="83.9624" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1372.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTokenLimit</text>
+</g>
+<!-- OriginsBase._setTierTokenLimit -->
+<g id="node21" class="node" data-name="OriginsBase._setTierTokenLimit">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1269" rx="88.6198" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1264.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_setTierTokenLimit</text>
+</g>
+<!-- OriginsBase.setTierTokenLimit&#45;&gt;OriginsBase._setTierTokenLimit -->
+<g id="edge10" class="edge" data-name="OriginsBase.setTierTokenLimit->OriginsBase._setTierTokenLimit">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M262.1289,-1378.8326C291.7437,-1375.7741 323.8066,-1367.86 348.5691,-1350 370.4955,-1334.1856 355.5367,-1312.9854 376.5691,-1296 382.4292,-1291.2674 389.0542,-1287.3616 396.0314,-1284.1386" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="397.8074,-1287.1928 405.7255,-1280.1532 395.1457,-1280.7185 397.8074,-1287.1928" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierTokenAmount -->
+<g id="node8" class="node" data-name="OriginsBase.setTierTokenAmount">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1431" rx="94.3427" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1426.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTokenAmount</text>
+</g>
+<!-- OriginsBase.setTierTokenAmount&#45;&gt;OriginsBase._setTierTokenAmount -->
+<g id="edge11" class="edge" data-name="OriginsBase.setTierTokenAmount->OriginsBase._setTierTokenAmount">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M272.6669,-1431.5432C299.1868,-1427.7743 326.7198,-1419.7588 348.5691,-1404 370.4955,-1388.1856 355.5367,-1366.9854 376.5691,-1350 381.6171,-1345.9233 387.2327,-1342.4601 393.1521,-1339.5183" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="394.9358,-1342.5565 402.6662,-1335.3115 392.1049,-1336.1544 394.9358,-1342.5565" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierVestOrLock -->
+<g id="node9" class="node" data-name="OriginsBase.setTierVestOrLock">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1647" rx="85.6473" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1642.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierVestOrLock</text>
+</g>
+<!-- OriginsBase.setTierVestOrLock&#45;&gt;OriginsBase._setTierVestOrLock -->
+<g id="edge12" class="edge" data-name="OriginsBase.setTierVestOrLock->OriginsBase._setTierVestOrLock">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M246.8608,-1636.1582C290.9527,-1629.1874 348.4417,-1620.0985 394.7507,-1612.7772" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="395.4235,-1616.2144 404.7542,-1611.1956 394.3303,-1609.3002 395.4235,-1616.2144" style=""></polygon>
+</g>
+<!-- OriginsBase.setTierTime -->
+<g id="node10" class="node" data-name="OriginsBase.setTierTime">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1539" rx="58.459" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1534.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTime</text>
+</g>
+<!-- OriginsBase.setTierTime&#45;&gt;OriginsBase._setTierTime -->
+<g id="edge13" class="edge" data-name="OriginsBase.setTierTime->OriginsBase._setTierTime">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M236.6636,-1539C284.0437,-1539 351.1156,-1539 402.1363,-1539" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="402.4411,-1542.5001 412.4411,-1539 402.4411,-1535.5001 402.4411,-1542.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.addressVerification -->
+<g id="node11" class="node" data-name="OriginsBase.addressVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1323" rx="86.7914" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1318.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addressVerification</text>
+</g>
+<!-- OriginsBase._addressVerification -->
+<g id="node26" class="node" data-name="OriginsBase._addressVerification">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1215" rx="91.4481" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1210.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_addressVerification</text>
+</g>
+<!-- OriginsBase.addressVerification&#45;&gt;OriginsBase._addressVerification -->
+<g id="edge14" class="edge" data-name="OriginsBase.addressVerification->OriginsBase._addressVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M264.7481,-1324.55C293.6234,-1321.2999 324.5349,-1313.3347 348.5691,-1296 370.4955,-1280.1856 355.5367,-1258.9854 376.5691,-1242 382.2386,-1237.4213 388.6241,-1233.6166 395.3518,-1230.4552" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="396.8366,-1233.6279 404.7032,-1226.5309 394.1278,-1227.1732 396.8366,-1233.6279" style=""></polygon>
+</g>
+<!-- OriginsBase.singleAddressMultipleTierVerification -->
+<g id="node12" class="node" data-name="OriginsBase.singleAddressMultipleTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1269" rx="161.9879" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1264.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">singleAddressMultipleTierVerification</text>
+</g>
+<!-- OriginsBase.singleAddressMultipleTierVerification&#45;&gt;OriginsBase._addressVerification -->
+<g id="edge15" class="edge" data-name="OriginsBase.singleAddressMultipleTierVerification->OriginsBase._addressVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M275.2413,-1254.5249C299.2475,-1250.6938 324.8773,-1246.3936 348.5691,-1242 366.8955,-1238.6014 386.6327,-1234.5815 404.9574,-1230.6961" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="405.9264,-1234.0681 414.9745,-1228.5562 404.4639,-1227.2226 405.9264,-1234.0681" style=""></polygon>
+</g>
+<!-- OriginsBase.multipleAddressSingleTierVerification -->
+<g id="node13" class="node" data-name="OriginsBase.multipleAddressSingleTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1215" rx="162.0694" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1210.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">multipleAddressSingleTierVerification</text>
+</g>
+<!-- OriginsBase.multipleAddressSingleTierVerification&#45;&gt;OriginsBase._addressVerification -->
+<g id="edge16" class="edge" data-name="OriginsBase.multipleAddressSingleTierVerification->OriginsBase._addressVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M340.8437,-1215C352.0407,-1215 363.1314,-1215 373.8588,-1215" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="374.024,-1218.5001 384.024,-1215 374.024,-1211.5001 374.024,-1218.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.multipleAddressAndTierVerification -->
+<g id="node14" class="node" data-name="OriginsBase.multipleAddressAndTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1161" rx="154.4674" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1156.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">multipleAddressAndTierVerification</text>
+</g>
+<!-- OriginsBase.multipleAddressAndTierVerification&#45;&gt;OriginsBase._addressVerification -->
+<g id="edge17" class="edge" data-name="OriginsBase.multipleAddressAndTierVerification->OriginsBase._addressVerification">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M273.4551,-1175.1904C297.9728,-1179.0926 324.2887,-1183.4973 348.5691,-1188 366.8955,-1191.3986 386.6327,-1195.4185 404.9574,-1199.3039" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="404.4639,-1202.7774 414.9745,-1201.4438 405.9264,-1195.9319 404.4639,-1202.7774" style=""></polygon>
+</g>
+<!-- OriginsBase.buy -->
+<g id="node15" class="node" data-name="OriginsBase.buy">
+
+<ellipse fill="#ff9797" stroke="#a52a2a" stroke-width="3" cx="178.2845" cy="-1485" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1480.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">buy</text>
+</g>
+<!-- OriginsBase._buy -->
+<g id="node31" class="node" data-name="OriginsBase._buy">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1377" rx="30.2015" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1372.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_buy</text>
+</g>
+<!-- OriginsBase.buy&#45;&gt;OriginsBase._buy -->
+<g id="edge18" class="edge" data-name="OriginsBase.buy->OriginsBase._buy">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M205.4066,-1484.1003C239.7583,-1482.2036 300.2908,-1476.3099 348.5691,-1458 386.4093,-1443.6488 424.9095,-1417.0486 449.4439,-1398.253" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="451.779,-1400.8706 457.5156,-1391.9632 447.4763,-1395.3491 451.779,-1400.8706" style=""></polygon>
+</g>
+<!-- OriginsBase.withdrawSaleDeposit -->
+<g id="node16" class="node" data-name="OriginsBase.withdrawSaleDeposit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-1107" rx="94.3369" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1102.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawSaleDeposit</text>
+</g>
+<!-- OriginsBase._withdrawSaleDeposit -->
+<g id="node32" class="node" data-name="OriginsBase._withdrawSaleDeposit">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-1107" rx="98.9936" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-1102.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_withdrawSaleDeposit</text>
+</g>
+<!-- OriginsBase.withdrawSaleDeposit&#45;&gt;OriginsBase._withdrawSaleDeposit -->
+<g id="edge19" class="edge" data-name="OriginsBase.withdrawSaleDeposit->OriginsBase._withdrawSaleDeposit">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M272.7556,-1107C302.4655,-1107 335.5204,-1107 366.1761,-1107" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="366.4721,-1110.5001 376.4721,-1107 366.4721,-1103.5001 366.4721,-1110.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.VerificationType -->
+<g id="node44" class="node" data-name="OriginsBase.VerificationType">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1748" rx="77.5646" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1743.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">VerificationType</text>
+</g>
+<!-- OriginsBase._setTierVerification&#45;&gt;OriginsBase.VerificationType -->
+<g id="edge20" class="edge" data-name="OriginsBase._setTierVerification->OriginsBase.VerificationType">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M564.9232,-1748C598.1505,-1748 635.8011,-1748 668.8934,-1748" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="669.0071,-1751.5001 679.0071,-1748 669.0071,-1744.5001 669.0071,-1751.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.DepositType -->
+<g id="node45" class="node" data-name="OriginsBase.DepositType">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1681" rx="60.8352" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1676.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">DepositType</text>
+</g>
+<!-- OriginsBase._setTierDeposit&#45;&gt;OriginsBase.DepositType -->
+<g id="edge21" class="edge" data-name="OriginsBase._setTierDeposit->OriginsBase.DepositType">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M544.3539,-1675.1029C588.1549,-1673.9621 644.6667,-1673.9657 688.3862,-1675.1139" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="688.5437,-1678.6199 698.6412,-1675.4121 688.7472,-1671.6228 688.5437,-1678.6199" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierDeposit&#45;&gt;OriginsBase.DepositType -->
+<g id="edge22" class="edge" data-name="OriginsBase._setTierDeposit->OriginsBase.DepositType">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M544.3539,-1686.8971C588.1549,-1688.0379 644.6667,-1688.0343 688.3862,-1686.8861" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="688.7472,-1690.3772 698.6412,-1686.5879 688.5437,-1683.3801 688.7472,-1690.3772" style=""></polygon>
+</g>
+<!-- OriginsBase._getTotalRemainingTokens -->
+<g id="node22" class="node" data-name="OriginsBase._getTotalRemainingTokens">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="756.752" cy="-1323" rx="118.7031" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1318.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_getTotalRemainingTokens</text>
+</g>
+<!-- _totalBal.add -->
+<g id="node152" class="node" data-name="_totalBal.add">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1082.9665" cy="-1928" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1923.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">add</text>
+</g>
+<!-- OriginsBase._getTotalRemainingTokens&#45;&gt;_totalBal.add -->
+<g id="edge23" class="edge" data-name="OriginsBase._getTotalRemainingTokens->_totalBal.add">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M874.4797,-1325.9599C888.3963,-1331.0615 901.1143,-1338.7333 910.9355,-1350 950.9719,-1395.929 891.3943,-1851.6439 930.9355,-1898 958.704,-1930.5544 1010.6503,-1934.2378 1046.014,-1932.3584" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="1046.6835,-1935.8198 1056.4114,-1931.6223 1046.1892,-1928.8373 1046.6835,-1935.8198" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;OriginsBase._getTotalRemainingTokens -->
+<g id="edge25" class="edge" data-name="OriginsBase._setTierTokenAmount->OriginsBase._getTotalRemainingTokens">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M574.7034,-1323C591.7538,-1323 609.6976,-1323 627.402,-1323" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="627.79,-1326.5001 637.79,-1323 627.7899,-1319.5001 627.79,-1326.5001" style=""></polygon>
+</g>
+<!-- IERC20.balanceOf -->
+<g id="node64" class="node" data-name="IERC20.balanceOf">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-1067" rx="50.9211" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1062.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">balanceOf</text>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;IERC20.balanceOf -->
+<g id="edge24" class="edge" data-name="OriginsBase._setTierTokenAmount->IERC20.balanceOf">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M553.1027,-1311.5169C561.1722,-1307.6588 568.5911,-1302.6043 574.5685,-1296 639.2881,-1224.4913 537.9276,-1145.4463 610.5685,-1082 768.7785,-943.8154 872.906,-1067 1082.9665,-1067 1082.9665,-1067 1082.9665,-1067 1735.9189,-1067 1869.0588,-1067 2025.1644,-1067 2109.1615,-1067" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2109.2887,-1070.5001 2119.2886,-1067 2109.2886,-1063.5001 2109.2887,-1070.5001" style=""></polygon>
+</g>
+<!-- IERC20.transferFrom -->
+<g id="node65" class="node" data-name="IERC20.transferFrom">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-1121" rx="61.3916" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1116.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">transferFrom</text>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;IERC20.transferFrom -->
+<g id="edge26" class="edge" data-name="OriginsBase._setTierTokenAmount->IERC20.transferFrom">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M552.3778,-1311.5256C560.6751,-1307.6761 568.3469,-1302.6214 574.5685,-1296 628.6451,-1238.4486 550.238,-1172.9576 610.5685,-1122 690.8184,-1054.2176 977.9212,-1105 1082.9665,-1105 1082.9665,-1105 1082.9665,-1105 1735.9189,-1105 1864.211,-1105 2013.6823,-1112.0628 2099.5586,-1116.8034" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2099.531,-1120.3072 2109.7103,-1117.3694 2099.9207,-1113.318 2099.531,-1120.3072" style=""></polygon>
+</g>
+<!-- IERC20.transfer -->
+<g id="node66" class="node" data-name="IERC20.transfer">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-1175" rx="40.5441" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1170.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">transfer</text>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;IERC20.transfer -->
+<g id="edge28" class="edge" data-name="OriginsBase._setTierTokenAmount->IERC20.transfer">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M550.6563,-1311.233C559.4469,-1307.448 567.7092,-1302.4887 574.5685,-1296 611.3244,-1261.2293 570.1254,-1218.4032 610.5685,-1188 778.5265,-1061.737 872.842,-1169 1082.9665,-1169 1082.9665,-1169 1082.9665,-1169 1407.0284,-1169 1675.4261,-1169 1996.9107,-1172.7578 2119.3616,-1174.3256" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2119.5106,-1177.8277 2129.5549,-1174.457 2119.6009,-1170.8283 2119.5106,-1177.8277" style=""></polygon>
+</g>
+<!-- requiredBal.sub -->
+<g id="node153" class="node" data-name="requiredBal.sub">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-428" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-423.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">sub</text>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;requiredBal.sub -->
+<g id="edge27" class="edge" data-name="OriginsBase._setTierTokenAmount->requiredBal.sub">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M554.3842,-1311.963C562.1263,-1308.0158 569.1176,-1302.8184 574.5685,-1296 631.0303,-1225.373 557.4727,-556.1912 610.5685,-483 635.6041,-448.489 685.032,-435.623 719.4445,-430.8323" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="720.0978,-434.2786 729.5986,-429.5898 719.2475,-427.3304 720.0978,-434.2786" style=""></polygon>
+</g>
+<!-- currentBal.sub -->
+<g id="node154" class="node" data-name="currentBal.sub">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-343" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-338.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">sub</text>
+</g>
+<!-- OriginsBase._setTierTokenAmount&#45;&gt;currentBal.sub -->
+<g id="edge29" class="edge" data-name="OriginsBase._setTierTokenAmount->currentBal.sub">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M554.4122,-1311.9854C562.1494,-1308.0343 569.1318,-1302.8298 574.5685,-1296 636.7591,-1217.8724 552.1011,-478.9517 610.5685,-398 635.5318,-363.4367 684.9763,-350.5827 719.4123,-345.8089" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="720.0701,-349.2548 729.5738,-344.5718 719.224,-342.3061 720.0701,-349.2548" style=""></polygon>
+</g>
+<!-- OriginsBase.TransferType -->
+<g id="node46" class="node" data-name="OriginsBase.TransferType">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1600" rx="63.6619" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1595.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">TransferType</text>
+</g>
+<!-- OriginsBase._setTierVestOrLock&#45;&gt;OriginsBase.TransferType -->
+<g id="edge30" class="edge" data-name="OriginsBase._setTierVestOrLock->OriginsBase.TransferType">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M566.0847,-1600C603.7838,-1600 647.0086,-1600 682.7607,-1600" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="683.1174,-1603.5001 693.1173,-1600 683.1173,-1596.5001 683.1174,-1603.5001" style=""></polygon>
+</g>
+<!-- OriginsBase.SaleEndDurationOrTS -->
+<g id="node47" class="node" data-name="OriginsBase.SaleEndDurationOrTS">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1539" rx="98.9955" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1534.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">SaleEndDurationOrTS</text>
+</g>
+<!-- OriginsBase._setTierTime&#45;&gt;OriginsBase.SaleEndDurationOrTS -->
+<g id="edge31" class="edge" data-name="OriginsBase._setTierTime->OriginsBase.SaleEndDurationOrTS">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M526.4889,-1528.3198C567.2682,-1525.3037 625.3219,-1524.7071 672.9345,-1526.5302" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="672.7861,-1530.0269 682.9261,-1526.9559 673.0842,-1523.0333 672.7861,-1530.0269" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierTime&#45;&gt;OriginsBase.SaleEndDurationOrTS -->
+<g id="edge33" class="edge" data-name="OriginsBase._setTierTime->OriginsBase.SaleEndDurationOrTS">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M538.6718,-1539C570.7145,-1539 610.5669,-1539 647.4048,-1539" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="647.7062,-1542.5001 657.7061,-1539 647.7061,-1535.5001 647.7062,-1542.5001" style=""></polygon>
+</g>
+<!-- OriginsBase._setTierTime&#45;&gt;OriginsBase.SaleEndDurationOrTS -->
+<g id="edge34" class="edge" data-name="OriginsBase._setTierTime->OriginsBase.SaleEndDurationOrTS">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M526.4889,-1549.6802C567.2682,-1552.6963 625.3219,-1553.2929 672.9345,-1551.4698" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="673.0842,-1554.9667 682.9261,-1551.0441 672.7861,-1547.9731 673.0842,-1554.9667" style=""></polygon>
+</g>
+<!-- _saleStartTS.add -->
+<g id="node155" class="node" data-name="_saleStartTS.add">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-258" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-253.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">add</text>
+</g>
+<!-- OriginsBase._setTierTime&#45;&gt;_saleStartTS.add -->
+<g id="edge32" class="edge" data-name="OriginsBase._setTierTime->_saleStartTS.add">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M494.0389,-1521.4443C517.7889,-1497.5051 557.949,-1452.0704 574.5685,-1404 614.1998,-1289.3694 539.9022,-411.5754 610.5685,-313 635.4808,-278.2487 685.1671,-265.4408 719.6553,-260.7287" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="720.3133,-264.175 729.8263,-259.511 719.4811,-257.2247 720.3133,-264.175" style=""></polygon>
+</g>
+<!-- OriginsBase._saleAllowed -->
+<g id="node27" class="node" data-name="OriginsBase._saleAllowed">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1377" rx="64.263" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1372.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_saleAllowed</text>
+</g>
+<!-- OriginsBase._updateTierTokenDetailsAfterBuy -->
+<g id="node28" class="node" data-name="OriginsBase._updateTierTokenDetailsAfterBuy">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1485" rx="146.3673" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1480.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_updateTierTokenDetailsAfterBuy</text>
+</g>
+<!-- OriginsBase._tokenTransferOnBuy -->
+<g id="node29" class="node" data-name="OriginsBase._tokenTransferOnBuy">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="756.752" cy="-1269" rx="97.8382" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1264.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_tokenTransferOnBuy</text>
+</g>
+<!-- IERC20.approve -->
+<g id="node67" class="node" data-name="IERC20.approve">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-1229" rx="42.2777" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1224.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">approve</text>
+</g>
+<!-- OriginsBase._tokenTransferOnBuy&#45;&gt;IERC20.approve -->
+<g id="edge35" class="edge" data-name="OriginsBase._tokenTransferOnBuy->IERC20.approve">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M853.4182,-1266.1028C980.4224,-1262.5517 1210.4162,-1257 1407.0284,-1257 1407.0284,-1257 1407.0284,-1257 1735.9189,-1257 1874.5305,-1257 2037.5192,-1242.612 2118.7094,-1234.4637" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2119.5451,-1237.897 2129.1409,-1233.4058 2118.8388,-1230.9327 2119.5451,-1237.897" style=""></polygon>
+</g>
+<!-- ILockedFund.depositVested -->
+<g id="node77" class="node" data-name="ILockedFund.depositVested">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1082.9665" cy="-1843" rx="65.989" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1838.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">depositVested</text>
+</g>
+<!-- OriginsBase._tokenTransferOnBuy&#45;&gt;ILockedFund.depositVested -->
+<g id="edge36" class="edge" data-name="OriginsBase._tokenTransferOnBuy->ILockedFund.depositVested">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M853.696,-1266.2812C875.4461,-1270.5227 896.3658,-1279.3191 910.9355,-1296 948.9718,-1339.5482 892.9515,-1772.4061 930.9355,-1816 950.3906,-1838.3285 981.3667,-1846.4138 1010.2973,-1848.3908" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="1010.2748,-1851.8932 1020.4228,-1848.8486 1010.5911,-1844.9004 1010.2748,-1851.8932" style=""></polygon>
+</g>
+<!-- OriginsBase._updateWalletCount -->
+<g id="node30" class="node" data-name="OriginsBase._updateWalletCount">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1431" rx="90.9129" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1426.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_updateWalletCount</text>
+</g>
+<!-- OriginsBase._buy&#45;&gt;OriginsBase._saleAllowed -->
+<g id="edge37" class="edge" data-name="OriginsBase._buy->OriginsBase._saleAllowed">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M505.9275,-1377C547.7912,-1377 624.6005,-1377 682.2346,-1377" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="682.3968,-1380.5001 692.3968,-1377 682.3968,-1373.5001 682.3968,-1380.5001" style=""></polygon>
+</g>
+<!-- OriginsBase._buy&#45;&gt;OriginsBase._updateTierTokenDetailsAfterBuy -->
+<g id="edge41" class="edge" data-name="OriginsBase._buy->OriginsBase._updateTierTokenDetailsAfterBuy">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M494.5562,-1391.4301C519.7042,-1409.8036 566.0842,-1441.1782 610.5685,-1458 622.4951,-1462.5101 635.2631,-1466.285 648.1033,-1469.4405" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="647.3897,-1472.868 657.9237,-1471.7347 648.9822,-1466.0515 647.3897,-1472.868" style=""></polygon>
+</g>
+<!-- OriginsBase._buy&#45;&gt;OriginsBase._tokenTransferOnBuy -->
+<g id="edge40" class="edge" data-name="OriginsBase._buy->OriginsBase._tokenTransferOnBuy">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M505.665,-1374.3758C526.6239,-1371.2912 554.3351,-1364.5834 574.5685,-1350 597.9682,-1333.1344 586.4842,-1311.8729 610.5685,-1296 623.4727,-1287.4953 638.3387,-1281.4921 653.5425,-1277.2853" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="654.7168,-1280.5993 663.5652,-1274.7721 653.0142,-1273.8095 654.7168,-1280.5993" style=""></polygon>
+</g>
+<!-- OriginsBase._buy&#45;&gt;OriginsBase._updateWalletCount -->
+<g id="edge42" class="edge" data-name="OriginsBase._buy->OriginsBase._updateWalletCount">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M504.5123,-1382.9171C531.8322,-1388.4719 573.9531,-1396.9574 610.5685,-1404 632.876,-1408.2906 657.125,-1412.8226 679.3433,-1416.9228" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="678.9259,-1420.4047 689.3945,-1418.7739 680.1938,-1413.5205 678.9259,-1420.4047" style=""></polygon>
+</g>
+<!-- deposit.add -->
+<g id="node156" class="node" data-name="deposit.add">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-119" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-114.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">add</text>
+</g>
+<!-- OriginsBase._buy&#45;&gt;deposit.add -->
+<g id="edge38" class="edge" data-name="OriginsBase._buy->deposit.add">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M506.2496,-1377.6187C528.9458,-1376.2592 558.5835,-1370.2923 574.5685,-1350 657.3875,-1244.8644 523.4278,-247.5825 610.5685,-146 637.0657,-115.1114 686.3843,-112.0313 720.3564,-114.2211" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="720.1111,-117.7126 730.3646,-115.0449 720.6854,-110.7362 720.1111,-117.7126" style=""></polygon>
+</g>
+<!-- deposit.mul -->
+<g id="node157" class="node" data-name="deposit.mul">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-173" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-168.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">mul</text>
+</g>
+<!-- OriginsBase._buy&#45;&gt;deposit.mul -->
+<g id="edge39" class="edge" data-name="OriginsBase._buy->deposit.mul">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M506.2371,-1377.6088C528.9266,-1376.2441 558.5614,-1370.2748 574.5685,-1350 651.8591,-1252.1024 537.9426,-329.4064 610.5685,-228 635.465,-193.2373 685.1549,-180.4321 719.6482,-175.7237" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="720.3073,-179.1699 729.8209,-174.5071 719.476,-172.2195 720.3073,-179.1699" style=""></polygon>
+</g>
+<!-- OriginsBase.checkOwner -->
+<g id="node48" class="node" data-name="OriginsBase.checkOwner">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-1215" rx="59.6531" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-1210.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">checkOwner</text>
+</g>
+<!-- OriginsBase._withdrawSaleDeposit&#45;&gt;OriginsBase.checkOwner -->
+<g id="edge43" class="edge" data-name="OriginsBase._withdrawSaleDeposit->OriginsBase.checkOwner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M517.9692,-1123.2856C569.6753,-1143.1455 656.773,-1176.599 710.2655,-1197.145" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="709.2565,-1200.5067 719.8466,-1200.825 711.7664,-1193.9721 709.2565,-1200.5067" style=""></polygon>
+</g>
+<!-- receiver.transfer -->
+<g id="node158" class="node" data-name="receiver.transfer">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="756.752" cy="-34" rx="40.5441" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="756.752" y="-29.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">transfer</text>
+</g>
+<!-- OriginsBase._withdrawSaleDeposit&#45;&gt;receiver.transfer -->
+<g id="edge44" class="edge" data-name="OriginsBase._withdrawSaleDeposit->receiver.transfer">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M476.8595,-1088.8149C486.245,-958.6106 545.4806,-170.9208 610.5685,-89 633.7803,-59.7851 674.276,-46.0864 706.7676,-39.6643" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="707.7804,-43.0384 717.0035,-37.8244 706.542,-36.1488 707.7804,-43.0384" style=""></polygon>
+</g>
+<!-- OriginsBase.getTierCount -->
+<g id="node33" class="node" data-name="OriginsBase.getTierCount">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-1053" rx="62.5585" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1048.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTierCount</text>
+</g>
+<!-- OriginsBase.getDepositAddress -->
+<g id="node34" class="node" data-name="OriginsBase.getDepositAddress">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-999" rx="84.5285" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-994.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getDepositAddress</text>
+</g>
+<!-- OriginsBase.getToken -->
+<g id="node35" class="node" data-name="OriginsBase.getToken">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-945" rx="47.5139" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-940.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getToken</text>
+</g>
+<!-- OriginsBase.getLockDetails -->
+<g id="node36" class="node" data-name="OriginsBase.getLockDetails">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-891" rx="70.0596" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-886.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getLockDetails</text>
+</g>
+<!-- OriginsBase.readTierPartA -->
+<g id="node37" class="node" data-name="OriginsBase.readTierPartA">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-837" rx="66.0261" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-832.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">readTierPartA</text>
+</g>
+<!-- OriginsBase.readTierPartB -->
+<g id="node38" class="node" data-name="OriginsBase.readTierPartB">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-783" rx="65.9638" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-778.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">readTierPartB</text>
+</g>
+<!-- OriginsBase.getTokensBoughtByAddressOnTier -->
+<g id="node39" class="node" data-name="OriginsBase.getTokensBoughtByAddressOnTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-729" rx="150.4888" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-724.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTokensBoughtByAddressOnTier</text>
+</g>
+<!-- OriginsBase.getParticipatingWalletCountPerTier -->
+<g id="node40" class="node" data-name="OriginsBase.getParticipatingWalletCountPerTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-675" rx="150.4714" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-670.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getParticipatingWalletCountPerTier</text>
+</g>
+<!-- OriginsBase.getTokensSoldPerTier -->
+<g id="node41" class="node" data-name="OriginsBase.getTokensSoldPerTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-621" rx="97.8517" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-616.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTokensSoldPerTier</text>
+</g>
+<!-- OriginsBase.checkSaleEnded -->
+<g id="node42" class="node" data-name="OriginsBase.checkSaleEnded">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-567" rx="74.7014" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-562.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">checkSaleEnded</text>
+</g>
+<!-- OriginsBase.isAddressApproved -->
+<g id="node43" class="node" data-name="OriginsBase.isAddressApproved">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-513" rx="87.9645" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-508.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">isAddressApproved</text>
+</g>
+<!-- OriginsAdmin.onlyOwner -->
+<g id="node49" class="node" data-name="OriginsAdmin.onlyOwner">
+
+<polygon fill="#edad56" stroke="#1bc6a6" stroke-width="3" points="237.2204,-2546.5442 237.2204,-2561.4558 202.6966,-2572 153.8725,-2572 119.3487,-2561.4558 119.3487,-2546.5442 153.8725,-2536 202.6966,-2536 237.2204,-2546.5442" style=""></polygon>
+<polygon fill="none" stroke="#1bc6a6" stroke-width="3" points="241.2183,-2543.583 241.2183,-2564.417 203.2932,-2576 153.2759,-2576 115.3508,-2564.417 115.3508,-2543.583 153.2759,-2532 203.2932,-2532 241.2183,-2543.583" style=""></polygon>
+<text text-anchor="middle" x="178.2845" y="-2549.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">onlyOwner</text>
+</g>
+<!-- OriginsAdmin.onlyVerifier -->
+<g id="node50" class="node" data-name="OriginsAdmin.onlyVerifier">
+
+<polygon fill="#edad56" stroke="#1bc6a6" stroke-width="3" points="241.9858,-2484.5442 241.9858,-2499.4558 204.6705,-2510 151.8986,-2510 114.5833,-2499.4558 114.5833,-2484.5442 151.8986,-2474 204.6705,-2474 241.9858,-2484.5442" style=""></polygon>
+<polygon fill="none" stroke="#1bc6a6" stroke-width="3" points="245.992,-2481.5191 245.992,-2502.4809 205.2264,-2514 151.3426,-2514 110.5771,-2502.4809 110.5771,-2481.5191 151.3426,-2470 205.2264,-2470 245.992,-2481.5191" style=""></polygon>
+<text text-anchor="middle" x="178.2845" y="-2487.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">onlyVerifier</text>
+</g>
+<!-- OriginsAdmin.&lt;Constructor&gt; -->
+<g id="node51" class="node" data-name="OriginsAdmin.&lt;Constructor&gt;">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="178.2845" cy="-2434" rx="67.5419" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2429.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&lt;Constructor&gt;</text>
+</g>
+<!-- OriginsAdmin.addOwner -->
+<g id="node52" class="node" data-name="OriginsAdmin.addOwner">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2380" rx="51.0069" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2375.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addOwner</text>
+</g>
+<!-- OriginsAdmin._addOwner -->
+<g id="node56" class="node" data-name="OriginsAdmin._addOwner">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-2380" rx="56.1628" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-2375.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_addOwner</text>
+</g>
+<!-- OriginsAdmin.addOwner&#45;&gt;OriginsAdmin._addOwner -->
+<g id="edge45" class="edge" data-name="OriginsAdmin.addOwner->OriginsAdmin._addOwner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M229.7281,-2380C279.4532,-2380 355.0211,-2380 409.2437,-2380" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="409.4489,-2383.5001 419.4489,-2380 409.4489,-2376.5001 409.4489,-2383.5001" style=""></polygon>
+</g>
+<!-- OriginsAdmin.removeOwner -->
+<g id="node53" class="node" data-name="OriginsAdmin.removeOwner">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2326" rx="66.0338" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2321.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">removeOwner</text>
+</g>
+<!-- OriginsAdmin._removeOwner -->
+<g id="node57" class="node" data-name="OriginsAdmin._removeOwner">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-2326" rx="71.1901" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-2321.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_removeOwner</text>
+</g>
+<!-- OriginsAdmin.removeOwner&#45;&gt;OriginsAdmin._removeOwner -->
+<g id="edge46" class="edge" data-name="OriginsAdmin.removeOwner->OriginsAdmin._removeOwner">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M244.6309,-2326C288.7924,-2326 347.1057,-2326 394.0856,-2326" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="394.2341,-2329.5001 404.234,-2326 394.234,-2322.5001 394.2341,-2329.5001" style=""></polygon>
+</g>
+<!-- OriginsAdmin.addVerifier -->
+<g id="node54" class="node" data-name="OriginsAdmin.addVerifier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2272" rx="55.5734" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2267.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addVerifier</text>
+</g>
+<!-- OriginsAdmin._addVerifier -->
+<g id="node58" class="node" data-name="OriginsAdmin._addVerifier">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-2272" rx="60.2306" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-2267.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_addVerifier</text>
+</g>
+<!-- OriginsAdmin.addVerifier&#45;&gt;OriginsAdmin._addVerifier -->
+<g id="edge47" class="edge" data-name="OriginsAdmin.addVerifier->OriginsAdmin._addVerifier">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M233.8527,-2272C282.2214,-2272 352.5917,-2272 404.9436,-2272" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="405.1619,-2275.5001 415.1619,-2272 405.1619,-2268.5001 405.1619,-2275.5001" style=""></polygon>
+</g>
+<!-- OriginsAdmin.removeVerifier -->
+<g id="node55" class="node" data-name="OriginsAdmin.removeVerifier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2218" rx="70.6007" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2213.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">removeVerifier</text>
+</g>
+<!-- OriginsAdmin._removeVerifier -->
+<g id="node59" class="node" data-name="OriginsAdmin._removeVerifier">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="475.5688" cy="-2218" rx="75.2578" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="475.5688" y="-2213.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_removeVerifier</text>
+</g>
+<!-- OriginsAdmin.removeVerifier&#45;&gt;OriginsAdmin._removeVerifier -->
+<g id="edge48" class="edge" data-name="OriginsAdmin.removeVerifier->OriginsAdmin._removeVerifier">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M249.1138,-2218C291.3359,-2218 345.2232,-2218 389.8381,-2218" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="390.0852,-2221.5001 400.0852,-2218 390.0852,-2214.5001 390.0852,-2221.5001" style=""></polygon>
+</g>
+<!-- OriginsAdmin.checkOwner -->
+<g id="node60" class="node" data-name="OriginsAdmin.checkOwner">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2164" rx="59.6531" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2159.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">checkOwner</text>
+</g>
+<!-- OriginsAdmin.checkVerifier -->
+<g id="node61" class="node" data-name="OriginsAdmin.checkVerifier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2110" rx="64.2204" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2105.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">checkVerifier</text>
+</g>
+<!-- OriginsAdmin.getOwners -->
+<g id="node62" class="node" data-name="OriginsAdmin.getOwners">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2056" rx="52.7276" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2051.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getOwners</text>
+</g>
+<!-- OriginsAdmin.getVerifiers -->
+<g id="node63" class="node" data-name="OriginsAdmin.getVerifiers">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-2002" rx="57.2953" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-1997.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getVerifiers</text>
+</g>
+<!-- IERC20.totalSupply -->
+<g id="node68" class="node" data-name="IERC20.totalSupply">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-1013" rx="55.6372" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1008.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">totalSupply</text>
+</g>
+<!-- IERC20.allowance -->
+<g id="node69" class="node" data-name="IERC20.allowance">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2170.0884" cy="-959" rx="50.3586" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-954.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">allowance</text>
+</g>
+<!-- SafeMath.add -->
+<g id="node70" class="node" data-name="SafeMath.add">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="178.2845" cy="-3039" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3034.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">add</text>
+</g>
+<!-- SafeMath.sub -->
+<g id="node71" class="node" data-name="SafeMath.sub">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="178.2845" cy="-2967" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2962.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">sub</text>
+</g>
+<!-- SafeMath.sub&#45;&gt;SafeMath.sub -->
+<g id="edge49" class="edge" data-name="SafeMath.sub->SafeMath.sub">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M152.3985,-2972.4173C105.6285,-2985.0329 114.2572,-3003 178.2845,-3003 237.3097,-3003 249.2542,-2987.7306 214.1179,-2975.4609" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="214.7571,-2971.9964 204.1706,-2972.4173 212.7089,-2978.69 214.7571,-2971.9964" style=""></polygon>
+</g>
+<!-- SafeMath.mul -->
+<g id="node72" class="node" data-name="SafeMath.mul">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="178.2845" cy="-2913" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2908.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">mul</text>
+</g>
+<!-- SafeMath.div -->
+<g id="node73" class="node" data-name="SafeMath.div">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="178.2845" cy="-2841" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2836.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">div</text>
+</g>
+<!-- SafeMath.div&#45;&gt;SafeMath.div -->
+<g id="edge50" class="edge" data-name="SafeMath.div->SafeMath.div">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M152.3985,-2846.4173C105.6285,-2859.0329 114.2572,-2877 178.2845,-2877 237.3097,-2877 249.2542,-2861.7306 214.1179,-2849.4609" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="214.7571,-2845.9964 204.1706,-2846.4173 212.7089,-2852.69 214.7571,-2845.9964" style=""></polygon>
+</g>
+<!-- SafeMath.divCeil -->
+<g id="node74" class="node" data-name="SafeMath.divCeil">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="178.2845" cy="-2769" rx="39.4428" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2764.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">divCeil</text>
+</g>
+<!-- SafeMath.divCeil&#45;&gt;SafeMath.divCeil -->
+<g id="edge51" class="edge" data-name="SafeMath.divCeil->SafeMath.divCeil">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M143.1304,-2777.2261C107.1642,-2789.5348 118.8822,-2805 178.2845,-2805 231.6538,-2805 246.5328,-2792.5167 222.9215,-2781.0546" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="224.0218,-2777.7243 213.4387,-2777.2261 221.4012,-2784.2153 224.0218,-2777.7243" style=""></polygon>
+</g>
+<!-- SafeMath.mod -->
+<g id="node75" class="node" data-name="SafeMath.mod">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="178.2845" cy="-2697" rx="28.4127" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2692.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">mod</text>
+</g>
+<!-- SafeMath.mod&#45;&gt;SafeMath.mod -->
+<g id="edge52" class="edge" data-name="SafeMath.mod->SafeMath.mod">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M151.4559,-2702.6743C105.7479,-2715.2754 114.6908,-2733 178.2845,-2733 236.91,-2733 249.0903,-2717.9367 214.8253,-2705.7106" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="215.702,-2702.3177 205.1132,-2702.6743 213.6132,-2708.9988 215.702,-2702.3177" style=""></polygon>
+</g>
+<!-- SafeMath.min256 -->
+<g id="node76" class="node" data-name="SafeMath.min256">
+
+<ellipse fill="#f2c383" stroke="#f2c383" stroke-width="3" cx="178.2845" cy="-2643" rx="40.5925" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-2638.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">min256</text>
+</g>
+<!-- LockedFund._depositVested -->
+<g id="node130" class="node" data-name="LockedFund._depositVested">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1407.0284" cy="-2232" rx="70.6451" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2227.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_depositVested</text>
+</g>
+<!-- ILockedFund.depositVested&#45;&gt;LockedFund._depositVested -->
+<g id="edge57" class="edge" data-name="ILockedFund.depositVested->LockedFund._depositVested">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1144.7128,-1849.3507C1176.8868,-1856.0695 1213.8376,-1869.8376 1234.9974,-1898 1276.0648,-1952.658 1209.4034,-2154.0568 1254.9974,-2205 1273.6267,-2225.8149 1302.2793,-2234.1581 1329.7088,-2236.734" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1329.5186,-2240.2292 1339.7382,-2237.4345 1330.0064,-2233.2462 1329.5186,-2240.2292" style=""></polygon>
+</g>
+<!-- ILockedFund.addAdmin -->
+<g id="node78" class="node" data-name="ILockedFund.addAdmin">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1789" rx="51.6093" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1784.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addAdmin</text>
+</g>
+<!-- ILockedFund.removeAdmin -->
+<g id="node79" class="node" data-name="ILockedFund.removeAdmin">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1735" rx="66.6363" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1730.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">removeAdmin</text>
+</g>
+<!-- ILockedFund.changeVestingRegistry -->
+<g id="node80" class="node" data-name="ILockedFund.changeVestingRegistry">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1082.9665" cy="-1681" rx="101.2834" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1676.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">changeVestingRegistry</text>
+</g>
+<!-- ILockedFund.changeWaitedTS -->
+<g id="node81" class="node" data-name="ILockedFund.changeWaitedTS">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1082.9665" cy="-1627" rx="77.5685" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1622.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">changeWaitedTS</text>
+</g>
+<!-- ILockedFund.withdrawWaitedUnlockedBalance -->
+<g id="node82" class="node" data-name="ILockedFund.withdrawWaitedUnlockedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1573" rx="144.062" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1568.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawWaitedUnlockedBalance</text>
+</g>
+<!-- ILockedFund.createVestingAndStake -->
+<g id="node83" class="node" data-name="ILockedFund.createVestingAndStake">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1519" rx="102.4043" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1514.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createVestingAndStake</text>
+</g>
+<!-- ILockedFund.createVesting -->
+<g id="node84" class="node" data-name="ILockedFund.createVesting">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1465" rx="64.2398" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1460.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createVesting</text>
+</g>
+<!-- ILockedFund.stakeTokens -->
+<g id="node85" class="node" data-name="ILockedFund.stakeTokens">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1411" rx="59.1103" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1406.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">stakeTokens</text>
+</g>
+<!-- ILockedFund.withdrawAndStakeTokens -->
+<g id="node86" class="node" data-name="ILockedFund.withdrawAndStakeTokens">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1357" rx="114.0286" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1352.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawAndStakeTokens</text>
+</g>
+<!-- ILockedFund.withdrawAndStakeTokensFrom -->
+<g id="node87" class="node" data-name="ILockedFund.withdrawAndStakeTokensFrom">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1082.9665" cy="-1303" rx="134.876" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1082.9665" y="-1298.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawAndStakeTokensFrom</text>
+</g>
+<!-- IOrigins.setDepositAddress -->
+<g id="node88" class="node" data-name="IOrigins.setDepositAddress">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4474" rx="83.3828" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4469.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setDepositAddress</text>
+</g>
+<!-- IOrigins.setLockedFund -->
+<g id="node89" class="node" data-name="IOrigins.setLockedFund">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4420" rx="70.649" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4415.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setLockedFund</text>
+</g>
+<!-- IOrigins.createTier -->
+<g id="node90" class="node" data-name="IOrigins.createTier">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4366" rx="50.3334" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4361.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createTier</text>
+</g>
+<!-- IOrigins.setTierVerification -->
+<g id="node91" class="node" data-name="IOrigins.setTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4312" rx="84.4996" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4307.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierVerification</text>
+</g>
+<!-- IOrigins.setTierDeposit -->
+<g id="node92" class="node" data-name="IOrigins.setTierDeposit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4258" rx="67.7702" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4253.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierDeposit</text>
+</g>
+<!-- IOrigins.setTierTokenLimit -->
+<g id="node93" class="node" data-name="IOrigins.setTierTokenLimit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4204" rx="83.9624" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4199.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTokenLimit</text>
+</g>
+<!-- IOrigins.setTierTokenAmount -->
+<g id="node94" class="node" data-name="IOrigins.setTierTokenAmount">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4150" rx="94.3427" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4145.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTokenAmount</text>
+</g>
+<!-- IOrigins.setTierVestOrLock -->
+<g id="node95" class="node" data-name="IOrigins.setTierVestOrLock">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4096" rx="85.6473" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4091.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierVestOrLock</text>
+</g>
+<!-- IOrigins.setTierTime -->
+<g id="node96" class="node" data-name="IOrigins.setTierTime">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-4042" rx="58.459" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-4037.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">setTierTime</text>
+</g>
+<!-- IOrigins.addressVerification -->
+<g id="node97" class="node" data-name="IOrigins.addressVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-3988" rx="86.7914" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3983.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addressVerification</text>
+</g>
+<!-- IOrigins.singleAddressMultipleTierVerification -->
+<g id="node98" class="node" data-name="IOrigins.singleAddressMultipleTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-3934" rx="161.9879" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3929.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">singleAddressMultipleTierVerification</text>
+</g>
+<!-- IOrigins.multipleAddressSingleTierVerification -->
+<g id="node99" class="node" data-name="IOrigins.multipleAddressSingleTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-3880" rx="162.0694" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3875.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">multipleAddressSingleTierVerification</text>
+</g>
+<!-- IOrigins.multipleAddressAndTierVerification -->
+<g id="node100" class="node" data-name="IOrigins.multipleAddressAndTierVerification">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-3826" rx="154.4674" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3821.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">multipleAddressAndTierVerification</text>
+</g>
+<!-- IOrigins.buy -->
+<g id="node101" class="node" data-name="IOrigins.buy">
+
+<ellipse fill="#ff9797" stroke="#a52a2a" stroke-width="3" cx="178.2845" cy="-3772" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3767.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">buy</text>
+</g>
+<!-- IOrigins.withdrawSaleDeposit -->
+<g id="node102" class="node" data-name="IOrigins.withdrawSaleDeposit">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="178.2845" cy="-3718" rx="94.3369" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3713.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawSaleDeposit</text>
+</g>
+<!-- IOrigins.getTierCount -->
+<g id="node103" class="node" data-name="IOrigins.getTierCount">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3664" rx="62.5585" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3659.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTierCount</text>
+</g>
+<!-- IOrigins.getDepositAddress -->
+<g id="node104" class="node" data-name="IOrigins.getDepositAddress">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3610" rx="84.5285" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3605.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getDepositAddress</text>
+</g>
+<!-- IOrigins.getToken -->
+<g id="node105" class="node" data-name="IOrigins.getToken">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3556" rx="47.5139" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3551.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getToken</text>
+</g>
+<!-- IOrigins.getLockDetails -->
+<g id="node106" class="node" data-name="IOrigins.getLockDetails">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3502" rx="70.0596" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3497.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getLockDetails</text>
+</g>
+<!-- IOrigins.readTierPartA -->
+<g id="node107" class="node" data-name="IOrigins.readTierPartA">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3448" rx="66.0261" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3443.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">readTierPartA</text>
+</g>
+<!-- IOrigins.readTierPartB -->
+<g id="node108" class="node" data-name="IOrigins.readTierPartB">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3394" rx="65.9638" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3389.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">readTierPartB</text>
+</g>
+<!-- IOrigins.getTokensBoughtByAddressOnTier -->
+<g id="node109" class="node" data-name="IOrigins.getTokensBoughtByAddressOnTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3340" rx="150.4888" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3335.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTokensBoughtByAddressOnTier</text>
+</g>
+<!-- IOrigins.getParticipatingWalletCountPerTier -->
+<g id="node110" class="node" data-name="IOrigins.getParticipatingWalletCountPerTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3286" rx="150.4714" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3281.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getParticipatingWalletCountPerTier</text>
+</g>
+<!-- IOrigins.getTokensSoldPerTier -->
+<g id="node111" class="node" data-name="IOrigins.getTokensSoldPerTier">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3232" rx="97.8517" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3227.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getTokensSoldPerTier</text>
+</g>
+<!-- IOrigins.checkSaleEnded -->
+<g id="node112" class="node" data-name="IOrigins.checkSaleEnded">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3178" rx="74.7014" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3173.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">checkSaleEnded</text>
+</g>
+<!-- IOrigins.isAddressApproved -->
+<g id="node113" class="node" data-name="IOrigins.isAddressApproved">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="178.2845" cy="-3124" rx="87.9645" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="178.2845" y="-3119.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">isAddressApproved</text>
+</g>
+<!-- LockedFund.onlyAdmin -->
+<g id="node114" class="node" data-name="LockedFund.onlyAdmin">
+
+<polygon fill="#edad56" stroke="#1bc6a6" stroke-width="3" points="1466.6519,-2336.5442 1466.6519,-2351.4558 1431.7253,-2362 1382.3316,-2362 1347.405,-2351.4558 1347.405,-2336.5442 1382.3316,-2326 1431.7253,-2326 1466.6519,-2336.5442" style=""></polygon>
+<polygon fill="none" stroke="#1bc6a6" stroke-width="3" points="1470.6559,-2333.5743 1470.6559,-2354.4257 1432.3171,-2366 1381.7398,-2366 1343.401,-2354.4257 1343.401,-2333.5743 1381.7398,-2322 1432.3171,-2322 1470.6559,-2333.5743" style=""></polygon>
+<text text-anchor="middle" x="1407.0284" y="-2339.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">onlyAdmin</text>
+</g>
+<!-- LockedFund.&lt;Constructor&gt; -->
+<g id="node115" class="node" data-name="LockedFund.&lt;Constructor&gt;">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1407.0284" cy="-2286" rx="67.5419" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2281.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&lt;Constructor&gt;</text>
+</g>
+<!-- LockedFund.addAdmin -->
+<g id="node116" class="node" data-name="LockedFund.addAdmin">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-2178" rx="51.6093" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2173.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">addAdmin</text>
+</g>
+<!-- LockedFund._addAdmin -->
+<g id="node126" class="node" data-name="LockedFund._addAdmin">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-2178" rx="56.7658" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-2173.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_addAdmin</text>
+</g>
+<!-- LockedFund.addAdmin&#45;&gt;LockedFund._addAdmin -->
+<g id="edge53" class="edge" data-name="LockedFund.addAdmin->LockedFund._addAdmin">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1459.1421,-2178C1515.9343,-2178 1606.9663,-2178 1669.0033,-2178" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1669.0837,-2181.5001 1679.0836,-2178 1669.0836,-2174.5001 1669.0837,-2181.5001" style=""></polygon>
+</g>
+<!-- LockedFund.removeAdmin -->
+<g id="node117" class="node" data-name="LockedFund.removeAdmin">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-2124" rx="66.6363" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2119.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">removeAdmin</text>
+</g>
+<!-- LockedFund._removeAdmin -->
+<g id="node127" class="node" data-name="LockedFund._removeAdmin">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-2124" rx="71.7931" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-2119.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_removeAdmin</text>
+</g>
+<!-- LockedFund.removeAdmin&#45;&gt;LockedFund._removeAdmin -->
+<g id="edge54" class="edge" data-name="LockedFund.removeAdmin->LockedFund._removeAdmin">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1473.9807,-2124C1526.0521,-2124 1598.5349,-2124 1654.0558,-2124" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1654.2167,-2127.5001 1664.2167,-2124 1654.2166,-2120.5001 1654.2167,-2127.5001" style=""></polygon>
+</g>
+<!-- LockedFund.changeVestingRegistry -->
+<g id="node118" class="node" data-name="LockedFund.changeVestingRegistry">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1407.0284" cy="-2070" rx="101.2834" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2065.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">changeVestingRegistry</text>
+</g>
+<!-- LockedFund._changeVestingRegistry -->
+<g id="node128" class="node" data-name="LockedFund._changeVestingRegistry">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-2070" rx="105.9401" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-2065.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_changeVestingRegistry</text>
+</g>
+<!-- LockedFund.changeVestingRegistry&#45;&gt;LockedFund._changeVestingRegistry -->
+<g id="edge55" class="edge" data-name="LockedFund.changeVestingRegistry->LockedFund._changeVestingRegistry">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1508.3901,-2070C1543.5845,-2070 1583.3228,-2070 1619.6271,-2070" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1619.7691,-2073.5001 1629.7691,-2070 1619.769,-2066.5001 1619.7691,-2073.5001" style=""></polygon>
+</g>
+<!-- LockedFund.changeWaitedTS -->
+<g id="node119" class="node" data-name="LockedFund.changeWaitedTS">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1407.0284" cy="-2016" rx="77.5685" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-2011.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">changeWaitedTS</text>
+</g>
+<!-- LockedFund._changeWaitedTS -->
+<g id="node129" class="node" data-name="LockedFund._changeWaitedTS">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-2016" rx="82.2256" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-2011.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_changeWaitedTS</text>
+</g>
+<!-- LockedFund.changeWaitedTS&#45;&gt;LockedFund._changeWaitedTS -->
+<g id="edge56" class="edge" data-name="LockedFund.changeWaitedTS->LockedFund._changeWaitedTS">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1484.9709,-2016C1532.4201,-2016 1593.3016,-2016 1643.215,-2016" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1643.3671,-2019.5001 1653.367,-2016 1643.367,-2012.5001 1643.3671,-2019.5001" style=""></polygon>
+</g>
+<!-- LockedFund.withdrawWaitedUnlockedBalance -->
+<g id="node120" class="node" data-name="LockedFund.withdrawWaitedUnlockedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1800" rx="144.062" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1795.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawWaitedUnlockedBalance</text>
+</g>
+<!-- LockedFund._withdrawWaitedUnlockedBalance -->
+<g id="node131" class="node" data-name="LockedFund._withdrawWaitedUnlockedBalance">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-1800" rx="148.719" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-1795.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_withdrawWaitedUnlockedBalance</text>
+</g>
+<!-- LockedFund.withdrawWaitedUnlockedBalance&#45;&gt;LockedFund._withdrawWaitedUnlockedBalance -->
+<g id="edge58" class="edge" data-name="LockedFund.withdrawWaitedUnlockedBalance->LockedFund._withdrawWaitedUnlockedBalance">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1551.2846,-1800C1559.7822,-1800 1568.3528,-1800 1576.9039,-1800" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1576.9275,-1803.5001 1586.9275,-1800 1576.9275,-1796.5001 1576.9275,-1803.5001" style=""></polygon>
+</g>
+<!-- LockedFund.createVestingAndStake -->
+<g id="node121" class="node" data-name="LockedFund.createVestingAndStake">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1962" rx="102.4043" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1957.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createVestingAndStake</text>
+</g>
+<!-- LockedFund._createVestingAndStake -->
+<g id="node133" class="node" data-name="LockedFund._createVestingAndStake">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-1854" rx="107.0608" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-1849.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_createVestingAndStake</text>
+</g>
+<!-- LockedFund.createVestingAndStake&#45;&gt;LockedFund._createVestingAndStake -->
+<g id="edge59" class="edge" data-name="LockedFund.createVestingAndStake->LockedFund._createVestingAndStake">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1502.2443,-1955.2296C1519.4508,-1951.0094 1536.5212,-1944.6094 1551.0594,-1935 1575.1224,-1919.095 1562.9497,-1896.8342 1587.0594,-1881 1599.0106,-1873.151 1612.6102,-1867.4192 1626.6168,-1863.2591" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1627.6239,-1866.6126 1636.3635,-1860.6234 1625.7965,-1859.8553 1627.6239,-1866.6126" style=""></polygon>
+</g>
+<!-- LockedFund.createVesting -->
+<g id="node122" class="node" data-name="LockedFund.createVesting">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1735.9189" cy="-1908" rx="64.2398" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-1903.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createVesting</text>
+</g>
+<!-- LockedFund._createVesting -->
+<g id="node132" class="node" data-name="LockedFund._createVesting">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1996.7105" cy="-1908" rx="68.8965" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-1903.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_createVesting</text>
+</g>
+<!-- LockedFund.createVesting&#45;&gt;LockedFund._createVesting -->
+<g id="edge60" class="edge" data-name="LockedFund.createVesting->LockedFund._createVesting">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1800.0497,-1908C1835.3407,-1908 1879.4515,-1908 1916.9488,-1908" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1917.3368,-1911.5001 1927.3368,-1908 1917.3368,-1904.5001 1917.3368,-1911.5001" style=""></polygon>
+</g>
+<!-- LockedFund.stakeTokens -->
+<g id="node123" class="node" data-name="LockedFund.stakeTokens">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1735.9189" cy="-1962" rx="59.1103" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-1957.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">stakeTokens</text>
+</g>
+<!-- LockedFund._getVesting -->
+<g id="node134" class="node" data-name="LockedFund._getVesting">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="2170.0884" cy="-1889" rx="57.9042" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2170.0884" y="-1884.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_getVesting</text>
+</g>
+<!-- LockedFund.stakeTokens&#45;&gt;LockedFund._getVesting -->
+<g id="edge61" class="edge" data-name="LockedFund.stakeTokens->LockedFund._getVesting">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1794.7922,-1964.3688C1864.4264,-1965.5881 1983.1902,-1962.6628 2080.6426,-1935 2099.8806,-1929.5391 2119.8068,-1919.7582 2135.9553,-1910.6154" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="2138.1187,-1913.4054 2144.993,-1905.3435 2134.5916,-1907.359 2138.1187,-1913.4054" style=""></polygon>
+</g>
+<!-- LockedFund._stakeTokens -->
+<g id="node135" class="node" data-name="LockedFund._stakeTokens">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1996.7105" cy="-1834" rx="64.2669" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-1829.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">_stakeTokens</text>
+</g>
+<!-- LockedFund.stakeTokens&#45;&gt;LockedFund._stakeTokens -->
+<g id="edge64" class="edge" data-name="LockedFund.stakeTokens->LockedFund._stakeTokens">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1795.1171,-1963.1412C1824.5559,-1960.9399 1859.21,-1953.8757 1884.7783,-1935 1906.528,-1918.9434 1893.9715,-1900.4208 1912.7783,-1881 1923.4451,-1869.985 1937.2565,-1860.8256 1950.5849,-1853.6075" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1952.4003,-1856.6096 1959.6905,-1848.9216 1949.1972,-1850.3854 1952.4003,-1856.6096" style=""></polygon>
+</g>
+<!-- IVestingLogic.cliff -->
+<g id="node145" class="node" data-name="IVestingLogic.cliff">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1996.7105" cy="-2595" rx="27.2408" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-2590.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">cliff</text>
+</g>
+<!-- LockedFund.stakeTokens&#45;&gt;IVestingLogic.cliff -->
+<g id="edge62" class="edge" data-name="LockedFund.stakeTokens->IVestingLogic.cliff">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1792.6141,-1956.5283C1824.5248,-1956.8155 1862.3543,-1963.4249 1884.7783,-1989 1927.2408,-2037.4293 1873.5973,-2516.8795 1912.7783,-2568 1923.7281,-2582.2865 1942.3282,-2589.145 1959.2399,-2592.3852" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="1959.0503,-2595.8975 1969.4681,-2593.9691 1960.1216,-2588.9799 1959.0503,-2595.8975" style=""></polygon>
+</g>
+<!-- IVestingLogic.duration -->
+<g id="node146" class="node" data-name="IVestingLogic.duration">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1996.7105" cy="-2541" rx="43.4396" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-2536.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">duration</text>
+</g>
+<!-- LockedFund.stakeTokens&#45;&gt;IVestingLogic.duration -->
+<g id="edge63" class="edge" data-name="LockedFund.stakeTokens->IVestingLogic.duration">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1792.5677,-1956.5691C1824.4622,-1956.8705 1862.2909,-1963.4806 1884.7783,-1989 1962.0199,-2076.6559 1841.477,-2421.4476 1912.7783,-2514 1920.5917,-2524.1422 1932.259,-2530.5392 1944.4278,-2534.5556" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="1943.6576,-2537.9743 1954.2304,-2537.2924 1945.54,-2531.2322 1943.6576,-2537.9743" style=""></polygon>
+</g>
+<!-- LockedFund.withdrawAndStakeTokens -->
+<g id="node124" class="node" data-name="LockedFund.withdrawAndStakeTokens">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1854" rx="114.0286" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1849.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawAndStakeTokens</text>
+</g>
+<!-- LockedFund.withdrawAndStakeTokens&#45;&gt;LockedFund._withdrawWaitedUnlockedBalance -->
+<g id="edge65" class="edge" data-name="LockedFund.withdrawAndStakeTokens->LockedFund._withdrawWaitedUnlockedBalance">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1486.2244,-1840.9969C1531.6523,-1833.5382 1589.0773,-1824.1097 1637.4002,-1816.1756" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1638.2652,-1819.5805 1647.566,-1814.5065 1637.1311,-1812.673 1638.2652,-1819.5805" style=""></polygon>
+</g>
+<!-- LockedFund.withdrawAndStakeTokens&#45;&gt;LockedFund._createVestingAndStake -->
+<g id="edge66" class="edge" data-name="LockedFund.withdrawAndStakeTokens->LockedFund._createVestingAndStake">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1521.1353,-1854C1552.6088,-1854 1586.8048,-1854 1618.4642,-1854" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1618.6474,-1857.5001 1628.6474,-1854 1618.6474,-1850.5001 1618.6474,-1857.5001" style=""></polygon>
+</g>
+<!-- LockedFund.withdrawAndStakeTokensFrom -->
+<g id="node125" class="node" data-name="LockedFund.withdrawAndStakeTokensFrom">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1908" rx="134.876" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1903.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawAndStakeTokensFrom</text>
+</g>
+<!-- LockedFund.withdrawAndStakeTokensFrom&#45;&gt;LockedFund._withdrawWaitedUnlockedBalance -->
+<g id="edge67" class="edge" data-name="LockedFund.withdrawAndStakeTokensFrom->LockedFund._withdrawWaitedUnlockedBalance">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1516.1084,-1897.3131C1528.4866,-1893.3184 1540.4475,-1888.0142 1551.0594,-1881 1575.1224,-1865.095 1562.9497,-1842.8342 1587.0594,-1827 1594.3171,-1822.2335 1602.1827,-1818.2477 1610.3782,-1814.9207" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1611.6007,-1818.2003 1619.7565,-1811.4376 1609.1635,-1811.6382 1611.6007,-1818.2003" style=""></polygon>
+</g>
+<!-- LockedFund.withdrawAndStakeTokensFrom&#45;&gt;LockedFund._createVestingAndStake -->
+<g id="edge68" class="edge" data-name="LockedFund.withdrawAndStakeTokensFrom->LockedFund._createVestingAndStake">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1492.1536,-1894.0234C1540.3967,-1886.1025 1600.6164,-1876.2151 1649.1308,-1868.2496" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1649.9963,-1871.6544 1659.2971,-1866.5804 1648.8621,-1864.7469 1649.9963,-1871.6544" style=""></polygon>
+</g>
+<!-- LockedFund._depositVested&#45;&gt;IERC20.transferFrom -->
+<g id="edge69" class="edge" data-name="LockedFund._depositVested->IERC20.transferFrom">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1476.2084,-2235.9096C1503.3431,-2233.6071 1532.3925,-2225.6786 1551.0594,-2205 1615.6099,-2133.4931 1557.8089,-1864.7846 1587.0594,-1773 1673.438,-1501.9541 1696.316,-1406.584 1912.7783,-1222 1969.5313,-1173.605 2052.2124,-1146.7455 2108.4217,-1133.1101" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2109.3177,-1136.495 2118.2488,-1130.7953 2107.7127,-1129.6814 2109.3177,-1136.495" style=""></polygon>
+</g>
+<!-- _amount.mul -->
+<g id="node159" class="node" data-name="_amount.mul">
+
+<ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1735.9189" cy="-2433" rx="27" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1735.9189" y="-2428.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">mul</text>
+</g>
+<!-- LockedFund._depositVested&#45;&gt;_amount.mul -->
+<g id="edge70" class="edge" data-name="LockedFund._depositVested->_amount.mul">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1477.2102,-2229.9005C1503.3627,-2232.7012 1531.4302,-2240.5085 1551.0594,-2259 1599.0778,-2304.2353 1539.3488,-2357.4401 1587.0594,-2403 1616.6511,-2431.2577 1665.076,-2436.2789 1698.6219,-2435.8522" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="1699.0564,-2439.3409 1708.9478,-2435.5447 1698.8481,-2432.344 1699.0564,-2439.3409" style=""></polygon>
+</g>
+<!-- LockedFund._withdrawWaitedUnlockedBalance&#45;&gt;IERC20.transfer -->
+<g id="edge71" class="edge" data-name="LockedFund._withdrawWaitedUnlockedBalance->IERC20.transfer">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1741.9845,-1781.9684C1769.7308,-1702.0984 1892.2371,-1376.4595 2100.6426,-1202 2107.7812,-1196.0242 2116.3946,-1191.2744 2125.0894,-1187.5336" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2126.4498,-1190.7598 2134.4901,-1183.8602 2123.9021,-1184.2399 2126.4498,-1190.7598" style=""></polygon>
+</g>
+<!-- LockedFund._createVesting&#45;&gt;LockedFund._getVesting -->
+<g id="edge73" class="edge" data-name="LockedFund._createVesting->LockedFund._getVesting">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M2060.2855,-1901.033C2074.9694,-1899.4238 2090.6079,-1897.71 2105.3412,-1896.0955" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="2105.8145,-1899.5646 2115.3737,-1894.996 2105.0519,-1892.6063 2105.8145,-1899.5646" style=""></polygon>
+</g>
+<!-- IVestingRegistry.createVesting -->
+<g id="node149" class="node" data-name="IVestingRegistry.createVesting">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2331.6539" cy="-1941" rx="64.2398" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2331.6539" y="-1936.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">createVesting</text>
+</g>
+<!-- LockedFund._createVesting&#45;&gt;IVestingRegistry.createVesting -->
+<g id="edge72" class="edge" data-name="LockedFund._createVesting->IVestingRegistry.createVesting">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M2061.2909,-1914.3627C2118.5263,-1920.0018 2201.9396,-1928.22 2260.9507,-1934.034" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2260.6425,-1937.5205 2270.9375,-1935.018 2261.3289,-1930.5543 2260.6425,-1937.5205" style=""></polygon>
+</g>
+<!-- LockedFund._createVestingAndStake&#45;&gt;LockedFund._createVesting -->
+<g id="edge75" class="edge" data-name="LockedFund._createVestingAndStake->LockedFund._createVesting">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1811.4294,-1866.831C1834.9792,-1871.0645 1861.0069,-1875.9814 1884.7783,-1881 1901.9458,-1884.6244 1920.4994,-1888.9374 1937.4704,-1893.0408" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1936.713,-1896.4586 1947.2574,-1895.4258 1938.3704,-1889.6576 1936.713,-1896.4586" style=""></polygon>
+</g>
+<!-- LockedFund._createVestingAndStake&#45;&gt;LockedFund._getVesting -->
+<g id="edge74" class="edge" data-name="LockedFund._createVestingAndStake->LockedFund._getVesting">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1833.6396,-1861.3651C1902.6675,-1866.6382 1997.3417,-1874.0128 2080.6426,-1881 2088.2893,-1881.6414 2096.302,-1882.3319 2104.2573,-1883.0289" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="2104.0026,-1886.5199 2114.2714,-1883.912 2104.6176,-1879.547 2104.0026,-1886.5199" style=""></polygon>
+</g>
+<!-- LockedFund._createVestingAndStake&#45;&gt;LockedFund._stakeTokens -->
+<g id="edge76" class="edge" data-name="LockedFund._createVestingAndStake->LockedFund._stakeTokens">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1833.3989,-1846.5243C1863.5503,-1844.212 1896.214,-1841.707 1924.3492,-1839.5494" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1924.7938,-1843.0256 1934.4968,-1838.7711 1924.2584,-1836.0461 1924.7938,-1843.0256" style=""></polygon>
+</g>
+<!-- IVestingRegistry.getVesting -->
+<g id="node150" class="node" data-name="IVestingRegistry.getVesting">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2331.6539" cy="-1887" rx="52.7469" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2331.6539" y="-1882.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getVesting</text>
+</g>
+<!-- LockedFund._getVesting&#45;&gt;IVestingRegistry.getVesting -->
+<g id="edge77" class="edge" data-name="LockedFund._getVesting->IVestingRegistry.getVesting">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M2227.9609,-1888.2836C2241.165,-1888.1202 2255.2594,-1887.9457 2268.6658,-1887.7797" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2268.8015,-1891.2784 2278.7574,-1887.6548 2268.7148,-1884.2789 2268.8015,-1891.2784" style=""></polygon>
+</g>
+<!-- LockedFund._stakeTokens&#45;&gt;IERC20.approve -->
+<g id="edge78" class="edge" data-name="LockedFund._stakeTokens->IERC20.approve">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M1998.4249,-1815.8735C2006.6573,-1731.5184 2044.0739,-1377.5494 2100.6426,-1284 2109.1946,-1269.8574 2122.8036,-1257.8967 2135.7172,-1248.7782" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="2137.6818,-1251.6749 2144.0427,-1243.202 2133.7864,-1245.8589 2137.6818,-1251.6749" style=""></polygon>
+</g>
+<!-- LockedFund.getWaitedTS -->
+<g id="node136" class="node" data-name="LockedFund.getWaitedTS">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1746" rx="61.975" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1741.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getWaitedTS</text>
+</g>
+<!-- LockedFund.getToken -->
+<g id="node137" class="node" data-name="LockedFund.getToken">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1407.0284" cy="-1692" rx="47.5139" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1687.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getToken</text>
+</g>
+<!-- LockedFund.getVestingDetails -->
+<g id="node138" class="node" data-name="LockedFund.getVestingDetails">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1407.0284" cy="-1638" rx="80.4499" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1633.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getVestingDetails</text>
+</g>
+<!-- LockedFund.vestedBalance -->
+<g id="node139" class="node" data-name="LockedFund.vestedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1584" rx="66.6113" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1579.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">vestedBalance</text>
+</g>
+<!-- LockedFund.getLockedBalance -->
+<g id="node140" class="node" data-name="LockedFund.getLockedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1530" rx="82.7859" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1525.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getLockedBalance</text>
+</g>
+<!-- LockedFund.getWaitedUnlockedBalance -->
+<g id="node141" class="node" data-name="LockedFund.getWaitedUnlockedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1476" rx="119.2229" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1471.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getWaitedUnlockedBalance</text>
+</g>
+<!-- LockedFund.getUnlockedBalance -->
+<g id="node142" class="node" data-name="LockedFund.getUnlockedBalance">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1422" rx="91.4539" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1417.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getUnlockedBalance</text>
+</g>
+<!-- LockedFund.adminStatus -->
+<g id="node143" class="node" data-name="LockedFund.adminStatus">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1368" rx="58.5655" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1363.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">adminStatus</text>
+</g>
+<!-- LockedFund.getCliffAndDuration -->
+<g id="node144" class="node" data-name="LockedFund.getCliffAndDuration">
+
+<ellipse fill="#ffbdb9" stroke="#ffbdb9" stroke-width="3" cx="1407.0284" cy="-1314" rx="92.0528" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1407.0284" y="-1309.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">getCliffAndDuration</text>
+</g>
+<!-- IVestingLogic.stakeTokens -->
+<g id="node147" class="node" data-name="IVestingLogic.stakeTokens">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1996.7105" cy="-2487" rx="59.1103" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-2482.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">stakeTokens</text>
+</g>
+<!-- IVestingLogic.withdrawTokens -->
+<g id="node148" class="node" data-name="IVestingLogic.withdrawTokens">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="1996.7105" cy="-2433" rx="75.8643" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="1996.7105" y="-2428.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">withdrawTokens</text>
+</g>
+<!-- IVestingRegistry.stakeTokens -->
+<g id="node151" class="node" data-name="IVestingRegistry.stakeTokens">
+
+<ellipse fill="#ff9797" stroke="#ff9797" stroke-width="3" cx="2331.6539" cy="-1833" rx="59.1103" ry="18" style=""></ellipse>
+<text text-anchor="middle" x="2331.6539" y="-1828.8" font-family="Times,serif" font-size="14.00" fill="#000000" style="">stakeTokens</text>
+</g>
+<!-- key -->
+<g id="node160" class="node" data-name="key">
+
+<polygon fill="#edad56" stroke="transparent" stroke-width="3" points="243.2845,-4629 113.2845,-4629 113.2845,-4541 243.2845,-4541 243.2845,-4629" style=""></polygon>
+<text text-anchor="start" x="162.9205" y="-4610.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">Internal Call</text>
+<text text-anchor="start" x="159.0285" y="-4590.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">External Call</text>
+<text text-anchor="start" x="136.4899" y="-4570.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">Defined Contract</text>
+<text text-anchor="start" x="122.8872" y="-4550.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">Undefined Contract</text>
+</g>
+<!-- key2 -->
+<g id="node161" class="node" data-name="key2">
+
+<polygon fill="#edad56" stroke="transparent" stroke-width="3" points="502.5688,-4629 448.5688,-4629 448.5688,-4541 502.5688,-4541 502.5688,-4629" style=""></polygon>
+<text text-anchor="start" x="463.3279" y="-4610.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&nbsp;&nbsp;&nbsp;</text>
+<text text-anchor="start" x="463.3279" y="-4590.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&nbsp;&nbsp;&nbsp;</text>
+<polygon fill="#445773" stroke="transparent" points="461.5688,-4565 461.5688,-4585 489.5688,-4585 489.5688,-4565 461.5688,-4565" style=""></polygon>
+<text text-anchor="start" x="463.3279" y="-4570.4" font-family="Times,serif" font-size="14.00" fill="#000000" style="">&nbsp;&nbsp;&nbsp;</text>
+<polygon fill="none" stroke="#e8726d" points="463.5688,-4547 463.5688,-4563 487.5688,-4563 487.5688,-4547 463.5688,-4547" style=""></polygon>
+</g>
+<!-- key&#45;&gt;key2 -->
+<g id="edge79" class="edge" data-name="key->key2">
+
+<path fill="none" stroke="#1bc6a6" stroke-width="2" d="M235.2845,-4615C332.4178,-4615 359.1911,-4615 451.5147,-4615" style=""></path>
+<polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="451.5688,-4618.5001 461.5688,-4615 451.5687,-4611.5001 451.5688,-4618.5001" style=""></polygon>
+</g>
+<!-- key&#45;&gt;key2 -->
+<g id="edge80" class="edge" data-name="key->key2">
+
+<path fill="none" stroke="#ffffff" stroke-width="2" d="M235.2845,-4595C332.4178,-4595 359.1911,-4595 451.5147,-4595" style=""></path>
+<polygon fill="#ffffff" stroke="#ffffff" stroke-width="2" points="451.5688,-4598.5001 461.5688,-4595 451.5687,-4591.5001 451.5688,-4598.5001" style=""></polygon>
+</g>
+</g>
+</svg>

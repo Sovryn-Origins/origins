@@ -4,12 +4,10 @@ The Origins Platform Smart Contracts
 
 ## Main Contracts
 
-- IOrgins
 - OriginsAdmin
 - OriginsStorage
 - OriginsEvents
 - OriginsBase
-- ILockedFund
 - LockedFund
 
 ### OriginsAdmin
@@ -53,6 +51,16 @@ The contract also keeps track of participating wallets per tier, the number of t
 Currently it's functionality is limited to vest tokens and withdraw tokens after a certain time period. In the future, it will allow for further features like locked tokens and unlocked tokens, etc.
 
 For Vesting, it uses the contracts of `Sovryn-smart-contract` repo. The registry used in this case with be `VestingRegistry3`.
+
+## Call Graph
+
+![Call Graph](callGraph.svg)
+
+P.S. It is a simple project, isn't it?
+
+## Call Graph
+
+![UML Diagram](UML.png)
 
 ## Explanation
 
