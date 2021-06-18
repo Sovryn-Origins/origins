@@ -288,7 +288,7 @@ contract LockedFund is ILockedFund {
 	 * @param _adminToRemove The address of the admin which should be removed.
 	 * @dev Only callable by an Admin.
 	 */
-	function _removeAdmin(address _adminToRemove) public onlyAdmin {
+	function _removeAdmin(address _adminToRemove) internal {
 		require(isAdmin[_adminToRemove], "LockedFund: Address is not an admin.");
 		isAdmin[_adminToRemove] = false;
 
