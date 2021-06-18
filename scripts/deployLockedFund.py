@@ -116,8 +116,8 @@ def updateVestingRegistry():
 def updateWaitedTS():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("Updating Waited Timestamp of LockedFund...\n")
-    lockedFund.changeVestingRegistry(values['vestingRegistry'])
-    print("Updated Waited Timestamp as", values['vestingRegistry'], " of LockedFund...\n")
+    lockedFund.changeWaitedTS(values['waitedTimestamp'])
+    print("Updated Waited Timestamp as", values['waitedTimestamp'], " of LockedFund...\n")
 
 # =========================================================================================================================================
 def writeToJSON():
