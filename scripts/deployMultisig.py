@@ -22,7 +22,7 @@ def loadConfig():
 
     if thisNetwork == "development":
         acct = accounts[0]
-        configFile = open('./scripts/values/testnet.json')
+        configFile = open('./scripts/values/development.json')
     elif thisNetwork == "testnet":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/values/testnet.json')
@@ -65,7 +65,9 @@ def deployMultisig():
 
 # =========================================================================================================================================
 def writeToJSON():
-    if thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    if thisNetwork == "development":
+        fileHandle = open('./scripts/values/development.json', "w")
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
         fileHandle = open('./scripts/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/values/mainnet.json', "w")
