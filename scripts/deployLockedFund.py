@@ -77,7 +77,7 @@ def deployLockedFund():
     vestingRegistry = values['vestingRegistry']
     adminList = [values['multisig'], values['initialAdmin']]
 
-    print("=============================================================")
+    print("\n=============================================================")
     print("Deployment Parameters for LockedFund")
     print("=============================================================")
     print("Waited Timestamp:    ", waitedTS)
@@ -94,28 +94,28 @@ def deployLockedFund():
 # =========================================================================================================================================
 def addOriginsAsAdmin():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
-    print("Adding Origins as an admin to LockedFund...\n")
+    print("\nAdding Origins as an admin to LockedFund...\n")
     lockedFund.addAdmin(values['origins'])
     print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
 
 # =========================================================================================================================================
 def removeMyselfAsAdmin():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
-    print("Removing myself as an admin to LockedFund...\n")
+    print("\nRemoving myself as an admin to LockedFund...\n")
     lockedFund.removeAdmin(acct)
     print("Removed myself as", acct, " as an admin of Locked Fund.")
 
 # =========================================================================================================================================
 def updateVestingRegistry():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
-    print("Updating Vesting Registry of LockedFund...\n")
+    print("\nUpdating Vesting Registry of LockedFund...\n")
     lockedFund.changeVestingRegistry(values['vestingRegistry'])
     print("Updated Vesting Registry as", values['vestingRegistry'], " of LockedFund...\n")
 
 # =========================================================================================================================================
 def updateWaitedTS():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
-    print("Updating Waited Timestamp of LockedFund...\n")
+    print("\nUpdating Waited Timestamp of LockedFund...\n")
     lockedFund.changeWaitedTS(values['waitedTimestamp'])
     print("Updated Waited Timestamp as", values['waitedTimestamp'], " of LockedFund...\n")
 
