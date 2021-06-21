@@ -87,6 +87,8 @@ contract OriginsStorage {
 	mapping(uint256 => uint256) internal tokensSoldPerTier;
 	/// @notice Contains if a tier sale ended or not.
 	mapping(uint256 => bool) internal tierSaleEnded;
+	/// @notice Contains if a tier asset collected withdrawn or not.
+	mapping(uint256 => bool) internal tierSaleWithdrawn;
 
 	/// @notice The address to uint to bool mapping to see if the particular address is eligible or not for a tier.
 	mapping(address => mapping(uint256 => bool)) internal addressApproved;
