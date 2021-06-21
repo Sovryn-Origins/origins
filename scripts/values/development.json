@@ -18,6 +18,9 @@
     "lockedFund": "0xE9f15545367F1eAcA292fa0D70E527c729701d9a",
     "tiers": [
         {
+            "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+        },
+        {
             "minimumAmount": "0",
             "maximumAmount": "50000000000000000",
             "tokensForSale": "11508000",

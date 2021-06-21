@@ -18,6 +18,9 @@
     "lockedFund": "",
     "tiers": [
         {
+            "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+        },
+        {
             "minimumAmount": "",
             "maximumAmount": "",
             "tokensForSale": "11508000",
@@ -45,11 +48,11 @@
             "depositRate": "50",
             "depositToken": "0x0000000000000000000000000000000000000000",
             "depositType": "0",
-            "verificationType": "2",
+            "verificationType": "1",
             "saleEndDurationOrTimestamp": "2",
             "transferType": "3"
         }
     ],
-    "toWhitelist": [],
-    "whitelisted": []
+    "toVerify": [],
+    "verified": []
 }
