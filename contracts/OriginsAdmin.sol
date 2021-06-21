@@ -1,12 +1,14 @@
 pragma solidity ^0.5.17;
 
+import "./OriginsStorage.sol";
+
 /**
  *  @title An owner contract with granular access for multiple parties.
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice You can use this contract for creating multiple owners with different access.
  *  @dev To add a new role, add the corresponding array and mapping, along with add, remove and get functions.
  */
-contract OriginsAdmin {
+contract OriginsAdmin is OriginsStorage {
 	/* Storage */
 
 	address[] private owners;
@@ -75,7 +77,7 @@ contract OriginsAdmin {
 	 * @dev Initializes the contract, setting the deployer as the initial owner.
 	 * @param _owners The owners list.
 	 */
-	constructor(address[] memory _owners) internal {
+	constructor(address[] memory _owners) public {
 		uint256 len = _owners.length;
 		for (uint256 index = 0; index < len; index++) {
 			require(!isOwner[_owners[index]], "OriginsAdmin: Each owner can be added only once.");
