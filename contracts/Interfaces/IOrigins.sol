@@ -161,7 +161,7 @@ contract IOrigins {
 	 * @param _amount The amount of token (deposit asset) which will be sent for purchasing.
 	 * @dev If deposit type if RBTC, then _amount can be passed as zero.
 	 */
-	function buy(uint256 _tierID, uint256 _amount) public payable;
+	function buy(uint256 _tierID, uint256 _amount) external payable;
 
 	/**
 	 * @notice The function used by the admin or deposit address to withdraw the sale proceedings.
@@ -175,26 +175,26 @@ contract IOrigins {
 	 * @notice Function to read the tier count.
 	 * @return The number of tiers present in the contract.
 	 */
-	function getTierCount() public view returns (uint256);
+	function getTierCount() external view returns (uint256);
 
 	/**
 	 * @notice Function to read the deposit address.
 	 * @return The address of the deposit address.
 	 * @dev If zero is returned, any of the owners can withdraw the raised funds.
 	 */
-	function getDepositAddress() public view returns (address);
+	function getDepositAddress() external view returns (address);
 
 	/**
 	 * @notice Function to read the token on sale.
 	 * @return The Token contract address which is being sold in the contract.
 	 */
-	function getToken() public view returns (address);
+	function getToken() external view returns (address);
 
 	/**
 	 * @notice Function to read the locked fund contract address.
 	 * @return Address of Locked Fund Contract.
 	 */
-	function getLockDetails() public view returns (address);
+	function getLockDetails() external view returns (address);
 
 	/**
 	 * @notice Function to read a Tier parameter.
@@ -211,7 +211,7 @@ contract IOrigins {
 	 * @return _depositRate Contains the rate of the token w.r.t. the depositing asset.
 	 */
 	function readTierPartA(uint256 _tierID)
-		public
+		external
 		view
 		returns (
 			uint256 _minAmount,
@@ -236,7 +236,7 @@ contract IOrigins {
 	 * @return _transferType Contains the type of token transfer after a user buys to get the tokens.
 	 */
 	function readTierPartB(uint256 _tierID)
-		public
+		external
 		view
 		returns (
 			address _depositToken,
@@ -252,7 +252,7 @@ contract IOrigins {
 	 * @param _tierID The tier ID for which the address has to be checked.
 	 * @return The amount of tokens bought by the address.
 	 */
-	function getTokensBoughtByAddressOnTier(address _addr, uint256 _tierID) public view returns (uint256);
+	function getTokensBoughtByAddressOnTier(address _addr, uint256 _tierID) external view returns (uint256);
 
 	/**
 	 * @notice Function to read participating wallet count per tier.
@@ -262,14 +262,14 @@ contract IOrigins {
 	 * A user can participate on one round and not on other.
 	 * In the future maybe a count on that can be created.
 	 */
-	function getParticipatingWalletCountPerTier(uint256 _tierID) public view returns (uint256);
+	function getParticipatingWalletCountPerTier(uint256 _tierID) external view returns (uint256);
 
 	/**
 	 * @notice Function to read tokens sold per tier.
 	 * @param  _tierID The tier ID for which the sold metrics has to be checked.
 	 * @return The amount of tokens sold on that tier.
 	 */
-	function getTokensSoldPerTier(uint256 _tierID) public view returns (uint256);
+	function getTokensSoldPerTier(uint256 _tierID) external view returns (uint256);
 
 	/**
 	 * @notice Function to check if a tier sale ended or not.
@@ -277,7 +277,7 @@ contract IOrigins {
 	 * @return True is sale ended, False otherwise.
 	 * @dev A return of false does not necessary mean the sale is active. It can also be in inactive state.
 	 */
-	function checkSaleEnded(uint256 _tierID) public view returns (bool _status);
+	function checkSaleEnded(uint256 _tierID) external view returns (bool _status);
 
 	/**
 	 * @notice Function to read address which are approved for sale in a tier.
@@ -285,5 +285,5 @@ contract IOrigins {
 	 * @param _tierID The tier ID for which the address has to be checked.
 	 * @return True is allowed, False otherwise.
 	 */
-	function isAddressApproved(address _addr, uint256 _tierID) public view returns (bool);
+	function isAddressApproved(address _addr, uint256 _tierID) external view returns (bool);
 }
