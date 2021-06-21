@@ -25,16 +25,16 @@ def loadConfig():
 
     if thisNetwork == "development":
         acct = accounts[0]
-        configFile =  open('./scripts/values/testnet.json')
+        configFile = open('./scripts/values/development.json')
     elif thisNetwork == "testnet":
         acct = accounts.load("rskdeployer")
-        configFile =  open('./scripts/values/testnet.json')
+        configFile = open('./scripts/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
         acct = accounts.load("rskdeployer")
-        configFile =  open('./scripts/values/testnet.json')
+        configFile = open('./scripts/values/testnet.json')
     elif thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
-        configFile =  open('./scripts/values/mainnet.json')
+        configFile = open('./scripts/values/mainnet.json')
     else:
         raise Exception("Network not supported.")
 
@@ -121,7 +121,9 @@ def updateWaitedTS():
 
 # =========================================================================================================================================
 def writeToJSON():
-    if thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    if thisNetwork == "development":
+        fileHandle = open('./scripts/values/development.json', "w")
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
         fileHandle = open('./scripts/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/values/mainnet.json', "w")
@@ -129,9 +131,10 @@ def writeToJSON():
 
 # =========================================================================================================================================
 def waitTime():
-    print("\nWaiting for 30 seconds for the node to propogate correctly...\n")
-    time.sleep(15)
-    print("Just 15 more seconds...\n")
-    time.sleep(10)
-    print("5 more seconds I promise...\n")
-    time.sleep(5)
+    if(thisNetwork != "development"):
+        print("\nWaiting for 30 seconds for the node to propogate correctly...\n")
+        time.sleep(15)
+        print("Just 15 more seconds...\n")
+        time.sleep(10)
+        print("5 more seconds I promise...\n")
+        time.sleep(5)
