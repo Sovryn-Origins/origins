@@ -69,7 +69,7 @@ contract OriginsBase is OriginsEvents {
 	 * Some are currently sent with default value due to Stack Too Deep problem.
 	 */
 	function createTier(
-	    uint256 _maxAmount,
+		uint256 _maxAmount,
 		uint256 _remainingTokens,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
@@ -434,7 +434,7 @@ contract OriginsBase is OriginsEvents {
 		} else if ((_saleStartTS != 0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
 			require(_saleStartTS < _saleEnd, "OriginsBase: The sale start TS cannot be after sale end TS.");
 		}
-		if(saleEndTS != 0){
+		if (saleEndTS != 0) {
 			require(saleEndTS > block.timestamp, "OriginsBase: The sale end duration cannot be past already.");
 		}
 
@@ -620,8 +620,7 @@ contract OriginsBase is OriginsEvents {
 		if (refund > 0) {
 			if (tierDetails.depositType == DepositType.RBTC) {
 				msg.sender.transfer(refund);
-			}
-			else {
+			} else {
 				bool txStatus = tierDetails.depositToken.transfer(msg.sender, refund);
 				require(txStatus, "OriginsBase: Token refund not received by user correctly.");
 			}
@@ -657,12 +656,11 @@ contract OriginsBase is OriginsEvents {
 				}
 
 				uint256 remainingTokens = tiers[index].remainingTokens;
-				if(remainingTokens > 0){
+				if (remainingTokens > 0) {
 					token.transfer(receiver, remainingTokens);
 					tiers[index].remainingTokens = 0;
 					emit RemainingTokenWithdrawn(msg.sender, receiver, index, remainingTokens);
 				}
-
 			}
 		}
 	}

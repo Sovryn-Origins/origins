@@ -7,7 +7,7 @@ import "./OriginsAdmin.sol";
  *  @author Franklin Richards - powerhousefrank@protonmail.com
  *  @notice You can use this contract for adding events into Origins Base.
  */
-contract OriginsEvents is OriginsAdmin{
+contract OriginsEvents is OriginsAdmin {
 	/* Events */
 
 	/**
@@ -172,5 +172,4 @@ contract OriginsEvents is OriginsAdmin{
 	 * @param _remainingToken The amount of tokens withdrawn.
 	 */
 	event RemainingTokenWithdrawn(address indexed _initiator, address indexed _receiver, uint256 _tierID, uint256 _remainingToken);
-
 }
