@@ -23,7 +23,7 @@ contract LockedFund is ILockedFund {
 	/// @notice The maximum basis point which is allowed.
 	uint256 internal constant MAX_BASIS_POINT = 10000;
 	/// @notice The maximum duration allowed for staking.
-	uint256 internal constant MAX_DURATION = 37;
+	uint256 internal constant MAX_DURATION = 36;
 	/// @notice The interval duration.
 	uint256 public constant INTERVAL = 4 weeks;
 
@@ -336,7 +336,7 @@ contract LockedFund is ILockedFund {
 	) internal {
 		/// If duration is also zero, then it is similar to Unlocked Token.
 		require(_duration != 0, "LockedFund: Duration cannot be zero.");
-		require(_duration < MAX_DURATION, "LockedFund: Duration is too long.");
+		require(_duration <= MAX_DURATION, "LockedFund: Duration is too long.");
 
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
