@@ -163,4 +163,14 @@ contract OriginsEvents is OriginsAdmin{
 		DepositType _depositType,
 		uint256 _amount
 	);
+
+	/**
+	 * @notice Emitted when depositAddress or Owner withdraws a tier remaining token.
+	 * @param _initiator The one who initiates this event.
+	 * @param _receiver The one who receives the remaining tokens.
+	 * @param _tierID The Tier ID of which the proceeding is withdrawn.
+	 * @param _remainingToken The amount of tokens withdrawn.
+	 */
+	event RemainingTokenWithdrawn(address indexed _initiator, address indexed _receiver, uint256 _tierID, uint256 _remainingToken);
+
 }
