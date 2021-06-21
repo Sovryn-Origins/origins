@@ -4,7 +4,7 @@
 project_structure:
   build: build
   contracts: contracts
-  interfaces: interfaces
+  interfaces: contracts/Interfaces
   reports: reports
   scripts: scripts
   tests: tests
@@ -24,7 +24,7 @@ networks:
       mnemonic: brownie
       block_time: 0
       default_balance: 1000000
-      #time: 2020-05-08T14:54:08+0000
+      # time: 2020-05-08T14:54:08+0000
   live:
     cmd_settings:
       port: 443
@@ -50,10 +50,10 @@ console:
 
 reports:
   exclude_paths:
-    - contracts/helpers/*.*
+    - contracts/Openzeppelin/*.*
+    - contracts/Testhelpers/*.*
   exclude_contracts:
-    - Ownable
-    - SafeMath
+    - MultiSigWallet
 
 hypothesis:
   deadline: null
