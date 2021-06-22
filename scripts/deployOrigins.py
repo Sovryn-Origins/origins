@@ -127,8 +127,24 @@ def deployOrigins():
 
     origins = acct.deploy(OriginsBase, adminList, token, depositAddress)
 
+    print("\nOrigins Deployed.")
+
     values['origins'] = str(origins)
     writeToJSON()
+
+    updateLockedFund()
+
+    lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
+
+    print("\nAdding Origins as an admin to LockedFund...\n")
+    lockedFund.addAdmin(values['origins'])
+    print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
+
+    addMyselfAsVerifier()
+
+    getOwnerList()
+
+    getVerifierList()
 
 # =========================================================================================================================================
 def updateDepositAddress():
@@ -355,6 +371,7 @@ def buyTokens():
 # =========================================================================================================================================
 def addMyselfAsVerifier():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\nAdding myself as a Verifier...")
     origins.addVerifier(acct)
     print("Added",acct,"as a verifier.")
 
