@@ -492,7 +492,8 @@ contract OriginsBase is OriginsEvents {
 		require(_tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner");
 
 		if (_tierDetails.transferType == TransferType.Unlocked) {
-			token.transfer(msg.sender, _tokensBought);
+			bool txStatus = token.transfer(msg.sender, _tokensBought);
+			require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
 		} else if (_tierDetails.transferType == TransferType.WaitedUnlock) {
 			/// TODO Call LockedFund Contract to release the token after a certain period.
 			/// TODO approve LockedFund
@@ -651,14 +652,16 @@ contract OriginsBase is OriginsEvents {
 					receiver.transfer(amount);
 					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.RBTC, amount);
 				} else {
-					tiers[index].depositToken.transfer(receiver, amount);
+					bool txStatus = tiers[index].depositToken.transfer(receiver, amount);
+					require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
 					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.Token, amount);
 				}
 
 				uint256 remainingTokens = tiers[index].remainingTokens;
 				if (remainingTokens > 0) {
-					token.transfer(receiver, remainingTokens);
 					tiers[index].remainingTokens = 0;
+					bool txStatus = token.transfer(receiver, remainingTokens);
+					require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
 					emit RemainingTokenWithdrawn(msg.sender, receiver, index, remainingTokens);
 				}
 			}
