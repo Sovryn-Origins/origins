@@ -580,7 +580,10 @@ contract OriginsBase is OriginsEvents {
 		uint256 tokensBoughtByAddress = tokensBoughtByAddressOnTier[msg.sender][_tierID];
 
 		/// @notice Checking if the user already reached the maximum amount.
-		require(tokensBoughtByAddress < tierDetails.maxAmount.div(tierDetails.depositRate), "OriginsBase: User already bought maximum allowed.");
+		require(
+			tokensBoughtByAddress < tierDetails.maxAmount.div(tierDetails.depositRate),
+			"OriginsBase: User already bought maximum allowed."
+		);
 
 		/// @notice Checking which deposit type is selected.
 		uint256 deposit;
