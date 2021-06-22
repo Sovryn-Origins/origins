@@ -580,7 +580,7 @@ contract OriginsBase is OriginsEvents {
 		uint256 tokensBoughtByAddress = tokensBoughtByAddressOnTier[msg.sender][_tierID];
 
 		/// @notice Checking if the user already reached the maximum amount.
-		require(tokensBoughtByAddress < tierDetails.maxAmount, "OriginsBase: User already bought maximum allowed.");
+		require(tokensBoughtByAddress < tierDetails.maxAmount.div(tierDetails.depositRate), "OriginsBase: User already bought maximum allowed.");
 
 		/// @notice Checking which deposit type is selected.
 		uint256 deposit;
@@ -594,13 +594,14 @@ contract OriginsBase is OriginsEvents {
 			require(txStatus, "OriginsBase: Not enough token supplied by user for buying.");
 			deposit = _amount;
 		}
+		require(deposit >= tierDetails.minAmount, "OriginsBase: Deposit is less than minimum allowed.");
 
 		/// @notice Checking what should be the allowed deposit amount.
 		uint256 refund;
-		require(deposit >= tierDetails.minAmount, "OriginsBase: Deposit is less than minimum allowed.");
-		if (tierDetails.maxAmount.sub(tokensBoughtByAddress) <= deposit) {
-			refund = deposit.add(tokensBoughtByAddress).sub(tierDetails.maxAmount);
-			deposit = tierDetails.maxAmount.sub(tokensBoughtByAddress);
+		uint256 boughtInAsset = tokensBoughtByAddress.div(tierDetails.depositRate);
+		if (tierDetails.maxAmount.sub(boughtInAsset) <= deposit) {
+			refund = deposit.add(boughtInAsset).sub(tierDetails.maxAmount);
+			deposit = tierDetails.maxAmount.sub(boughtInAsset);
 		}
 
 		/// @notice actual buying happens here.
