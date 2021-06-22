@@ -47,23 +47,26 @@ def choice():
     while(repeat):
         print("\nOptions:")
         print("1 for Deploying Locked Fund.")
-        print("2 for Adding Origins as an Admin.")
-        print("3 for Removing yourself as an Admin.")
-        print("4 for Updating Vesting Registry.")
-        print("5 for Updating waited timestamp.")
-        print("6 to exit.")
+        print("2 for Adding LockedFund as an Admin of Vesting Registry.")
+        print("3 for Adding Origins as an Admin.")
+        print("4 for Removing yourself as an Admin.")
+        print("5 for Updating Vesting Registry.")
+        print("6 for Updating waited timestamp.")
+        print("7 to exit.")
         selection = int(input("Enter the choice: "))
         if(selection == 1):
             deployLockedFund()
         elif(selection == 2):
-            addOriginsAsAdmin()
+            addLockedFundAsAdmin()
         elif(selection == 3):
-            removeMyselfAsAdmin()
+            addOriginsAsAdmin()
         elif(selection == 4):
-            updateVestingRegistry()
+            removeMyselfAsAdmin()
         elif(selection == 5):
-            updateWaitedTS()
+            updateVestingRegistry()
         elif(selection == 6):
+            updateWaitedTS()
+        elif(selection == 7):
             repeat = False
         else:
             print("\nSmarter people have written this, enter valid selection ;)\n")
@@ -88,8 +91,23 @@ def deployLockedFund():
 
     lockedFund = acct.deploy(LockedFund, waitedTS, token, vestingRegistry, adminList)
 
+    print("\nLocked Fund Deployed.")
+    print("\nAdding LockedFund as an admin of Vesting Registry.")
+
+    vestingRegistry = Contract.from_abi("VestingRegistry", address=values['vestingRegistry'], abi=VestingRegistry.abi, owner=acct)
+    vestingRegistry.addAdmin(lockedFund.address)
+
+    print("\nAdded Locked Fund:",lockedFund.address,"as the admin of Vesting Registry:", values['vestingRegistry'])
+
     values['lockedFund'] = str(lockedFund)
     writeToJSON()
+
+# =========================================================================================================================================
+def addLockedFundAsAdmin():
+    vestingRegistry = Contract.from_abi("VestingRegistry", address=values['vestingRegistry'], abi=VestingRegistry.abi, owner=acct)
+    print("\nAdding LockedFund as an admin of Vesting Registry.")
+    vestingRegistry.addAdmin(values['lockedFund'])
+    print("\nAdded Locked Fund:",values['lockedFund'],"as the admin of Vesting Registry:", values['vestingRegistry'])
 
 # =========================================================================================================================================
 def addOriginsAsAdmin():
