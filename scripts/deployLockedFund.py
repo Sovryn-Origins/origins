@@ -94,7 +94,7 @@ def deployLockedFund():
     print("\nLocked Fund Deployed.")
     print("\nAdding LockedFund as an admin of Vesting Registry.")
 
-    vestingRegistry = Contract.from_abi("VestingRegistry", address=values['vestingRegistry'], abi=VestingRegistry.abi, owner=acct)
+    vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
     vestingRegistry.addAdmin(lockedFund.address)
 
     print("\nAdded Locked Fund:",lockedFund.address,"as the admin of Vesting Registry:", values['vestingRegistry'])
@@ -104,7 +104,7 @@ def deployLockedFund():
 
 # =========================================================================================================================================
 def addLockedFundAsAdmin():
-    vestingRegistry = Contract.from_abi("VestingRegistry", address=values['vestingRegistry'], abi=VestingRegistry.abi, owner=acct)
+    vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
     print("\nAdding LockedFund as an admin of Vesting Registry.")
     vestingRegistry.addAdmin(values['lockedFund'])
     print("\nAdded Locked Fund:",values['lockedFund'],"as the admin of Vesting Registry:", values['vestingRegistry'])
