@@ -14,7 +14,7 @@
     "depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
     "waitedTimestamp": "1624579200",
     "vestingRegistry": "0xE402a46F372a461dD19ed34453253a0B5D1e0509",
-    "origins": "0x2450452B49C8c329e5bcE3AcCb19e1beDaC81e7E",
+    "origins": "0x127557B259949DFdD43dc18952217CA707eaFD02",
     "lockedFund": "0x1DDAf77DE0c18af5dc9457C4DB83F13652618157",
     "tiers": [
         {
