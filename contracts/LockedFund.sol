@@ -391,19 +391,6 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
-	 * @notice Internal function to create vesting if not already created and Stakes tokens for a user.
-	 */
-	function _createVestingAndStake(address _sender) internal {
-		address vestingAddr = _getVesting(_sender);
-
-		if (vestingAddr == address(0)) {
-			vestingAddr = _createVesting(_sender);
-		}
-
-		_stakeTokens(_sender, vestingAddr);
-	}
-
-	/**
 	 * @notice Returns the Vesting Contract Address.
 	 * @param _tokenOwner The owner of the vesting contract.
 	 * @return _vestingAddress The Vesting Contract Address.
@@ -414,16 +401,31 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Stakes the tokens in a particular vesting contract.
+	 * @param _sender The user wallet address.
 	 * @param _vesting The Vesting Contract Address.
 	 */
 	function _stakeTokens(address _sender, address _vesting) internal {
-		uint256 amount = lockedBalances[_sender];
-		lockedBalances[_sender] = 0;
+		uint256 amount = vestedBalances[_sender];
+		vestedBalances[_sender] = 0;
 
 		require(token.approve(_vesting, amount), "LockedFund: Approve failed.");
 		IVestingLogic(_vesting).stakeTokens(amount);
 
 		emit TokenStaked(_sender, _vesting, amount);
+	}
+
+	/**
+	 * @notice Internal function to create vesting if not already created and Stakes tokens for a user.
+	 * @param _sender The user wallet address.
+	 */
+	function _createVestingAndStake(address _sender) internal {
+		address vestingAddr = _getVesting(_sender);
+
+		if (vestingAddr == address(0)) {
+			vestingAddr = _createVesting(_sender);
+		}
+
+		_stakeTokens(_sender, vestingAddr);
 	}
 
 	/* Getter or Read Functions */
@@ -457,7 +459,7 @@ contract LockedFund is ILockedFund {
 	 * @param _addr The address of the user to check the vested balance.
 	 * @return _balance The vested balance of the address `_addr`.
 	 */
-	function vestedBalance(address _addr) external view returns (uint256 _balance) {
+	function getVestedBalance(address _addr) external view returns (uint256 _balance) {
 		return vestedBalances[_addr];
 	}
 
