@@ -581,7 +581,7 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice Checking if the user already reached the maximum amount.
 		require(
-			tokensBoughtByAddress < tierDetails.maxAmount.div(tierDetails.depositRate),
+			tokensBoughtByAddress < tierDetails.maxAmount.mul(tierDetails.depositRate),
 			"OriginsBase: User already bought maximum allowed."
 		);
 
