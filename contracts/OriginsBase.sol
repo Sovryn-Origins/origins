@@ -609,7 +609,7 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice actual buying happens here.
 		uint256 tokensBought = deposit.mul(tierDetails.depositRate);
-		tierDetails.remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
+		tiers[_tierID].remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
 		tokensBoughtByAddressOnTier[msg.sender][_tierID] = tokensBoughtByAddressOnTier[msg.sender][_tierID].add(tokensBought);
 
 		/// @notice Checking what type of Transfer to do.
