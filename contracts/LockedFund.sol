@@ -360,7 +360,6 @@ contract LockedFund is ILockedFund {
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
 	 */
 	function _withdrawWaitedUnlockedBalance(address _sender, address _receiverAddress) internal {
-		require(waitedTS != 0, "LockedFund: Waited TS not set yet.");
 		require(waitedTS < block.timestamp, "LockedFund: Wait Timestamp not yet passed.");
 
 		address userAddr = _receiverAddress;
