@@ -135,7 +135,6 @@ def deployOrigins():
     updateLockedFund()
 
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
-
     print("\nAdding Origins as an admin to LockedFund...\n")
     lockedFund.addAdmin(values['origins'])
     print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
@@ -143,8 +142,12 @@ def deployOrigins():
     addMyselfAsVerifier()
 
     getOwnerList()
-
     getVerifierList()
+
+    # For easy deployment uncomment below three lines.
+    # createNewTier()
+    # createNewTier()
+    # verifyWallet()
 
 # =========================================================================================================================================
 def updateDepositAddress():
