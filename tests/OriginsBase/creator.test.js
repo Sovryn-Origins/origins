@@ -49,7 +49,37 @@ let firstMaxAmount = new BN(50000);
 let firstRemainingTokens = new BN(5000000);
 let [firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstTransferType] = [0, 1, 11, transferTypeVested];
 let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [currentTimestamp(), 86400, saleEndDurationOrTSDuration];
-let [secondMinAmount, secondMaxAmount, secondRemainingTokens, secondSaleStartTS, secondSaleEnd, secondUnlockedBP, secondVestOrLockCliff, secondVestOfLockDuration, secondDepositRate, secondDepositToken, secondDepositType, secondVerificationType, secondSaleEndDurationOrTS, secondTransferType] = [1, new BN(75000), new BN(10000000), currentTimestamp(), 86400, 5000, 1, 11, 50, zeroAddress, depositTypeRBTC, verificationTypeEveryone, saleEndDurationOrTSDuration, transferTypeVested];
+let [
+	secondMinAmount,
+	secondMaxAmount,
+	secondRemainingTokens,
+	secondSaleStartTS,
+	secondSaleEnd,
+	secondUnlockedBP,
+	secondVestOrLockCliff,
+	secondVestOfLockDuration,
+	secondDepositRate,
+	secondDepositToken,
+	secondDepositType,
+	secondVerificationType,
+	secondSaleEndDurationOrTS,
+	secondTransferType,
+] = [
+	1,
+	new BN(75000),
+	new BN(10000000),
+	currentTimestamp(),
+	86400,
+	5000,
+	1,
+	11,
+	50,
+	zeroAddress,
+	depositTypeRBTC,
+	verificationTypeEveryone,
+	saleEndDurationOrTSDuration,
+	transferTypeVested,
+];
 
 /**
  * Function to create a random value.
@@ -80,7 +110,7 @@ function currentTimestamp() {
  *
  * @returns value The token amount which was minted by user.
  */
- async function userMintAndApprove(tokenContract, userAddr, toApprove) {
+async function userMintAndApprove(tokenContract, userAddr, toApprove) {
 	let value = randomValue();
 	await tokenContract.mint(userAddr, value);
 	await tokenContract.approve(toApprove, value, { from: userAddr });
@@ -90,7 +120,7 @@ function currentTimestamp() {
 contract("OriginsBase (Creator Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic, originsBase;
 	let creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr;
-    let tierCount;
+	let tierCount;
 
 	before("Initiating Accounts & Creating Test Contract Instance.", async () => {
 		// Checking if we have enough accounts to test.
@@ -121,7 +151,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		);
 		vestingFactory.transferOwnership(vestingRegistry.address);
 
-        // Creating the instance of LockedFund Contract.
+		// Creating the instance of LockedFund Contract.
 		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
@@ -130,73 +160,146 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		// Setting lockedFund in Origins.
 		await originsBase.setLockedFund(lockedFund.address, { from: owner });
 
-        // Added Origins as an admin of LockedFund.
-        await lockedFund.addAdmin(originsBase.address, { from: owner });
+		// Added Origins as an admin of LockedFund.
+		await lockedFund.addAdmin(originsBase.address, { from: owner });
 
-        // Setting Verifier in Origins.
+		// Setting Verifier in Origins.
 		await originsBase.addVerifier(verifier, { from: owner });
 
-        // Minting new tokens, Approving Origins and creating a new tier.
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-    });
+		// Minting new tokens, Approving Origins and creating a new tier.
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+	});
 
 	// beforeEach("Creating New OriginsBase Contract Instance.", async () => {
 	// });
 
 	it("Creator should not be able to set deposit address.", async () => {
-		await expectRevert(originsBase.setDepositAddress(newDepositAddr, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+		await expectRevert(
+			originsBase.setDepositAddress(newDepositAddr, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
 	});
 
 	it("Creator should not be able to set Locked Fund Contract.", async () => {
 		let newLockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
-		await expectRevert(originsBase.setLockedFund(newLockedFund.address, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+		await expectRevert(
+			originsBase.setLockedFund(newLockedFund.address, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
 	});
 
-    it("Creator should not be able to add a new tier.", async () => {
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: creator });
-        await expectRevert(originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to add a new tier.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: creator });
+		await expectRevert(
+			originsBase.createTier(
+				firstMaxAmount,
+				firstRemainingTokens,
+				firstSaleStartTS,
+				firstSaleEnd,
+				firstUnlockedBP,
+				firstVestOrLockCliff,
+				firstVestOfLockDuration,
+				firstDepositRate,
+				firstDepositType,
+				firstVerificationType,
+				firstSaleEndDurationOrTS,
+				firstTransferType,
+				{ from: creator }
+			),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to set Tier Deposit Parameters.", async () => {
-        await expectRevert(originsBase.setTierDeposit(tierCount, secondDepositRate, secondDepositToken, secondDepositType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to set Tier Deposit Parameters.", async () => {
+		await expectRevert(
+			originsBase.setTierDeposit(tierCount, secondDepositRate, secondDepositToken, secondDepositType, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to set Tier Token Limit Parameters.", async () => {
-        await expectRevert(originsBase.setTierTokenLimit(tierCount, secondMinAmount, secondMaxAmount, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to set Tier Token Limit Parameters.", async () => {
+		await expectRevert(
+			originsBase.setTierTokenLimit(tierCount, secondMinAmount, secondMaxAmount, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to set Tier Token Amount Parameters.", async () => {
-        await expectRevert(originsBase.setTierTokenAmount(tierCount, secondRemainingTokens, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to set Tier Token Amount Parameters.", async () => {
+		await expectRevert(
+			originsBase.setTierTokenAmount(tierCount, secondRemainingTokens, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to set Tier Vest or Lock Parameters.", async () => {
-        await expectRevert(originsBase.setTierVestOrLock(tierCount, secondVestOrLockCliff, secondVestOfLockDuration, waitedTS, secondUnlockedBP, secondTransferType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to set Tier Vest or Lock Parameters.", async () => {
+		await expectRevert(
+			originsBase.setTierVestOrLock(
+				tierCount,
+				secondVestOrLockCliff,
+				secondVestOfLockDuration,
+				waitedTS,
+				secondUnlockedBP,
+				secondTransferType,
+				{ from: creator }
+			),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to set Tier Time Parameters.", async () => {
-        await expectRevert(originsBase.setTierTime(tierCount, secondSaleStartTS, secondSaleEnd, secondSaleEndDurationOrTS, { from: creator }), "OriginsAdmin: Only owner can call this function.");
-    });
+	it("Creator should not be able to set Tier Time Parameters.", async () => {
+		await expectRevert(
+			originsBase.setTierTime(tierCount, secondSaleStartTS, secondSaleEnd, secondSaleEndDurationOrTS, { from: creator }),
+			"OriginsAdmin: Only owner can call this function."
+		);
+	});
 
-    it("Creator should not be able to verify a single address to a single tier.", async () => {
-        await expectRevert(originsBase.addressVerification(userOne, tierCount, { from: creator }), "OriginsAdmin: Only verifier can call this function.");
-    });
+	it("Creator should not be able to verify a single address to a single tier.", async () => {
+		await expectRevert(
+			originsBase.addressVerification(userOne, tierCount, { from: creator }),
+			"OriginsAdmin: Only verifier can call this function."
+		);
+	});
 
-    it("Creator should not be able to verify a single address to a multiple tier.", async () => {
-        tierCount = 3;
-        await expectRevert(originsBase.singleAddressMultipleTierVerification(userOne, [tierCount, tierCount-1, tierCount-2], { from: creator }), "OriginsAdmin: Only verifier can call this function.");
-    });
+	it("Creator should not be able to verify a single address to a multiple tier.", async () => {
+		tierCount = 3;
+		await expectRevert(
+			originsBase.singleAddressMultipleTierVerification(userOne, [tierCount, tierCount - 1, tierCount - 2], { from: creator }),
+			"OriginsAdmin: Only verifier can call this function."
+		);
+	});
 
-    it("Creator should not be able to verify a multiple address to a single tier.", async () => {
-        await expectRevert(originsBase.multipleAddressSingleTierVerification([userOne, userTwo, userThree], tierCount, { from: creator }), "OriginsAdmin: Only verifier can call this function.");
-    });
+	it("Creator should not be able to verify a multiple address to a single tier.", async () => {
+		await expectRevert(
+			originsBase.multipleAddressSingleTierVerification([userOne, userTwo, userThree], tierCount, { from: creator }),
+			"OriginsAdmin: Only verifier can call this function."
+		);
+	});
 
-    it("Creator should not be able to verify a multiple address to a multiple tier.", async () => {
-        tierCount = 3;
-        await expectRevert(originsBase.multipleAddressAndTierVerification([userOne, userTwo, userThree], [tierCount, tierCount-1, tierCount-2], { from: creator }), "OriginsAdmin: Only verifier can call this function.");
-    });
-
+	it("Creator should not be able to verify a multiple address to a multiple tier.", async () => {
+		tierCount = 3;
+		await expectRevert(
+			originsBase.multipleAddressAndTierVerification([userOne, userTwo, userThree], [tierCount, tierCount - 1, tierCount - 2], {
+				from: creator,
+			}),
+			"OriginsAdmin: Only verifier can call this function."
+		);
+	});
 });

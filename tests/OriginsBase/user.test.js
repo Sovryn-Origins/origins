@@ -12,7 +12,7 @@ const {
 	BN, // Big Number support.
 	constants,
 	expectRevert, // Assertions for transactions that should fail.
-    time
+	time,
 } = require("@openzeppelin/test-helpers");
 const { current } = require("@openzeppelin/test-helpers/src/balance");
 
@@ -50,7 +50,37 @@ let firstMaxAmount = new BN(50000);
 let firstRemainingTokens = new BN(6000000);
 let [firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstTransferType] = [0, 1, 11, transferTypeVested];
 let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [currentTimestamp(), 86400, saleEndDurationOrTSDuration];
-let [secondMinAmount, secondMaxAmount, secondRemainingTokens, secondSaleStartTS, secondSaleEnd, secondUnlockedBP, secondVestOrLockCliff, secondVestOfLockDuration, secondDepositRate, secondDepositToken, secondDepositType, secondVerificationType, secondSaleEndDurationOrTS, secondTransferType] = [1, new BN(75000), new BN(10000000), currentTimestamp(), 86400, 5000, 1, 11, 50, zeroAddress, depositTypeRBTC, verificationTypeEveryone, saleEndDurationOrTSDuration, transferTypeVested];
+let [
+	secondMinAmount,
+	secondMaxAmount,
+	secondRemainingTokens,
+	secondSaleStartTS,
+	secondSaleEnd,
+	secondUnlockedBP,
+	secondVestOrLockCliff,
+	secondVestOfLockDuration,
+	secondDepositRate,
+	secondDepositToken,
+	secondDepositType,
+	secondVerificationType,
+	secondSaleEndDurationOrTS,
+	secondTransferType,
+] = [
+	1,
+	new BN(75000),
+	new BN(10000000),
+	currentTimestamp(),
+	86400,
+	5000,
+	1,
+	11,
+	50,
+	zeroAddress,
+	depositTypeRBTC,
+	verificationTypeEveryone,
+	saleEndDurationOrTSDuration,
+	transferTypeVested,
+];
 
 /**
  * Function to create a random value.
@@ -81,7 +111,7 @@ function currentTimestamp() {
  *
  * @returns value The token amount which was minted by user.
  */
- async function userMintAndApprove(tokenContract, userAddr, toApprove) {
+async function userMintAndApprove(tokenContract, userAddr, toApprove) {
 	let value = randomValue();
 	await tokenContract.mint(userAddr, value);
 	await tokenContract.approve(toApprove, value, { from: userAddr });
@@ -91,7 +121,7 @@ function currentTimestamp() {
 contract("OriginsBase (Admin Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic, originsBase;
 	let creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr;
-    let tierCount;
+	let tierCount;
 
 	before("Initiating Accounts & Creating Test Contract Instance.", async () => {
 		// Checking if we have enough accounts to test.
@@ -122,138 +152,285 @@ contract("OriginsBase (Admin Functions)", (accounts) => {
 		);
 		vestingFactory.transferOwnership(vestingRegistry.address);
 
-        // Creating the instance of LockedFund Contract.
+		// Creating the instance of LockedFund Contract.
 		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
 
-        // Creating the instance of OriginsBase Contract.
+		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr);
 
 		// Setting lockedFund in Origins.
 		await originsBase.setLockedFund(lockedFund.address, { from: owner });
 
-        // Added Origins as an admin of LockedFund.
-        await lockedFund.addAdmin(originsBase.address, { from: owner });
+		// Added Origins as an admin of LockedFund.
+		await lockedFund.addAdmin(originsBase.address, { from: owner });
 
-        // Setting Verifier in Origins.
+		// Setting Verifier in Origins.
 		await originsBase.addVerifier(verifier, { from: owner });
 
-        // Creating a new tier.
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-    });
-
-	beforeEach("Creating New OriginsBase Contract Instance.", async () => {
+		// Creating a new tier.
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
 	});
 
-    it("User should be able to buy tokens.", async () => {
-        await originsBase.addressVerification(userOne, tierCount, { from: verifier });
-        let amount = 10000;
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-    });
+	beforeEach("Creating New OriginsBase Contract Instance.", async () => {});
 
-    it("User should be able to buy tokens multiple times until max asset amount reaches.", async () => {
-        let amount = 10000;
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-    });
+	it("User should be able to buy tokens.", async () => {
+		await originsBase.addressVerification(userOne, tierCount, { from: verifier });
+		let amount = 10000;
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+	});
 
-    it("User should be allowed to buy until the max reaches.", async () => {
-        let amount = 10000;
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User already bought maximum allowed.");
-    });
+	it("User should be able to buy tokens multiple times until max asset amount reaches.", async () => {
+		let amount = 10000;
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+	});
 
-    it("User should not be allowed to buy if sale start time is not set.", async () => {
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, zero, currentTimestamp()+1000, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, saleEndDurationOrTSDuration, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        let amount = 10000;
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale has not started yet.");
-    });
+	it("User should be allowed to buy until the max reaches.", async () => {
+		let amount = 10000;
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await expectRevert(
+			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
+			"OriginsBase: User already bought maximum allowed."
+		);
+	});
 
-    it("User should not be allowed to buy if the token sale has ended.", async () => {
-        let amount = 100;
-        await token.mint(owner, amount);
-        await token.approve(originsBase.address, amount, { from: owner });
-        await originsBase.createTier(amount, amount, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, 1, firstDepositType, verificationTypeEveryone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale ended.");
-    });
+	it("User should not be allowed to buy if sale start time is not set.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			zero,
+			currentTimestamp() + 1000,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			saleEndDurationOrTSDuration,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		let amount = 10000;
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale has not started yet.");
+	});
 
-    it("User should not be allowed to buy if sale end is not set.", async () => {
-        let amount = randomValue();
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, zero, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount}), "OriginsBase: Sale not allowed.");
-    });
+	it("User should not be allowed to buy if the token sale has ended.", async () => {
+		let amount = 100;
+		await token.mint(owner, amount);
+		await token.approve(originsBase.address, amount, { from: owner });
+		await originsBase.createTier(
+			amount,
+			amount,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			1,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale ended.");
+	});
 
-    it("User should not be allowed to buy if total tokens are sold.", async () => {
-        let amount = 100;
-        await token.mint(owner, amount);
-        await token.approve(originsBase.address, amount, { from: owner });
-        await originsBase.createTier(amount/2, amount, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, 1, firstDepositType, verificationTypeEveryone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount/2 });
-        await originsBase.buy(tierCount, zero, { from: userTwo, value: amount/2 });
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount/2 }), "OriginsBase: Sale ended.");
-    });
+	it("User should not be allowed to buy if sale end is not set.", async () => {
+		let amount = randomValue();
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			zero,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
+	});
 
-    it("User should not be allowed to buy if Verification is not set.", async () => {
-        let amount = randomValue();
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, verificationTypeNone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount}), "OriginsBase: No one is allowed for sale.");
-    });
+	it("User should not be allowed to buy if total tokens are sold.", async () => {
+		let amount = 100;
+		await token.mint(owner, amount);
+		await token.approve(originsBase.address, amount, { from: owner });
+		await originsBase.createTier(
+			amount / 2,
+			amount,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			1,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
+		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale ended.");
+	});
 
-    it("If verification is done by address, user should only be allowed if it is done by verified address.", async () => {
-        let amount = randomValue();
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount}), "OriginsBase: User not approved for sale.");
-    });
+	it("User should not be allowed to buy if Verification is not set.", async () => {
+		let amount = randomValue();
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			verificationTypeNone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: No one is allowed for sale.");
+	});
 
-    it("User should not be allowed to buy once the max reaches even if there is remaining tokens.", async () => {
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, verificationTypeEveryone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        let amount = 25000;
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-        amount = 5000;
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User already bought maximum allowed.");
-        // Though any other user can still buy.
-        amount = 5000;
-        await token.approve(originsBase.address, amount, { from: userTwo });
-    });
+	it("If verification is done by address, user should only be allowed if it is done by verified address.", async () => {
+		let amount = randomValue();
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not approved for sale.");
+	});
 
-    it("User should not be allowed to buy tokens with zero deposit in RBTC", async () => {
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, verificationTypeEveryone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: zero }), "OriginsBase: Amount cannot be zero.");
-    });
+	it("User should not be allowed to buy once the max reaches even if there is remaining tokens.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		let amount = 25000;
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		amount = 5000;
+		await expectRevert(
+			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
+			"OriginsBase: User already bought maximum allowed."
+		);
+		// Though any other user can still buy.
+		amount = 5000;
+		await token.approve(originsBase.address, amount, { from: userTwo });
+	});
 
-    it("User should not be allowed to buy with assets deposited less than minimum allowed.", async () => {
-        let amount = 1000;
-        await token.mint(owner, firstRemainingTokens);
-        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, verificationTypeEveryone, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
-        tierCount = await originsBase.getTierCount();
-        await originsBase.setTierTokenLimit(tierCount, 10000, firstMaxAmount, { from: owner })
-        await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Deposit is less than minimum allowed.");
-    });
+	it("User should not be allowed to buy tokens with zero deposit in RBTC", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: zero }), "OriginsBase: Amount cannot be zero.");
+	});
 
+	it("User should not be allowed to buy with assets deposited less than minimum allowed.", async () => {
+		let amount = 1000;
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierTokenLimit(tierCount, 10000, firstMaxAmount, { from: owner });
+		await expectRevert(
+			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
+			"OriginsBase: Deposit is less than minimum allowed."
+		);
+	});
 });
