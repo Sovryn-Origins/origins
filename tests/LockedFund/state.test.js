@@ -208,14 +208,56 @@ contract("LockedFund (State Change)", (accounts) => {
 
 	it("Admin should be able to add another admin.", async () => {
 		await lockedFund.addAdmin(newAdmin, { from: admin });
-		await checkStatus(lockedFund, [1,1,0,0,1,1,1,1,1,1], newAdmin, waitedTS, token.address, zero, zero, vestingRegistry.address, zero, zero, zero, zero, true);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+			newAdmin,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			true
+		);
 	});
 
 	it("Admin should be able to remove an admin.", async () => {
 		await lockedFund.addAdmin(newAdmin, { from: admin });
-		await checkStatus(lockedFund, [1,1,0,0,1,1,1,1,1,1], newAdmin, waitedTS, token.address, zero, zero, vestingRegistry.address, zero, zero, zero, zero, true);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+			newAdmin,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			true
+		);
 		await lockedFund.removeAdmin(newAdmin, { from: admin });
-		await checkStatus(lockedFund, [1,1,0,0,1,1,1,1,1,1], newAdmin, waitedTS, token.address, zero, zero, vestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+			newAdmin,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("Admin should be able to change the vestingRegistry.", async () => {
@@ -227,14 +269,42 @@ contract("LockedFund (State Change)", (accounts) => {
 			creator // This should be Governance Timelock Contract.
 		);
 		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
-		await checkStatus(lockedFund, [1,1,0,0,1,1,1,1,1,1], userOne, waitedTS, token.address, zero, zero, newVestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			newVestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("Admin should be able to change the waited timestamp.", async () => {
 		let value = randomValue();
 		let newWaitedTS = waitedTS + value;
 		await lockedFund.changeWaitedTS(newWaitedTS, { from: admin });
-		await checkStatus(lockedFund, [1,1,0,0,1,1,1,1,1,1], userOne, newWaitedTS, token.address, zero, zero, vestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 0, 0, 1, 1, 1, 1, 1, 1],
+			userOne,
+			newWaitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("Admin should be able to deposit using depositVested().", async () => {
@@ -242,7 +312,21 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 	});
 
 	it("User should be able to withdraw waited unlocked balance using withdrawWaitedUnlockedBalance().", async () => {
@@ -250,12 +334,40 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 		let oldBalances = await getTokenBalances(userOne, token, lockedFund);
 		await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			zero,
+			zero,
+			false
+		);
 		let newBalances = await getTokenBalances(userOne, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value/2), "Token Balance not matching.");
+		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
 	it("User should be able to withdraw waited unlocked balance to any wallet using withdrawWaitedUnlockedBalance().", async () => {
@@ -263,12 +375,40 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 		let oldBalances = await getTokenBalances(userTwo, token, lockedFund);
 		await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			zero,
+			zero,
+			false
+		);
 		let newBalances = await getTokenBalances(userTwo, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value/2), "Token Balance not matching.");
+		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
 	it("User should be able to create vesting and stake vested balance using createVestingAndStake().", async () => {
@@ -276,9 +416,37 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, value, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			value,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		await lockedFund.createVestingAndStake({ from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("User should be able to create vesting using createVesting().", async () => {
@@ -286,9 +454,37 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, value, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			value,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		await lockedFund.createVesting({ from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, value, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			value,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("User should be able to stake vested balance using stakeTokens().", async () => {
@@ -296,9 +492,37 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, value, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			value,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		await lockedFund.stakeTokens({ from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 	});
 
 	it("User should be able to withdraw waited unlocked balance, create vesting and stake vested balance using withdrawAndStakeTokens().", async () => {
@@ -317,12 +541,40 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, newVestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			newVestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 		let oldBalances = await getTokenBalances(userOne, token, lockedFund);
 		await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, newVestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			newVestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		let newBalances = await getTokenBalances(userOne, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value/2), "Token Balance not matching.");
+		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
 	it("User should be able to withdraw waited unlocked balance to any wallet, create vesting and stake vested balance using withdrawAndStakeTokens().", async () => {
@@ -341,12 +593,40 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, newVestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			newVestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 		let oldBalances = await getTokenBalances(userTwo, token, lockedFund);
 		await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, newVestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			newVestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		let newBalances = await getTokenBalances(userTwo, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value/2), "Token Balance not matching.");
+		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
 	it("Any user should be able to trigger withdraw waited unlocked balance of another user, create vesting and stake vested balance for them using withdrawAndStakeTokensFrom().", async () => {
@@ -354,12 +634,39 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, Math.ceil(value/2), zero, Math.floor(value/2), zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			Math.floor(value / 2),
+			zero,
+			false
+		);
 		let oldBalances = await getTokenBalances(userOne, token, lockedFund);
 		await lockedFund.withdrawAndStakeTokensFrom(userOne, { from: userTwo });
-		await checkStatus(lockedFund, [1,1,1,1,1,1,1,1,1,1], userOne, waitedTS, token.address, cliff, duration, vestingRegistry.address, zero, zero, zero, zero, false);
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			zero,
+			zero,
+			zero,
+			zero,
+			false
+		);
 		let newBalances = await getTokenBalances(userOne, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value/2), "Token Balance not matching.");
+		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
-
 });

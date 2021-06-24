@@ -155,7 +155,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
 			_userAddress: userOne,
-			_amount: new BN(Math.floor(value/2)),
+			_amount: new BN(Math.floor(value / 2)),
 		});
 	});
 
@@ -168,7 +168,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
 			_userAddress: userTwo,
-			_amount: new BN(Math.floor(value/2)),
+			_amount: new BN(Math.floor(value / 2)),
 		});
 	});
 
@@ -239,7 +239,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
 			_userAddress: userOne,
-			_amount: new BN(Math.floor(value/2)),
+			_amount: new BN(Math.floor(value / 2)),
 		});
 		let vestingAddress = await newVestingRegistry.getVesting(userOne);
 		expectEvent(txReceipt, "VestingCreated", {
@@ -250,7 +250,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "TokenStaked", {
 			_initiator: userOne,
 			_vesting: vestingAddress,
-			_amount: new BN(Math.ceil(value/2)),
+			_amount: new BN(Math.ceil(value / 2)),
 		});
 	});
 
@@ -274,7 +274,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
 			_userAddress: userTwo,
-			_amount: new BN(Math.floor(value/2)),
+			_amount: new BN(Math.floor(value / 2)),
 		});
 		let vestingAddress = await newVestingRegistry.getVesting(userOne);
 		expectEvent(txReceipt, "VestingCreated", {
@@ -285,7 +285,7 @@ contract("LockedFund (Events)", (accounts) => {
 		expectEvent(txReceipt, "TokenStaked", {
 			_initiator: userOne,
 			_vesting: vestingAddress,
-			_amount: new BN(Math.ceil(value/2)),
+			_amount: new BN(Math.ceil(value / 2)),
 		});
 	});
 
@@ -315,5 +315,4 @@ contract("LockedFund (Events)", (accounts) => {
 	// 		_amount: new BN(Math.ceil(value/2)),
 	// 	});
 	// });
-
 });
