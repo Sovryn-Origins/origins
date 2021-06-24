@@ -3,7 +3,7 @@ const OriginsAdmin = artifacts.require("OriginsAdmin");
 const {
 	BN, // Big Number support.
 	constants,
-    expectEvent,
+	expectEvent,
 	expectRevert, // Assertions for transactions that should fail.
 } = require("@openzeppelin/test-helpers");
 
@@ -16,14 +16,14 @@ let zeroAddress = constants.ZERO_ADDRESS;
 contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	let originsAdmin;
 	let creator, ownerOne, ownerTwo, ownerThree;
-    let verifierOne, verifierTwo, verifierThree, userOne;
+	let verifierOne, verifierTwo, verifierThree, userOne;
 
 	before("Initiating Accounts & Creating Contract Instance.", async () => {
 		// Checking if we have enough accounts to test.
 		assert.isAtLeast(accounts.length, 8, "Alteast 8 accounts are required to test the contracts.");
 		[creator, ownerOne, ownerTwo, ownerThree, verifierOne, verifierTwo, verifierThree, userOne] = accounts;
 
-        // Creating the instance of OriginsAdmin Contract.
+		// Creating the instance of OriginsAdmin Contract.
 		originsAdmin = await OriginsAdmin.new([ownerOne]);
 	});
 
@@ -31,7 +31,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		let txReceipt = await originsAdmin.addOwner(ownerTwo, { from: ownerOne });
 		expectEvent(txReceipt, "OwnerAdded", {
 			_initiator: ownerOne,
-			_newOwner: ownerTwo
+			_newOwner: ownerTwo,
 		});
 	});
 
@@ -39,7 +39,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		let txReceipt = await originsAdmin.removeOwner(ownerTwo, { from: ownerOne });
 		expectEvent(txReceipt, "OwnerRemoved", {
 			_initiator: ownerOne,
-			_removedOwner: ownerTwo
+			_removedOwner: ownerTwo,
 		});
 	});
 
@@ -47,7 +47,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		let txReceipt = await originsAdmin.addVerifier(verifierOne, { from: ownerOne });
 		expectEvent(txReceipt, "VerifierAdded", {
 			_initiator: ownerOne,
-			_newVerifier: verifierOne
+			_newVerifier: verifierOne,
 		});
 	});
 
@@ -55,8 +55,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		let txReceipt = await originsAdmin.removeVerifier(verifierOne, { from: ownerOne });
 		expectEvent(txReceipt, "VerifierRemoved", {
 			_initiator: ownerOne,
-			_removedVerifier: verifierOne
+			_removedVerifier: verifierOne,
 		});
 	});
-
 });

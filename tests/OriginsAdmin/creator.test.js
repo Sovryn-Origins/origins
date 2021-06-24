@@ -15,14 +15,14 @@ let zeroAddress = constants.ZERO_ADDRESS;
 contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	let originsAdmin;
 	let creator, ownerOne, ownerTwo, ownerThree;
-    let verifierOne, verifierTwo, verifierThree, userOne;
+	let verifierOne, verifierTwo, verifierThree, userOne;
 
 	before("Initiating Accounts & Creating Contract Instance.", async () => {
 		// Checking if we have enough accounts to test.
 		assert.isAtLeast(accounts.length, 8, "Alteast 8 accounts are required to test the contracts.");
 		[creator, ownerOne, ownerTwo, ownerThree, verifierOne, verifierTwo, verifierThree, userOne] = accounts;
 
-        // Creating the instance of OriginsAdmin Contract.
+		// Creating the instance of OriginsAdmin Contract.
 		originsAdmin = await OriginsAdmin.new([ownerOne]);
 	});
 
@@ -41,5 +41,4 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	it("Creator should not be able to remove a verifier.", async () => {
 		await expectRevert(originsAdmin.removeVerifier(verifierOne, { from: creator }), "OriginsAdmin: Only owner can call this function.");
 	});
-
 });
