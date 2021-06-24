@@ -517,12 +517,12 @@ contract OriginsBase is OriginsEvents {
 
 	/**
 	 * @notice Internal Function to update the Tier Token Details.
-	 * @param _tierDetails The Tier whose Token Details are updated.
 	 * @param _tierID The Tier ID whose Token Details are updated.
 	 */
-	function _updateTierTokenDetailsAfterBuy(Tier memory _tierDetails, uint256 _tierID) internal {
+	function _updateTierTokenDetailsAfterBuy(uint256 _tierID) internal {
+		Tier memory _tierDetails = tiers[_tierID];
 		if (_tierDetails.remainingTokens < _tierDetails.maxAmount) {
-			if (_tierDetails.remainingTokens < _tierDetails.minAmount) {
+			if (_tierDetails.remainingTokens <= _tierDetails.minAmount) {
 				if (_tierDetails.remainingTokens == 0) {
 					tierSaleEnded[_tierID] = true;
 					emit TierSaleEnded(msg.sender, _tierID);
@@ -616,7 +616,7 @@ contract OriginsBase is OriginsEvents {
 		_tokenTransferOnBuy(tierDetails, tokensBought);
 
 		/// @notice Updating the tier token parameters.
-		_updateTierTokenDetailsAfterBuy(tierDetails, _tierID);
+		_updateTierTokenDetailsAfterBuy(_tierID);
 
 		/// @notice Updating the stats.
 		_updateWalletCount(_tierID, deposit, tokensBoughtByAddress, tokensBought);
@@ -648,7 +648,7 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice Only withdraw is allowed where sale is ended. Premature withdraw is not allowed.
 		for (uint256 index = 1; index <= tierCount; index++) {
-			if (tierSaleEnded[index] && !tierSaleWithdrawn[index]) {
+			if ((tierSaleEnded[index] || !_saleAllowed(index)) && !tierSaleWithdrawn[index]) {
 				tierSaleWithdrawn[index] = true;
 				uint256 amount = tokensSoldPerTier[index].div(tiers[index].depositRate);
 
