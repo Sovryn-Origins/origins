@@ -12,10 +12,10 @@
         "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222"
     ],
     "depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
-    "waitedTimestamp": "1624579200",
+    "waitedTimestamp": "1624991400",
     "vestingRegistry": "0xE402a46F372a461dD19ed34453253a0B5D1e0509",
-    "origins": "0x127557B259949DFdD43dc18952217CA707eaFD02",
-    "lockedFund": "0x1DDAf77DE0c18af5dc9457C4DB83F13652618157",
+    "origins": "0x8D242d6fb0088aC8434c2069Bf3D498bCC7c0E47",
+    "lockedFund": "0x0188907C12ddE77ddD41500Ae7263aD6BF243B29",
     "tiers": [
         {
             "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
@@ -24,7 +24,7 @@
             "minimumAmount": "1",
             "maximumAmount": "50000000000000000",
             "tokensForSale": "11508000",
-            "saleStartTimestamp": "1624233600",
+            "saleStartTimestamp": "1624473000",
             "saleEnd": "259200",
             "unlockedBP": "0",
             "vestOrLockCliff": "1",
@@ -40,7 +40,7 @@
             "minimumAmount": "1",
             "maximumAmount": "75000000000000000",
             "tokensForSale": "20000000",
-            "saleStartTimestamp": "1624492800",
+            "saleStartTimestamp": "1624732200",
             "saleEnd": "259200",
             "unlockedBP": "5000",
             "vestOrLockCliff": "1",
@@ -58,7 +58,6 @@
         "0x54b8Aef719B63Ef9354b618AC1828b71EE6e496D",
         "0xa41f08993b6d4dE3281F31492F7a93D6F403806B",
         "0xdd771DdF2e13632ECccC4057690e35338b20FdF3",
-        "0xdd771DdF2e13632ECccC4057690e35338b20FdF3",
         "0x7d20eaa96aDbFe158C222210E7A8c05c44Da9d15",
         "0x2bD2201bfe156a71EB0d02837172FFc237218505",
         "0xA987a709f4A93eC25738FeC0F8d6189260459ed7",
@@ -66,7 +65,6 @@
         "0x48343139f46EA80422F7820cC0eBE5B77bbB1818",
         "0xCB1857547a18837155694b4E267d3C64e677A2Ed",
         "0x01e1205a5c3B6ffa3859Ab8E18134763132A422A"
-
     ],
     "verified": []
 }
