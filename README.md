@@ -84,6 +84,7 @@ TODO
 
 - If the deposit asset price is lower than the token which is sold, currently that is not possible with this system. A simple solution is to have a divisor constant or a numerator & denominator system instead of the rate system.
 - LockedFund can only have a single cliff and duration per person. Tier based system would be much better when the vesting registry is updated (waiting for a PR to be merged in Sovryn).
+- Address can only be validated, and cannot be invalidated. Adding a simple function should suffice. To be done in the next update.
 
 ## Improvements
 
@@ -93,3 +94,4 @@ TODO
 - Divide the contract based on Verification Type, Vesting/Locked Type, Deposit by Token or RBTC, etc to make the contract size and interaction gas cost to the minimum without losing the Origins Granularity. This will be a new contract which will be inheriting from OriginsBase, with OriginsBase itself inheriting a unique OriginsStorage based on the granularity.
 - Maybe a single contract can act as the platform if instead of different tiers based on ID, the tiers are based on token address (which is to be sold), thus having multiple tiers based on that. So, a single contract can handle multiple sales at once with multiple tiers. This can only be done after struct decoupling and gas profiling of each function and possible gas saving methods added.
 - Total unique wallets participated in all tiers. Currently only unique wallets participated in a each tier is counted, which is not the same as unique wallets participated in all tiers combined. New storage structure will be required.
+- Tests related to other type of sales to be added.
