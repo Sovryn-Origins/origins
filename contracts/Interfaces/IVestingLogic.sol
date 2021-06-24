@@ -1,16 +1,6 @@
 pragma solidity ^0.5.17;
 
-/**
- * @title Vesting Storage Contract (Incomplete).
- * @notice This contract is just the required storage fromm vesting for LockedFund.
- */
-contract VestingStorage {
-	/// @notice The cliff. After this time period the tokens begin to unlock.
-	uint256 public cliff;
-
-	/// @notice The duration. After this period all tokens will have been unlocked.
-	uint256 public duration;
-}
+import "../Sovryn/Governance/Vesting/VestingStorage.sol";
 
 /**
  * TODO
