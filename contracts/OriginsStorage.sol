@@ -83,6 +83,8 @@ contract OriginsStorage {
 	mapping(address => mapping(uint256 => uint256)) internal tokensBoughtByAddressOnTier;
 	/// @notice Contains the number of unique wallets who participated in the sale in a particular Tier.
 	mapping(uint256 => uint256) internal participatingWalletCountPerTier;
+	/// @notice Contains the amount of token allocation provided by the tier.
+	mapping(uint256 => uint256) internal totalTokenAllocationPerTier;
 	/// @notice Contains the amount of tokens sold in a particular Tier.
 	mapping(uint256 => uint256) internal tokensSoldPerTier;
 	/// @notice Contains if a tier sale ended or not.
