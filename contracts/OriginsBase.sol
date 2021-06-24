@@ -364,11 +364,11 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
 		if (requiredBal > currentBal) {
-			totalTokenAllocationPerTier[_tierID] = requiredBal.sub(currentBal);
+			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
 			bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
 			require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
 		} else {
-			totalTokenAllocationPerTier[_tierID] = currentBal.sub(requiredBal);
+			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].sub(currentBal.sub(requiredBal));
 			bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
 			require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
 		}
@@ -583,10 +583,7 @@ contract OriginsBase is OriginsEvents {
 		uint256 boughtInAsset = tokensBoughtByAddress.div(tierDetails.depositRate);
 
 		/// @notice Checking if the user already reached the maximum amount.
-		require(
-			boughtInAsset < tierDetails.maxAmount,
-			"OriginsBase: User already bought maximum allowed."
-		);
+		require(boughtInAsset < tierDetails.maxAmount, "OriginsBase: User already bought maximum allowed.");
 
 		/// @notice Checking which deposit type is selected.
 		uint256 deposit;
@@ -804,6 +801,15 @@ contract OriginsBase is OriginsEvents {
 	 */
 	function getParticipatingWalletCountPerTier(uint256 _tierID) external view returns (uint256) {
 		return participatingWalletCountPerTier[_tierID];
+	}
+
+	/**
+	 * @notice Function to read total token allocation per tier.
+	 * @param  _tierID The tier ID for which the metrics has to be checked.
+	 * @return The amount of tokens allocation on that tier.
+	 */
+	function getTotalTokenAllocationPerTier(uint256 _tierID) external view returns (uint256) {
+		return totalTokenAllocationPerTier[_tierID];
 	}
 
 	/**
