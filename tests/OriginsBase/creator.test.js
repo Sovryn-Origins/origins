@@ -1,0 +1,202 @@
+const Token = artifacts.require("Token");
+const LockedFund = artifacts.require("LockedFund");
+const OriginsBase = artifacts.require("OriginsBase");
+const StakingLogic = artifacts.require("Staking");
+const StakingProxy = artifacts.require("StakingProxy");
+const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
+const VestingLogic = artifacts.require("VestingLogic");
+const VestingFactory = artifacts.require("VestingFactory");
+const VestingRegistry = artifacts.require("VestingRegistry3");
+
+const {
+	BN, // Big Number support.
+	constants,
+	expectRevert, // Assertions for transactions that should fail.
+} = require("@openzeppelin/test-helpers");
+const { current } = require("@openzeppelin/test-helpers/src/balance");
+
+const { assert } = require("chai");
+
+// Some constants we would be using in the contract.
+let zero = new BN(0);
+let zeroAddress = constants.ZERO_ADDRESS;
+let cliff = 1; // This is in 4 weeks. i.e. 1 * 4 weeks.
+let duration = 11; // This is in 4 weeks. i.e. 11 * 4 weeks.
+let zeroBasisPoint = 0;
+let twentyBasisPoint = 2000;
+let fiftyBasisPoint = 5000;
+let hundredBasisPoint = 10000;
+let invalidBasisPoint = 10001;
+let waitedTS = currentTimestamp();
+let depositTypeRBTC = 0;
+let depositTypeToken = 1;
+let saleEndDurationOrTSNone = 0;
+let saleEndDurationOrTSUntilSupply = 1;
+let saleEndDurationOrTSDuration = 2;
+let saleEndDurationOrTSTimestamp = 3;
+let verificationTypeNone = 0;
+let verificationTypeEveryone = 1;
+let verificationTypeByAddress = 2;
+let transferTypeNone = 0;
+let transferTypeUnlocked = 1;
+let transferTypeWaitedUnlock = 2;
+let transferTypeVested = 3;
+let transferTypeLocked = 4;
+let firstVerificationType = verificationTypeByAddress;
+let [firstDepositRate, firstDepositToken, firstDepositType] = [100, zeroAddress, depositTypeRBTC];
+let firstMinAmount = 1;
+let firstMaxAmount = new BN(50000);
+let firstRemainingTokens = new BN(5000000);
+let [firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstTransferType] = [0, 1, 11, transferTypeVested];
+let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [currentTimestamp(), 86400, saleEndDurationOrTSDuration];
+let [secondMinAmount, secondMaxAmount, secondRemainingTokens, secondSaleStartTS, secondSaleEnd, secondUnlockedBP, secondVestOrLockCliff, secondVestOfLockDuration, secondDepositRate, secondDepositToken, secondDepositType, secondVerificationType, secondSaleEndDurationOrTS, secondTransferType] = [1, new BN(75000), new BN(10000000), currentTimestamp(), 86400, 5000, 1, 11, 50, zeroAddress, depositTypeRBTC, verificationTypeEveryone, saleEndDurationOrTSDuration, transferTypeVested];
+
+/**
+ * Function to create a random value.
+ * It expects no parameter.
+ *
+ * @return {number} Random Value.
+ */
+function randomValue() {
+	return Math.floor(Math.random() * 10000) + 10000;
+}
+
+/**
+ * Function to get back the current timestamp in seconds.
+ * It expects no parameter.
+ *
+ * @return {number} Current Unix Timestamp.
+ */
+function currentTimestamp() {
+	return Math.floor(Date.now() / 1000);
+}
+
+/**
+ * Mints random token for user account and then approve a contract.
+ *
+ * @param tokenContract The Token Contract.
+ * @param userAddr User Address.
+ * @param toApprove User Address who is approved.
+ *
+ * @returns value The token amount which was minted by user.
+ */
+ async function userMintAndApprove(tokenContract, userAddr, toApprove) {
+	let value = randomValue();
+	await tokenContract.mint(userAddr, value);
+	await tokenContract.approve(toApprove, value, { from: userAddr });
+	return value;
+}
+
+contract("OriginsBase (Creator Functions)", (accounts) => {
+	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic, originsBase;
+	let creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr;
+    let tierCount;
+
+	before("Initiating Accounts & Creating Test Contract Instance.", async () => {
+		// Checking if we have enough accounts to test.
+		assert.isAtLeast(accounts.length, 9, "Alteast 9 accounts are required to test the contracts.");
+		[creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr] = accounts;
+
+		// Creating the instance of Test Token.
+		token = await Token.new(zero);
+
+		// Creating the Staking Instance.
+		stakingLogic = await StakingLogic.new(token.address);
+		staking = await StakingProxy.new(token.address);
+		await staking.setImplementation(stakingLogic.address);
+		staking = await StakingLogic.at(staking.address);
+
+		// Creating the FeeSharing Instance.
+		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address);
+
+		// Creating the Vesting Instance.
+		vestingLogic = await VestingLogic.new();
+		vestingFactory = await VestingFactory.new(vestingLogic.address);
+		vestingRegistry = await VestingRegistry.new(
+			vestingFactory.address,
+			token.address,
+			staking.address,
+			feeSharingProxy.address,
+			creator // This should be Governance Timelock Contract.
+		);
+		vestingFactory.transferOwnership(vestingRegistry.address);
+
+        // Creating the instance of LockedFund Contract.
+		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
+
+		// Creating the instance of OriginsBase Contract.
+		originsBase = await OriginsBase.new([owner], token.address, depositAddr);
+
+		// Setting lockedFund in Origins.
+		await originsBase.setLockedFund(lockedFund.address, { from: owner });
+
+        // Added Origins as an admin of LockedFund.
+        await lockedFund.addAdmin(originsBase.address, { from: owner });
+
+        // Setting Verifier in Origins.
+		await originsBase.addVerifier(verifier, { from: owner });
+
+        // Minting new tokens, Approving Origins and creating a new tier.
+        await token.mint(owner, firstRemainingTokens);
+        await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+        await originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: owner });
+        tierCount = await originsBase.getTierCount();
+    });
+
+	// beforeEach("Creating New OriginsBase Contract Instance.", async () => {
+	// });
+
+	it("Creator should not be able to set deposit address.", async () => {
+		await expectRevert(originsBase.setDepositAddress(newDepositAddr, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+	});
+
+	it("Creator should not be able to set Locked Fund Contract.", async () => {
+		let newLockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
+		await expectRevert(originsBase.setLockedFund(newLockedFund.address, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+	});
+
+    it("Creator should not be able to add a new tier.", async () => {
+        await token.mint(owner, firstRemainingTokens);
+        await token.approve(originsBase.address, firstRemainingTokens, { from: creator });
+        await expectRevert(originsBase.createTier(firstMaxAmount, firstRemainingTokens, firstSaleStartTS, firstSaleEnd, firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstDepositRate, firstDepositType, firstVerificationType, firstSaleEndDurationOrTS, firstTransferType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to set Tier Deposit Parameters.", async () => {
+        await expectRevert(originsBase.setTierDeposit(tierCount, secondDepositRate, secondDepositToken, secondDepositType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to set Tier Token Limit Parameters.", async () => {
+        await expectRevert(originsBase.setTierTokenLimit(tierCount, secondMinAmount, secondMaxAmount, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to set Tier Token Amount Parameters.", async () => {
+        await expectRevert(originsBase.setTierTokenAmount(tierCount, secondRemainingTokens, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to set Tier Vest or Lock Parameters.", async () => {
+        await expectRevert(originsBase.setTierVestOrLock(tierCount, secondVestOrLockCliff, secondVestOfLockDuration, waitedTS, secondUnlockedBP, secondTransferType, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to set Tier Time Parameters.", async () => {
+        await expectRevert(originsBase.setTierTime(tierCount, secondSaleStartTS, secondSaleEnd, secondSaleEndDurationOrTS, { from: creator }), "OriginsAdmin: Only owner can call this function.");
+    });
+
+    it("Creator should not be able to verify a single address to a single tier.", async () => {
+        await expectRevert(originsBase.addressVerification(userOne, tierCount, { from: creator }), "OriginsAdmin: Only verifier can call this function.");
+    });
+
+    it("Creator should not be able to verify a single address to a multiple tier.", async () => {
+        tierCount = 3;
+        await expectRevert(originsBase.singleAddressMultipleTierVerification(userOne, [tierCount, tierCount-1, tierCount-2], { from: creator }), "OriginsAdmin: Only verifier can call this function.");
+    });
+
+    it("Creator should not be able to verify a multiple address to a single tier.", async () => {
+        await expectRevert(originsBase.multipleAddressSingleTierVerification([userOne, userTwo, userThree], tierCount, { from: creator }), "OriginsAdmin: Only verifier can call this function.");
+    });
+
+    it("Creator should not be able to verify a multiple address to a multiple tier.", async () => {
+        tierCount = 3;
+        await expectRevert(originsBase.multipleAddressAndTierVerification([userOne, userTwo, userThree], [tierCount, tierCount-1, tierCount-2], { from: creator }), "OriginsAdmin: Only verifier can call this function.");
+    });
+
+});
