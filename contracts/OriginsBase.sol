@@ -364,9 +364,11 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
 		if (requiredBal > currentBal) {
+			totalTokenAllocationPerTier[_tierID] = requiredBal.sub(currentBal);
 			bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
 			require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
 		} else {
+			totalTokenAllocationPerTier[_tierID] = currentBal.sub(requiredBal);
 			bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
 			require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
 		}
@@ -578,10 +580,11 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice If user is verified on address or does not need verification, the following steps will be taken.
 		uint256 tokensBoughtByAddress = tokensBoughtByAddressOnTier[msg.sender][_tierID];
+		uint256 boughtInAsset = tokensBoughtByAddress.div(tierDetails.depositRate);
 
 		/// @notice Checking if the user already reached the maximum amount.
 		require(
-			tokensBoughtByAddress < tierDetails.maxAmount.mul(tierDetails.depositRate),
+			boughtInAsset < tierDetails.maxAmount,
 			"OriginsBase: User already bought maximum allowed."
 		);
 
@@ -601,7 +604,6 @@ contract OriginsBase is OriginsEvents {
 
 		/// @notice Checking what should be the allowed deposit amount.
 		uint256 refund;
-		uint256 boughtInAsset = tokensBoughtByAddress.div(tierDetails.depositRate);
 		if (tierDetails.maxAmount.sub(boughtInAsset) <= deposit) {
 			refund = deposit.add(boughtInAsset).sub(tierDetails.maxAmount);
 			deposit = tierDetails.maxAmount.sub(boughtInAsset);
