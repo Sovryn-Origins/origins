@@ -57,7 +57,7 @@ def choice():
         if(selection == 1):
             deployLockedFund()
         elif(selection == 2):
-            addLockedFundAsAdmin()
+            addLockedFundAsVestingAdmin()
         elif(selection == 3):
             addOriginsAsAdmin()
         elif(selection == 4):
@@ -90,20 +90,16 @@ def deployLockedFund():
     print("=============================================================")
 
     lockedFund = acct.deploy(LockedFund, waitedTS, token, vestingRegistry, adminList)
-
+    values['lockedFund'] = str(lockedFund.address)
     print("\nLocked Fund Deployed.")
-    print("\nAdding LockedFund as an admin of Vesting Registry.")
 
-    vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
-    vestingRegistry.addAdmin(lockedFund.address)
+    addLockedFundAsVestingAdmin()
+    updateWaitedTS()
 
-    print("\nAdded Locked Fund:",lockedFund.address,"as the admin of Vesting Registry:", values['vestingRegistry'])
-
-    values['lockedFund'] = str(lockedFund)
     writeToJSON()
 
 # =========================================================================================================================================
-def addLockedFundAsAdmin():
+def addLockedFundAsVestingAdmin():
     vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
     print("\nAdding LockedFund as an admin of Vesting Registry.")
     vestingRegistry.addAdmin(values['lockedFund'])
