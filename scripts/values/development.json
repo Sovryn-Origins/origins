@@ -15,7 +15,7 @@
     "waitedTimestamp": "1624317500",
     "vestingRegistry": "0xBE62193751BdFBc4976B22CCE09511AA0d40BF17",
     "origins": "0xB22691778D55F4B79F594264d14b71276Dca3C38",
-    "lockedFund": "0xE9f15545367F1eAcA292fa0D70E527c729701d9a",
+    "lockedFund": "0xeCF499458B913c4CeA7aADfF0F2ECCf30625B675",
     "tiers": [
         {
             "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
