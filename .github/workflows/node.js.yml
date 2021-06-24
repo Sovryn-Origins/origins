@@ -22,8 +22,12 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-    - run: npm ci
-    - run: npm run lint
+    - name: Installing Packages
+      run: npm ci
+    - name: Checking Formatting
+      run: npm run lint
     - run: npm run prettier-check
-    - run: npm run coverage
-    - run: cat coverage/lcov.info | coveralls
+    - name: Code Coverage
+      run: npm run coverage
+    - name: Coveralls GitHub Action
+      uses: coverallsapp/github-action@v1.1.2
