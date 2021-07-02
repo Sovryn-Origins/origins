@@ -219,6 +219,12 @@ def getTransferType(transferType):
 
 # =========================================================================================================================================
 def makeAllowance(tokenObj, spender, amount):
+    print("\nChecking if enough token balance if there.")
+    bal = tokenObj.balanceOf(acct)
+    if(bal < amount):
+        print("\nNot enough token balance available for creating tier.")
+        sys.exit()
+    print("\nBalance:",bal)
     print("\nApproving Token Transfer from", acct, " to", spender)
     tokenObj.approve(spender, amount)
     print("Token Transfer Approved...")
