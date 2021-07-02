@@ -9,10 +9,11 @@
     "multisig": "0x8f2608FA847A37989Df18E008ed476569AfE21D0",
     "initialAdmin": "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
     "originsVerifiers": [
-        "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222"
+        "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
+        "0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435"
     ],
     "depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
-    "waitedTimestamp": "1624991400",
+    "waitedTimestamp": "1627837200",
     "vestingRegistry": "0xE402a46F372a461dD19ed34453253a0B5D1e0509",
     "origins": "0xf4963730a7A1E1aA06E01A0C70Ae465Ba7C4a9E3",
     "lockedFund": "0x0188907C12ddE77ddD41500Ae7263aD6BF243B29",
@@ -42,6 +43,22 @@
             "tokensForSale": "20000000",
             "saleStartTimestamp": "1624732200",
             "saleEnd": "259200",
+            "unlockedBP": "5000",
+            "vestOrLockCliff": "1",
+            "vestOrLockDuration": "11",
+            "depositRate": "50",
+            "depositToken": "0x0000000000000000000000000000000000000000",
+            "depositType": "0",
+            "verificationType": "1",
+            "saleEndDurationOrTimestamp": "2",
+            "transferType": "3"
+        },
+        {
+            "minimumAmount": "1",
+            "maximumAmount": "75000000000000000",
+            "tokensForSale": "20000000",
+            "saleStartTimestamp": "1625151600",
+            "saleEnd": "172800",
             "unlockedBP": "5000",
             "vestOrLockCliff": "1",
             "vestOrLockDuration": "11",

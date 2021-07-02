@@ -111,3 +111,5 @@ artifacts
 coverage
 coverage.json
 .DS_Store
+ORIGINS.code-workspace
+__pycache__
