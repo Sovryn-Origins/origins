@@ -40,6 +40,7 @@ contract ILockedFund {
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
+	 * @param _unlockedOrWaited TODO
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -47,6 +48,39 @@ contract ILockedFund {
 		uint256 _amount,
 		uint256 _cliff,
 		uint256 _duration,
+		uint256 _basisPoint,
+		uint256 _unlockedOrWaited
+	) public;
+
+	/**
+	 * @notice Adds Token to the user balance (Locked and Waited Unlocked Balance based on `_basisPoint`).
+	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
+	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
+	 * @param _cliff The cliff for vesting.
+	 * @param _duration The duration for vesting.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @param _unlockedOrWaited TODO
+	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
+	 */
+	function depositLocked(
+		address _userAddress,
+		uint256 _amount,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _basisPoint,
+		uint256 _unlockedOrWaited
+	) public;
+
+	/**
+	 * @notice Adds Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
+	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
+	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
+	 */
+	function depositWaitedUnlocked(
+		address _userAddress,
+		uint256 _amount,
 		uint256 _basisPoint
 	) public;
 
@@ -79,10 +113,4 @@ contract ILockedFund {
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external;
-
-	/**
-	 * @notice Withdraws unlocked tokens and Stakes Locked tokens for a user who already have a vesting created.
-	 * @param _userAddress The address of user tokens will be withdrawn.
-	 */
-	function withdrawAndStakeTokensFrom(address _userAddress) external;
 }
