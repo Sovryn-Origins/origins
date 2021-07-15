@@ -1,13 +1,13 @@
 {
-  "name": "origins",
-  "version": "0.1.0",
+  "name": "origins-launchpad",
+  "version": "1.0.0-alpha",
   "description": "The smart contracts for the Origins Platform",
   "keywords": [
     "Origins",
     "Launchpad",
     "Token Sale"
   ],
-  "author": "Franklin Richards",
+  "author": "Franklin Richards <powerhousefrank@protonmail.com>",
   "homepage": "https://live.sovryn.app/origins",
   "repository": {
     "type": "git",
@@ -16,6 +16,7 @@
   "bugs": {
     "url": "https://github.com/DistributedCollective/origins/issues"
   },
+  "license": "UNLICENSED",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "^2.0.1",
     "@nomiclabs/hardhat-ganache": "^2.0.0",
