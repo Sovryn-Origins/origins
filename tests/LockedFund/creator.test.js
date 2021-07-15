@@ -26,6 +26,8 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeImmediate = 1;
+let unlockTypeWaited = 2;
 
 /**
  * Function to create a random value.
@@ -57,7 +59,7 @@ contract("LockedFund (Creator Functions)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -122,7 +124,7 @@ contract("LockedFund (Creator Functions)", (accounts) => {
 		token.mint(creator, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: creator });
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: creator }),
+			lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: creator }),
 			"LockedFund: Only admin can call this."
 		);
 	});

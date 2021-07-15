@@ -26,6 +26,8 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeImmediate = 1;
+let unlockTypeWaited = 2;
 
 /**
  * Function to create a random value.
@@ -57,7 +59,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -143,13 +145,13 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 	});
 
 	it("Admin should not be able to deposit with the duration as zero.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, zero, zeroBasisPoint, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, zero, zeroBasisPoint, unlockTypeWaited, { from: admin }),
 			"LockedFund: Duration cannot be zero."
 		);
 	});
@@ -157,7 +159,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	it("Admin should not be able to deposit with the duration higher than max allowed.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, 100, zeroBasisPoint, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, 100, zeroBasisPoint, unlockTypeWaited, { from: admin }),
 			"LockedFund: Duration is too long."
 		);
 	});
@@ -165,7 +167,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	it("Admin should not be able to deposit with basis point higher than max allowed.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, duration, invalidBasisPoint, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, duration, invalidBasisPoint, unlockTypeWaited, { from: admin }),
 			"LockedFund: Basis Point has to be less than 10000."
 		);
 	});

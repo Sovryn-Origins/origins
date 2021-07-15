@@ -26,6 +26,8 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeImmediate = 1;
+let unlockTypeWaited = 2;
 
 /**
  * Function to create a random value.
@@ -57,7 +59,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -122,7 +124,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		token.mint(userOne, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: userOne });
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: userOne }),
+			lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: userOne }),
 			"LockedFund: Only admin can call this."
 		);
 	});
@@ -131,7 +133,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
 	});
 
@@ -139,7 +141,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
 	});
 
@@ -147,7 +149,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.changeWaitedTS(currentTimestamp() + 10000, { from: admin });
 		await expectRevert(
 			lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne }),
@@ -159,7 +161,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.createVestingAndStake({ from: userOne });
 	});
 
@@ -167,7 +169,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.createVesting({ from: userOne });
 	});
 
@@ -175,7 +177,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.stakeTokens({ from: userOne });
 	});
 
@@ -191,7 +193,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await expectRevert(lockedFund.stakeTokens({ from: userOne }), "function call to a non-contract account");
 	});
 
@@ -199,7 +201,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
 	});
 
@@ -207,16 +209,8 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
-	});
-
-	it("Any user should be able to trigger withdraw waited unlocked balance of another user, create vesting and stake vested balance for them using withdrawAndStakeTokensFrom().", async () => {
-		let value = randomValue();
-		token.mint(admin, value, { from: creator });
-		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await lockedFund.withdrawAndStakeTokensFrom(userOne, { from: userTwo });
 	});
 
 	it("User should not be able to create vesting and stake vested balance using createVestingAndStake() if cliff and duration is not set.", async () => {

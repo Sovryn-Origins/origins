@@ -26,6 +26,8 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeImmediate = 1;
+let unlockTypeWaited = 2;
 
 /**
  * Function to create a random value.
@@ -57,7 +59,7 @@ contract("LockedFund (Events)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -135,7 +137,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		expectEvent(txReceipt, "VestedDeposited", {
 			_initiator: admin,
 			_userAddress: userOne,
@@ -150,7 +152,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
@@ -163,7 +165,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
@@ -176,7 +178,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.createVestingAndStake({ from: userOne });
 		let vestingAddress = await vestingRegistry.getVesting(userOne);
 		expectEvent(txReceipt, "VestingCreated", {
@@ -195,7 +197,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.createVesting({ from: userOne });
 		let vestingAddress = await vestingRegistry.getVesting(userOne);
 		expectEvent(txReceipt, "VestingCreated", {
@@ -209,7 +211,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		let vestingAddress = await vestingRegistry.getVesting(userOne);
 		let txReceipt = await lockedFund.stakeTokens({ from: userOne });
 		expectEvent(txReceipt, "TokenStaked", {
@@ -234,7 +236,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
@@ -269,7 +271,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
 		expectEvent(txReceipt, "Withdrawn", {
 			_initiator: userOne,
@@ -289,30 +291,4 @@ contract("LockedFund (Events)", (accounts) => {
 		});
 	});
 
-	// This test should be correct, but the problem is with Smart Contract. There should be a initiator parameter for _withdrawWaitedUnlockedBalance()
-	// it("Any user triggering withdraw of waited unlocked balance of another user, creating vesting and staking vested balance for them using withdrawAndStakeTokensFrom() should emit Withdrawn, VestingCreated and TokenStaked..", async () => {
-	// 	let value = randomValue();
-	// 	token.mint(admin, value, { from: creator });
-	// 	token.approve(lockedFund.address, value, { from: admin });
-	// 	await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-	// 	let txReceipt = await lockedFund.withdrawAndStakeTokensFrom(userOne, { from: userTwo });
-	// 	console.log("User One:"+userOne);
-	// 	console.log("User Two:"+userTwo);
-	// 	expectEvent(txReceipt, "Withdrawn", {
-	// 		_initiator: userTwo,
-	// 		_userAddress: userOne,
-	// 		_amount: new BN(Math.floor(value/2)),
-	// 	});
-	// 	let vestingAddress = await vestingRegistry.getVesting(userOne);
-	// 	expectEvent(txReceipt, "VestingCreated", {
-	// 		_initiator: userTwo,
-	// 		_userAddress: userOne,
-	// 		_vesting: vestingAddress,
-	// 	});
-	// 	expectEvent(txReceipt, "TokenStaked", {
-	// 		_initiator: userTwo,
-	// 		_vesting: vestingAddress,
-	// 		_amount: new BN(Math.ceil(value/2)),
-	// 	});
-	// });
 });

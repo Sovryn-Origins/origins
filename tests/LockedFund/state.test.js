@@ -26,6 +26,8 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeImmediate = 1;
+let unlockTypeWaited = 2;
 
 /**
  * Function to create a random value.
@@ -174,7 +176,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -311,7 +313,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -333,7 +335,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -374,7 +376,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -415,7 +417,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -453,7 +455,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -491,7 +493,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -540,7 +542,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -592,7 +594,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -629,44 +631,4 @@ contract("LockedFund (State Change)", (accounts) => {
 		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
-	it("Any user should be able to trigger withdraw waited unlocked balance of another user, create vesting and stake vested balance for them using withdrawAndStakeTokensFrom().", async () => {
-		let value = randomValue();
-		token.mint(admin, value, { from: creator });
-		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, { from: admin });
-		await checkStatus(
-			lockedFund,
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-			userOne,
-			waitedTS,
-			token.address,
-			cliff,
-			duration,
-			vestingRegistry.address,
-			Math.ceil(value / 2),
-			zero,
-			Math.floor(value / 2),
-			zero,
-			false
-		);
-		let oldBalances = await getTokenBalances(userOne, token, lockedFund);
-		await lockedFund.withdrawAndStakeTokensFrom(userOne, { from: userTwo });
-		await checkStatus(
-			lockedFund,
-			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-			userOne,
-			waitedTS,
-			token.address,
-			cliff,
-			duration,
-			vestingRegistry.address,
-			zero,
-			zero,
-			zero,
-			zero,
-			false
-		);
-		let newBalances = await getTokenBalances(userOne, token, lockedFund);
-		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
-	});
 });
