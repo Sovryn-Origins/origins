@@ -1,6 +1,7 @@
 ## Prerequisite
 
 Please fill the below details in mainnet.json (or the corresponding network JSON files):
+
 - Token Contract in `token` (If not already added by the `deploy_Token.py` script)
 - Token Decimals in `decimal` (If not already added by the `deploy_Token.py` script)
 - Multisig Owners in `multisigOwners`
@@ -47,9 +48,9 @@ Then select the correct option to deploy Origins.
 6. Set the origins as an admin of Locked Fund. Similar to above, running the `deployLockedFund` will show an option for the same.
 
 7. Other things to do after things are deployed:
-    - If the verification type is `ByAddress` (Optional):
-        - Add yourself as a Verifier to verify address.
-        - Verify Addresses, if the verification type is `ByAddress`. (Currently it takes all the addresses at once and tries to verify, need to sequentialize that to take X number of wallets at once. A CSV parsed sequential list taker has to be built.)
-        - Remove yourself as a whitelister.
-    - Remove yourself as an Owner of Origins Platform.
-    - Remove yourself as an Owner of Locked Fund.
+   - If the verification type is `ByAddress` (Optional):
+     - Add yourself as a Verifier to verify address.
+     - Verify Addresses, if the verification type is `ByAddress`. (Currently it takes all the addresses at once and tries to verify, need to sequentialize that to take X number of wallets at once. A CSV parsed sequential list taker has to be built.)
+     - Remove yourself as a whitelister.
+   - Remove yourself as an Owner of Origins Platform.
+   - Remove yourself as an Owner of Locked Fund.
