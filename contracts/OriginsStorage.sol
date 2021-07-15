@@ -76,7 +76,11 @@ contract OriginsStorage {
 	}
 
 	/// @notice TODO
-	enum unlockType { None, Immediate, Waited }
+	enum unlockType {
+		None,
+		Immediate,
+		Waited
+	}
 
 	/// @notice The tiers based on the tier id, taken from tier count.
 	mapping(uint256 => Tier) internal tiers;

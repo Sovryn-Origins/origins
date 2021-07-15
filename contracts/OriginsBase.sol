@@ -402,14 +402,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		tiers[_tierID].unlockedBP = _unlockedBP;
 		tiers[_tierID].transferType = _transferType;
 
-		emit TierVestOrLockUpdated(
-			msg.sender,
-			_tierID,
-			_vestOrLockCliff,
-			_vestOrLockDuration,
-			_unlockedBP,
-			_transferType
-		);
+		emit TierVestOrLockUpdated(msg.sender, _tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedBP, _transferType);
 	}
 
 	/**
@@ -494,11 +487,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		} else {
 			token.approve(address(lockedFund), _tokensBought);
 			if (_tierDetails.transferType == TransferType.WaitedUnlock) {
-				lockedFund.depositWaitedUnlocked(
-					msg.sender,
-					_tokensBought,
-					_tierDetails.unlockedBP
-				);
+				lockedFund.depositWaitedUnlocked(msg.sender, _tokensBought, _tierDetails.unlockedBP);
 			} else if (_tierDetails.transferType == TransferType.Vested) {
 				lockedFund.depositVested(
 					msg.sender,
