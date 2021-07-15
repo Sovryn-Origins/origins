@@ -24,31 +24,30 @@ contract IOrigins {
 
 	/**
 	 * @notice Function to create a new tier.
+	 * @param _maxAmount The maximum amount of asset which can be deposited.
 	 * @param _remainingTokens Contains the remaining tokens for sale.
 	 * @param _saleStartTS Contains the timestamp for the sale to start. Before which no user will be able to buy tokens.
 	 * @param _saleEnd Contains the duration or timestamp for the sale to end. After which no user will be able to buy tokens.
-	 * @param _unlockedTokenWithdrawTS Contains the timestamp for the waited unlocked tokens to be withdrawn.
 	 * @param _unlockedBP Contains the unlock amount in Basis Point for Vesting/Lock.
 	 * @param _vestOrLockCliff Contains the cliff of the vesting/lock for distribution.
 	 * @param _vestOrLockDuration Contains the duration of the vesting/lock for distribution.
 	 * @param _depositRate Contains the rate of the token w.r.t. the depositing asset.
-	 * @param _depositToken Contains the deposit token address if the deposit type is Token.
 	 * @param _verificationType Contains the method by which verification happens.
 	 * @param _saleEndDurationOrTS Contains whether end of sale is by Duration or Timestamp.
 	 * @param _transferType Contains the type of token transfer after a user buys to get the tokens.
 	 * @return _tierID The newly created tier ID.
 	 * @dev In the future this should be decoupled.
+	 * Some are currently sent with default value due to Stack Too Deep problem.
 	 */
 	function createTier(
+		uint256 _maxAmount,
 		uint256 _remainingTokens,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
-		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
 		uint256 _depositRate,
-		address _depositToken,
 		uint256 _depositType,
 		uint256 _verificationType,
 		uint256 _saleEndDurationOrTS,
@@ -100,7 +99,6 @@ contract IOrigins {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _vestOrLockCliff The Vest/Lock Cliff = A * LockedFund.Interval, where A is the cliff.
 	 * @param _vestOrLockDuration The Vest/Lock Duration = A * LockedFund.Interval, where A is the duration.
-	 * @param _unlockedTokenWithdrawTS The unlocked token withdraw timestamp.
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
@@ -108,7 +106,6 @@ contract IOrigins {
 		uint256 _tierID,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
-		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
 		uint256 _transferType
 	) external;
@@ -204,7 +201,6 @@ contract IOrigins {
 	 * @return _remainingTokens Contains the remaining tokens for sale.
 	 * @return _saleStartTS Contains the timestamp for the sale to start. Before which no user will be able to buy tokens.
 	 * @return _saleEnd Contains the duration or timestamp for the sale to end. After which no user will be able to buy tokens.
-	 * @return _unlockedTokenWithdrawTS Contains the timestamp for the waited unlocked tokens to be withdrawn.
 	 * @return _unlockedBP Contains the unlock amount in Basis Point for Vesting/Lock.
 	 * @return _vestOrLockCliff Contains the cliff of the vesting/lock for distribution.
 	 * @return _vestOrLockDuration Contains the duration of the vesting/lock for distribution.
@@ -219,7 +215,6 @@ contract IOrigins {
 			uint256 _remainingTokens,
 			uint256 _saleStartTS,
 			uint256 _saleEnd,
-			uint256 _unlockedTokenWithdrawTS,
 			uint256 _unlockedBP,
 			uint256 _vestOrLockCliff,
 			uint256 _vestOrLockDuration,
@@ -263,6 +258,13 @@ contract IOrigins {
 	 * In the future maybe a count on that can be created.
 	 */
 	function getParticipatingWalletCountPerTier(uint256 _tierID) external view returns (uint256);
+
+	/**
+	 * @notice Function to read total token allocation per tier.
+	 * @param  _tierID The tier ID for which the metrics has to be checked.
+	 * @return The amount of tokens allocation on that tier.
+	 */
+	function getTotalTokenAllocationPerTier(uint256 _tierID) external view returns (uint256);
 
 	/**
 	 * @notice Function to read tokens sold per tier.
