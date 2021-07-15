@@ -80,7 +80,6 @@ contract OriginsEvents is OriginsAdmin {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _vestOrLockCliff The Vest/Lock Cliff in Seconds.
 	 * @param _vestOrLockDuration The Vest/Lock Duration in Seconds.
-	 * @param _unlockedTokenWithdrawTS The unlocked token withdraw timestamp.
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
@@ -89,7 +88,6 @@ contract OriginsEvents is OriginsAdmin {
 		uint256 _tierID,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
-		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
 		TransferType _transferType
 	);
