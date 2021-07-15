@@ -21,11 +21,12 @@ brownie run scripts/token/deploy_Token.py --network [ENTER DESIRED NETWORK]
 It will ask for a choice between deployment and transfer of ownership. Initially we select deployment. After running step 2, we can go forward to transferring ownership anytime we want.
 
 The deployment will take:
+
 - the token name from `Token_Name`
 - the token symbol from `Token_Symbol`
 - the token amount from `Token_Amount`
 - the decimals from `Token_Decimal`
-from the JSON files. `Amount * (10 ** Decimals)` will be done by the script.
+  from the JSON files. `Amount * (10 ** Decimals)` will be done by the script.
 
 It will also update the testnet/mainnet JSON file with the new contract address as well.
 
