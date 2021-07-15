@@ -15,16 +15,24 @@ import "../../Interfaces/IApproveAndCall.sol";
  *   based upon previous governance voting and approval.
  * */
 contract Token is ERC20, ERC20Detailed, Ownable {
-	string constant NAME = "Test Token";
-	string constant SYMBOL = "TEST";
-	uint8 constant DECIMALS = 18;
+	string public NAME;
+	string public SYMBOL;
+	uint8 public DECIMALS;
 
 	/**
 	 * @notice Constructor called on deployment, initiates the contract.
 	 * @dev On deployment, some amount of tokens will be minted for the owner.
 	 * @param _initialAmount The amount of tokens to be minted on contract creation.
 	 * */
-	constructor(uint256 _initialAmount) public ERC20Detailed(NAME, SYMBOL, DECIMALS) {
+	constructor(
+		uint256 _initialAmount,
+		string memory _name,
+		string memory _symbol,
+		uint8 _decimals
+	) public ERC20Detailed(_name, _symbol, _decimals) {
+		NAME = _name;
+		SYMBOL = _symbol;
+		DECIMALS = _decimals;
 		if (_initialAmount != 0) {
 			_mint(msg.sender, _initialAmount);
 		}
