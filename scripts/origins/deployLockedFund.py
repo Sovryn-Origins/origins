@@ -13,9 +13,9 @@ def main():
     balanceAfter = acct.balance()
 
     print("=============================================================")
-    print("RSK Before Balance:  ", balanceBefore)
-    print("RSK After Balance:   ", balanceAfter)
-    print("Gas Used:            ", balanceBefore - balanceAfter)
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
     print("=============================================================")
 
 # =========================================================================================================================================
@@ -25,16 +25,16 @@ def loadConfig():
 
     if thisNetwork == "development":
         acct = accounts[0]
-        configFile = open('./scripts/values/development.json')
+        configFile = open('./scripts/origins/values/development.json')
     elif thisNetwork == "testnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/mainnet.json')
+        configFile = open('./scripts/origins/values/mainnet.json')
     else:
         raise Exception("Network not supported.")
 
@@ -78,7 +78,7 @@ def deployLockedFund():
         waitedTS = int(time.time()) + (4*24*60*60)
     token = values['token']
     vestingRegistry = values['vestingRegistry']
-    adminList = [values['multisig'], values['initialAdmin']]
+    adminList = [values['multisig'], acct]
 
     print("\n=============================================================")
     print("Deployment Parameters for LockedFund")
@@ -101,7 +101,7 @@ def deployLockedFund():
 # =========================================================================================================================================
 def addLockedFundAsVestingAdmin():
     vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
-    print("\nAdding LockedFund as an admin of Vesting Registry.")
+    print("\nAdding LockedFund as an admin of Vesting Registry.\n")
     vestingRegistry.addAdmin(values['lockedFund'])
     print("\nAdded Locked Fund:",values['lockedFund'],"as the admin of Vesting Registry:", values['vestingRegistry'])
 
@@ -110,37 +110,37 @@ def addOriginsAsAdmin():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nAdding Origins as an admin to LockedFund...\n")
     lockedFund.addAdmin(values['origins'])
-    print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
+    print("Added Origins as", values['origins'], "as an admin of Locked Fund.")
 
 # =========================================================================================================================================
 def removeMyselfAsAdmin():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nRemoving myself as an admin to LockedFund...\n")
     lockedFund.removeAdmin(acct)
-    print("Removed myself as", acct, " as an admin of Locked Fund.")
+    print("Removed myself as", acct, "as an admin of Locked Fund.")
 
 # =========================================================================================================================================
 def updateVestingRegistry():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nUpdating Vesting Registry of LockedFund...\n")
     lockedFund.changeVestingRegistry(values['vestingRegistry'])
-    print("Updated Vesting Registry as", values['vestingRegistry'], " of LockedFund...\n")
+    print("Updated Vesting Registry as", values['vestingRegistry'], "of LockedFund...\n")
 
 # =========================================================================================================================================
 def updateWaitedTS():
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nUpdating Waited Timestamp of LockedFund...\n")
     lockedFund.changeWaitedTS(values['waitedTimestamp'])
-    print("Updated Waited Timestamp as", values['waitedTimestamp'], " of LockedFund...\n")
+    print("Updated Waited Timestamp as", values['waitedTimestamp'], "of LockedFund...\n")
 
 # =========================================================================================================================================
 def writeToJSON():
     if thisNetwork == "development":
-        fileHandle = open('./scripts/values/development.json', "w")
+        fileHandle = open('./scripts/origins/values/development.json', "w")
     elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
-        fileHandle = open('./scripts/values/testnet.json', "w")
+        fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
-        fileHandle = open('./scripts/values/mainnet.json', "w")
+        fileHandle = open('./scripts/origins/values/mainnet.json', "w")
     json.dump(values, fileHandle, indent=4)
 
 # =========================================================================================================================================

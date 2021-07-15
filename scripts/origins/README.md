@@ -1,8 +1,8 @@
 ## Prerequisite
 
 Please fill the below details in mainnet.json (or the corresponding network JSON files):
-- Token Contract in `token`
-- Token Decimals in `decimal`
+- Token Contract in `token` (If not already added by the `deploy_Token.py` script)
+- Token Decimals in `decimal` (If not already added by the `deploy_Token.py` script)
 - Multisig Owners in `multisigOwners`
 - Initial Admin in `initialAdmin`, this should be the EOA which runs this script. Don't forget to remove yourself as an admin. It is recommended to use a multisig as the sole admin after initial setup.
 - Verifier in `originsVerifiers`, this address will be adding the address list which has to be verified to a particular tier.
@@ -17,7 +17,7 @@ Please fill the below details in mainnet.json (or the corresponding network JSON
 To create:
 
 ```
-brownie run scripts/deployMultisig.py --network [ENTER DESIRED NETWORK]
+brownie run scripts/origins/deployMultisig.py --network [ENTER DESIRED NETWORK]
 ```
 
 2. Create the Locked Fund Contract.
@@ -25,7 +25,7 @@ brownie run scripts/deployMultisig.py --network [ENTER DESIRED NETWORK]
 To create:
 
 ```
-brownie run scripts/deployLockedFund.py --network [ENTER DESIRED NETWORK]
+brownie run scripts/origins/deployLockedFund.py --network [ENTER DESIRED NETWORK]
 ```
 
 Then select the correct option to deploy Locked Fund Contract.
@@ -35,7 +35,7 @@ Then select the correct option to deploy Locked Fund Contract.
 To create:
 
 ```
-brownie run scripts/deployOrigins.py --network [ENTER DESIRED NETWORK]
+brownie run scripts/origins/deployOrigins.py --network [ENTER DESIRED NETWORK]
 ```
 
 Then select the correct option to deploy Origins.

@@ -14,9 +14,9 @@ def main():
     balanceAfter = acct.balance()
 
     print("=============================================================")
-    print("RSK Before Balance:  ", balanceBefore)
-    print("RSK After Balance:   ", balanceAfter)
-    print("Gas Used:            ", balanceBefore - balanceAfter)
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
     print("=============================================================")
 
 # =========================================================================================================================================
@@ -26,16 +26,16 @@ def loadConfig():
 
     if thisNetwork == "development":
         acct = accounts[0]
-        configFile = open('./scripts/values/development.json')
+        configFile = open('./scripts/origins/values/development.json')
     elif thisNetwork == "testnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/values/mainnet.json')
+        configFile = open('./scripts/origins/values/mainnet.json')
     else:
         raise Exception("Network not supported.")
 
@@ -59,14 +59,15 @@ def choice():
         print("10 for Setting Tier Time Parameters.")
         print("11 for Buying Tokens.")
         print("12 for Adding Myself as a Verifier.")
-        print("13 for Verifying Wallet List with Tier ID")
-        print("14 for Removing Myself as an Owner.")
-        print("15 for Removing Myself as a Verifier.")
-        print("16 for getting the Tier Count.")
-        print("17 for getting the Tier Details.")
-        print("18 for getting the Owner Details.")
-        print("19 for getting the Verifier Details.")
-        print("20 to exit.")
+        print("13 for Verified my wallet with Tier ID")
+        print("14 for Verifying Wallet List with Tier ID")
+        print("15 for Removing Myself as an Owner.")
+        print("16 for Removing Myself as a Verifier.")
+        print("17 for getting the Tier Count.")
+        print("18 for getting the Tier Details.")
+        print("19 for getting the Owner Details.")
+        print("20 for getting the Verifier Details.")
+        print("21 to exit.")
         selection = int(input("Enter the choice: "))
         if(selection == 1):
             deployOrigins()
@@ -93,27 +94,29 @@ def choice():
         elif(selection == 12):
             addMyselfAsVerifier()
         elif(selection == 13):
-            verifyWallet()
+            verifyMyWallet()
         elif(selection == 14):
-            removeMyselfAsOwner()
+            verifyWalletList()
         elif(selection == 15):
-            removeMyselfAsVerifier()
+            removeMyselfAsOwner()
         elif(selection == 16):
-            getTierCount()
+            removeMyselfAsVerifier()
         elif(selection == 17):
-            getTierDetails()
+            getTierCount()
         elif(selection == 18):
-            getOwnerList()
+            getTierDetails()
         elif(selection == 19):
-            getVerifierList()
+            getOwnerList()
         elif(selection == 20):
+            getVerifierList()
+        elif(selection == 21):
             repeat = False
         else:
             print("\nSmarter people have written this, enter valid selection ;)\n")
 
 # =========================================================================================================================================
 def deployOrigins():
-    adminList = [values['multisig'], values['initialAdmin']]
+    adminList = [values['multisig'], acct]
     token = values['token']
     depositAddress = values['depositAddress']
 
@@ -354,7 +357,7 @@ def setTierTokenAmount():
 def setTierVestOrLock():
     tierID = readTier("edit")
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
-    origins.setTierVestOrLock(tierID, values['tiers'][tierID]['vestOrLockCliff'], values['tiers'][tierID]['vestOrLockDuration'], values['waitedTimestamp'], values['tiers'][tierID]['unlockedBP'], values['tiers'][tierID]['transferType'])
+    origins.setTierVestOrLock(tierID, values['tiers'][tierID]['vestOrLockCliff'], values['tiers'][tierID]['vestOrLockDuration'], values['tiers'][tierID]['unlockedBP'], values['tiers'][tierID]['transferType'])
     print("Tier Vest or Lock Updated.")
 
 # =========================================================================================================================================
@@ -371,22 +374,34 @@ def buyTokens():
     amount = 0
     rbtcAmount = 0
     print("\nIf you want to send just `X` RBTC/Token, put 1 itself, (X * (10 ** Decimals)) is done behind the screen.")
-    amount = int(input("Enter the amount of tokens/RBTC you want to send: "))
+    amount = float(input("Enter the amount of tokens/RBTC you want to send: "))
     if(values['tiers'][tierID]['depositToken'] != '0x0000000000000000000000000000000000000000'):
         token = Contract.from_abi("Token", address=values['tiers'][tierID]['depositToken'], abi=Token.abi, owner=acct)
+        decimal = token.decimals()
+        amount = amount * (10 ** decimal)
         checkAllowance(token, origins.address, amount)
+    else:
+        decimal = 18
+        amount = amount * (10 ** decimal)
+        rbtcAmount = amount
     origins.buy(tierID, amount, {'value':rbtcAmount})
 
 # =========================================================================================================================================
 def addMyselfAsVerifier():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
-    print("\nAdding myself as a Verifier...")
+    print("\nAdding myself as a Verifier...\n")
     origins.addVerifier(acct)
     print("Added",acct,"as a verifier.")
 
 # =========================================================================================================================================
-def verifyWallet():
-    tierID = readTier("add the wallet list to")
+def verifyMyWallet():
+    tierID = readTier("verify my wallet to")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    origins.addressVerification(acct, tierID)
+    print("My address is Verified.")
+
+def verifyWalletList():
+    tierID = readTier("verify the wallet list to")
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     origins.multipleAddressSingleTierVerification(values['toVerify'], tierID)
     print("All the address Verified.")
@@ -394,7 +409,7 @@ def verifyWallet():
 # =========================================================================================================================================
 def removeMyselfAsVerifier():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
-    print("\nRemoving myself as a Verifier...")
+    print("\nRemoving myself as a Verifier...\n")
     origins.removeVerifier(acct)
     print("Removed myself as a Verifier.")
 
@@ -418,7 +433,7 @@ def getTierDetails():
     tierID = readTier("read")
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
 
-    minAmount, maxAmount, remainingTokens, saleStartTimestamp, saleEnd, unlockedTS, unlockedBP, vestOrLockCliff, vestOrLockDuration, depositRate = origins.readTierPartA(tierID)
+    minAmount, maxAmount, remainingTokens, saleStartTimestamp, saleEnd, unlockedBP, vestOrLockCliff, vestOrLockDuration, depositRate = origins.readTierPartA(tierID)
     depositToken, depositType, verificationType, saleEndDurationOrTimestamp, transferType = origins.readTierPartB(tierID)
 
     decimal = int(values['decimal'])
@@ -437,7 +452,6 @@ def getTierDetails():
     print("Tokens For Sale (without Decimal):   ", remainingTokens)
     print("Sale Start Timestamp:                ", saleStartTimestamp)
     print("Sale End Duration/Timestamp:         ", saleEnd)
-    # print("Unlocked Token Timestamp:            ", unlockedTS)
     print("Unlocked Token Basis Point:          ", unlockedBP)
     print("Vest Or Lock Cliff:                  ", vestOrLockCliff)
     print("Vest Or Lock Duration:               ", vestOrLockDuration)
@@ -466,11 +480,11 @@ def getVerifierList():
 # =========================================================================================================================================
 def writeToJSON():
     if thisNetwork == "development":
-        fileHandle = open('./scripts/values/development.json', "w")
+        fileHandle = open('./scripts/origins/values/development.json', "w")
     elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
-        fileHandle = open('./scripts/values/testnet.json', "w")
+        fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
-        fileHandle = open('./scripts/values/mainnet.json', "w")
+        fileHandle = open('./scripts/origins/values/mainnet.json', "w")
     json.dump(values, fileHandle, indent=4)
 
 # =========================================================================================================================================
