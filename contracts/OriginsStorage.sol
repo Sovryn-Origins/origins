@@ -75,6 +75,9 @@ contract OriginsStorage {
 		Locked
 	}
 
+	/// @notice TODO
+	enum unlockType { None, Immediate, Waited }
+
 	/// @notice The tiers based on the tier id, taken from tier count.
 	mapping(uint256 => Tier) internal tiers;
 
@@ -102,7 +105,6 @@ contract OriginsStorage {
 	 * remainingTokens - Contains the remaining tokens for sale.
 	 * saleStartTS - Contains the timestamp for the sale to start. Before which no user will be able to buy tokens.
 	 * saleEnd - Contains the duration or timestamp for the sale to end. After which no user will be able to buy tokens.
-	 * unlockedTokenWithdrawTS - Contains the timestamp for the waited unlocked tokens to be withdrawn.
 	 * unlockBP - Contains the unlock amount in Basis Point for Vesting/Lock.
 	 * vestOrLockCliff - Contains the cliff of the vesting/lock for distribution.
 	 * vestOrLockDuration - Contains the duration of the vesting/lock for distribution.
@@ -118,7 +120,6 @@ contract OriginsStorage {
 		uint256 remainingTokens;
 		uint256 saleStartTS;
 		uint256 saleEnd;
-		uint256 unlockedTokenWithdrawTS;
 		uint256 unlockedBP;
 		uint256 vestOrLockCliff;
 		uint256 vestOrLockDuration;
