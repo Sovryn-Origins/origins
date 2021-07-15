@@ -52,7 +52,9 @@ module.exports = {
 		disambiguatePaths: false,
 	},
 	networks: {
-		hardhat: {},
+		hardhat: {
+			blockGasLimit: 6800000
+		},
 		rskPublicTestnet: {
 			url: "https://public-node.testnet.rsk.co/",
 			accounts: { mnemonic: "brownie", count: 10 },
