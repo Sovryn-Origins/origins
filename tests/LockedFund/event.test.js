@@ -290,5 +290,4 @@ contract("LockedFund (Events)", (accounts) => {
 			_amount: new BN(Math.ceil(value / 2)),
 		});
 	});
-
 });

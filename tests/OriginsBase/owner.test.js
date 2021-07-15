@@ -427,14 +427,9 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 			firstTransferType,
 			{ from: owner }
 		);
-		await originsBase.setTierVestOrLock(
-			1,
-			secondVestOrLockCliff,
-			secondVestOfLockDuration,
-			secondUnlockedBP,
-			secondTransferType,
-			{ from: owner }
-		);
+		await originsBase.setTierVestOrLock(1, secondVestOrLockCliff, secondVestOfLockDuration, secondUnlockedBP, secondTransferType, {
+			from: owner,
+		});
 	});
 
 	it("Owner should not be able to set Tier Vest or Lock Parameters with cliff higher than duration.", async () => {
@@ -456,14 +451,9 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 			{ from: owner }
 		);
 		await expectRevert(
-			originsBase.setTierVestOrLock(
-				1,
-				secondVestOfLockDuration,
-				secondVestOrLockCliff,
-				secondUnlockedBP,
-				secondTransferType,
-				{ from: owner }
-			),
+			originsBase.setTierVestOrLock(1, secondVestOfLockDuration, secondVestOrLockCliff, secondUnlockedBP, secondTransferType, {
+				from: owner,
+			}),
 			"OriginsBase: Cliff has to be <= duration."
 		);
 	});
@@ -487,14 +477,9 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 			{ from: owner }
 		);
 		await expectRevert(
-			originsBase.setTierVestOrLock(
-				1,
-				secondVestOrLockCliff,
-				secondVestOfLockDuration,
-				invalidBasisPoint,
-				secondTransferType,
-				{ from: owner }
-			),
+			originsBase.setTierVestOrLock(1, secondVestOrLockCliff, secondVestOfLockDuration, invalidBasisPoint, secondTransferType, {
+				from: owner,
+			}),
 			"OriginsBase: The basis point cannot be higher than 10K."
 		);
 	});

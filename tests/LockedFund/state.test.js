@@ -630,5 +630,4 @@ contract("LockedFund (State Change)", (accounts) => {
 		let newBalances = await getTokenBalances(userTwo, token, lockedFund);
 		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
-
 });
