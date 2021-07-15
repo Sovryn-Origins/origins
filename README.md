@@ -1,6 +1,37 @@
-# Origins [![Node.js CI](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml) [![Build Status](https://travis-ci.org/DistributedCollective/origins.svg?branch=main)](https://travis-ci.org/DistributedCollective/origins) [![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=initial)](https://coveralls.io/github/DistributedCollective/origins?branch=initial)
+# Origins
 
 The Origins Platform Smart Contracts
+
+## Badges
+
+Version & Tag:
+
+[![NPM Package](https://img.shields.io/npm/v/origins-launchpad.svg?style=flat)](https://www.npmjs.org/package/origins-launchpad)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/DistributedCollective/origins)
+
+Issue & PR:
+
+![GitHub issues](https://img.shields.io/github/issues/DistributedCollective/origins)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/DistributedCollective/origins)
+
+CI:
+
+[![Node.js CI](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml)
+[![Build Status](https://travis-ci.org/DistributedCollective/origins.svg?branch=main)](https://travis-ci.org/DistributedCollective/origins)
+
+Code Coverage:
+
+[![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=initial)](https://coveralls.io/github/DistributedCollective/origins?branch=initial)
+
+Code Style:
+
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat)](https://github.com/prettier/prettier)
+
+Metrics & Activity:
+
+![GitHub language count](https://img.shields.io/github/languages/count/DistributedCollective/origins)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/DistributedCollective/origins)
+![GitHub last commit](https://img.shields.io/github/last-commit/DistributedCollective/origins)
 
 ## Main Contracts
 
@@ -58,9 +89,9 @@ For Vesting, it uses the contracts of `Sovryn-smart-contract` repo. The registry
 
 P.S. It is a simple project, isn't it?
 
-## Call Graph
+## UML Diagram
 
-![UML Diagram](UML.png)
+![UML Diagram](UML.svg)
 
 ## Explanation
 
@@ -95,3 +126,4 @@ TODO
 - Maybe a single contract can act as the platform if instead of different tiers based on ID, the tiers are based on token address (which is to be sold), thus having multiple tiers based on that. So, a single contract can handle multiple sales at once with multiple tiers. This can only be done after struct decoupling and gas profiling of each function and possible gas saving methods added.
 - Total unique wallets participated in all tiers. Currently only unique wallets participated in a each tier is counted, which is not the same as unique wallets participated in all tiers combined. New storage structure will be required.
 - Tests related to other type of sales to be added.
+- Reduce the reason string text size, or use a numbering system with errors in mainly LockedFund and OriginsBase.
