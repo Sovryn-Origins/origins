@@ -33,7 +33,11 @@ contract LockedFund is ILockedFund {
 	IVestingRegistry public vestingRegistry;
 
 	/// @notice TODO
-	enum unlockType { None, Immediate, Waited }
+	enum unlockType {
+		None,
+		Immediate,
+		Waited
+	}
 
 	/// @notice The vested balances.
 	mapping(address => uint256) public vestedBalances;
@@ -106,12 +110,7 @@ contract LockedFund is ILockedFund {
 	 * @param _amount The amount of Token to be added to the un/locked balance.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
 	 */
-	event WaitedUnlockedDeposited(
-		address indexed _initiator,
-		address indexed _userAddress,
-		uint256 _amount,
-		uint256 _basisPoint
-	);
+	event WaitedUnlockedDeposited(address indexed _initiator, address indexed _userAddress, uint256 _amount, uint256 _basisPoint);
 
 	/**
 	 * @notice Emitted when a user withdraws the fund.
@@ -401,15 +400,13 @@ contract LockedFund is ILockedFund {
 
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
-		if(_unlockedOrWaited == unlockType.Immediate) {
+		if (_unlockedOrWaited == unlockType.Immediate) {
 			unlockedBalances[_userAddress] = unlockedBalances[_userAddress].add(unlockedBal);
 			// TODO emit unlocked deposited event.
-		}
-		else if(_unlockedOrWaited == unlockType.Waited) {
+		} else if (_unlockedOrWaited == unlockType.Waited) {
 			waitedUnlockedBalances[_userAddress] = waitedUnlockedBalances[_userAddress].add(unlockedBal);
 			// TODO emit waited unlocked deposited event.
-		}
-		else {
+		} else {
 			unlockedBal = 0;
 		}
 
@@ -440,7 +437,7 @@ contract LockedFund is ILockedFund {
 
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
-		if(unlockedBal > 0){
+		if (unlockedBal > 0) {
 			unlockedBalances[_userAddress] = unlockedBalances[_userAddress].add(unlockedBal);
 			// TODO emit unlocked deposited event.
 		}
