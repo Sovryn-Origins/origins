@@ -128,7 +128,7 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		[creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -253,7 +253,6 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 				tierCount,
 				secondVestOrLockCliff,
 				secondVestOfLockDuration,
-				waitedTS,
 				secondUnlockedBP,
 				secondTransferType,
 				{ from: verifier }

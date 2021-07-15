@@ -129,7 +129,6 @@ async function checkTier(
 	_remainingTokens,
 	_saleStartTS,
 	_saleEnd,
-	_unlockedTokenWithdrawTS,
 	_unlockedBP,
 	_vestOrLockCliff,
 	_vestOrLockDuration,
@@ -151,7 +150,6 @@ async function checkTier(
 	} else if (tierPartB._saleEndDurationOrTS == saleEndDurationOrTSTimestamp) {
 		assert(tierPartA._saleEnd.eq(new BN(_saleEnd)), "Sale End TS is not correctly set.");
 	}
-	assert(tierPartA._unlockedTokenWithdrawTS.eq(new BN(_unlockedTokenWithdrawTS)), "Unlocked Token Withdraw TS is not correctly set.");
 	assert(tierPartA._unlockedBP.eq(new BN(_unlockedBP)), "Unlocked Basis Point is not correctly set.");
 	assert(tierPartA._vestOrLockCliff.eq(new BN(_vestOrLockCliff)), "Vest or Lock Cliff is not correctly set.");
 	assert(tierPartA._vestOrLockDuration.eq(new BN(_vestOrLockDuration)), "Vest or Lock Duration is not correctly set.");
@@ -174,7 +172,7 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		[creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -283,7 +281,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -324,7 +321,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -365,7 +361,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -406,7 +401,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -449,7 +443,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			secondRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -485,7 +478,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			tierCount,
 			secondVestOrLockCliff,
 			secondVestOfLockDuration,
-			waitedTS,
 			secondUnlockedBP,
 			secondTransferType,
 			{ from: owner }
@@ -498,7 +490,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			firstSaleStartTS,
 			firstSaleEnd,
-			waitedTS,
 			secondUnlockedBP,
 			secondVestOrLockCliff,
 			secondVestOfLockDuration,
@@ -539,7 +530,6 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			firstRemainingTokens,
 			secondSaleStartTS,
 			secondSaleEnd,
-			zero,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,

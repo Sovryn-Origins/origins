@@ -117,7 +117,7 @@ async function userMintAndApprove(tokenContract, userAddr, toApprove) {
 	return value;
 }
 
-contract("OriginsBase (Admin Functions)", (accounts) => {
+contract("OriginsBase (Owner Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic, originsBase;
 	let creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr;
 	let tierCount;
@@ -128,7 +128,7 @@ contract("OriginsBase (Admin Functions)", (accounts) => {
 		[creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero);
+		token = await Token.new(zero, "Test Token", "TST", 18);
 
 		// Creating the Staking Instance.
 		stakingLogic = await StakingLogic.new(token.address);
@@ -431,7 +431,6 @@ contract("OriginsBase (Admin Functions)", (accounts) => {
 			1,
 			secondVestOrLockCliff,
 			secondVestOfLockDuration,
-			waitedTS,
 			secondUnlockedBP,
 			secondTransferType,
 			{ from: owner }
@@ -461,7 +460,6 @@ contract("OriginsBase (Admin Functions)", (accounts) => {
 				1,
 				secondVestOfLockDuration,
 				secondVestOrLockCliff,
-				waitedTS,
 				secondUnlockedBP,
 				secondTransferType,
 				{ from: owner }
@@ -493,7 +491,6 @@ contract("OriginsBase (Admin Functions)", (accounts) => {
 				1,
 				secondVestOrLockCliff,
 				secondVestOfLockDuration,
-				waitedTS,
 				invalidBasisPoint,
 				secondTransferType,
 				{ from: owner }
