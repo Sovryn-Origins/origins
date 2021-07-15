@@ -1,5 +1,6 @@
 pragma solidity ^0.5.17;
 
+import "./Interfaces/IOrigins.sol";
 import "./OriginsEvents.sol";
 
 /**
@@ -8,7 +9,7 @@ import "./OriginsEvents.sol";
  *  @notice You can use this contract for creating a sale in the Origins Platform.
  *  @dev Don't forget to update the Interface: IOrigins, according to the changes in this.
  */
-contract OriginsBase is OriginsEvents {
+contract OriginsBase is IOrigins, OriginsEvents {
 	/* Functions */
 
 	/**
@@ -77,10 +78,10 @@ contract OriginsBase is OriginsEvents {
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
 		uint256 _depositRate,
-		DepositType _depositType,
-		VerificationType _verificationType,
-		SaleEndDurationOrTS _saleEndDurationOrTS,
-		TransferType _transferType
+		uint256 _depositType,
+		uint256 _verificationType,
+		uint256 _saleEndDurationOrTS,
+		uint256 _transferType
 	) external onlyOwner returns (uint256 _tierID) {
 		/// @notice `tierCount` should always start at 1, because else default value zero will result in verification process.
 		tierCount++;
@@ -91,10 +92,10 @@ contract OriginsBase is OriginsEvents {
 		emit NewTierCreated(msg.sender, _tierID);
 
 		/// @notice Verification Parameter.
-		_setTierVerification(_tierID, _verificationType);
+		_setTierVerification(_tierID, VerificationType(_verificationType));
 
 		/// @notice Deposit Parameters. (IMPORTANT TODO, change deposit token address here.)
-		_setTierDeposit(_tierID, _depositRate, address(0), _depositType);
+		_setTierDeposit(_tierID, _depositRate, address(0), DepositType(_depositType));
 
 		/// @notice Token Amount Limit Parameters. (IMPORTANT TODO, change minimum amount.)
 		_setTierTokenLimit(_tierID, 0, _maxAmount);
@@ -103,10 +104,10 @@ contract OriginsBase is OriginsEvents {
 		_setTierTokenAmount(_tierID, _remainingTokens);
 
 		/// @notice Vesting or Locking Parameters.
-		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, 0, _unlockedBP, _transferType);
+		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedBP, TransferType(_transferType));
 
 		/// @notice Time Parameters.
-		_setTierTime(_tierID, _saleStartTS, _saleEnd, _saleEndDurationOrTS);
+		_setTierTime(_tierID, _saleStartTS, _saleEnd, SaleEndDurationOrTS(_saleEndDurationOrTS));
 	}
 
 	/**
@@ -114,8 +115,8 @@ contract OriginsBase is OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _verificationType The type of verification for the particular sale.
 	 */
-	function setTierVerification(uint256 _tierID, VerificationType _verificationType) external onlyOwner {
-		_setTierVerification(_tierID, _verificationType);
+	function setTierVerification(uint256 _tierID, uint256 _verificationType) external onlyOwner {
+		_setTierVerification(_tierID, VerificationType(_verificationType));
 	}
 
 	/**
@@ -129,9 +130,9 @@ contract OriginsBase is OriginsEvents {
 		uint256 _tierID,
 		uint256 _depositRate,
 		address _depositToken,
-		DepositType _depositType
+		uint256 _depositType
 	) external onlyOwner {
-		_setTierDeposit(_tierID, _depositRate, _depositToken, _depositType);
+		_setTierDeposit(_tierID, _depositRate, _depositToken, DepositType(_depositType));
 	}
 
 	/**
@@ -162,7 +163,6 @@ contract OriginsBase is OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _vestOrLockCliff The Vest/Lock Cliff = A * LockedFund.Interval, where A is the cliff.
 	 * @param _vestOrLockDuration The Vest/Lock Duration = A * LockedFund.Interval, where A is the duration.
-	 * @param _unlockedTokenWithdrawTS The unlocked token withdraw timestamp.
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
@@ -170,11 +170,10 @@ contract OriginsBase is OriginsEvents {
 		uint256 _tierID,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
-		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
-		TransferType _transferType
+		uint256 _transferType
 	) external onlyOwner {
-		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedTokenWithdrawTS, _unlockedBP, _transferType);
+		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedBP, TransferType(_transferType));
 	}
 
 	/**
@@ -188,9 +187,9 @@ contract OriginsBase is OriginsEvents {
 		uint256 _tierID,
 		uint256 _saleStartTS,
 		uint256 _saleEnd,
-		SaleEndDurationOrTS _saleEndDurationOrTS
+		uint256 _saleEndDurationOrTS
 	) external onlyOwner {
-		_setTierTime(_tierID, _saleStartTS, _saleEnd, _saleEndDurationOrTS);
+		_setTierTime(_tierID, _saleStartTS, _saleEnd, SaleEndDurationOrTS(_saleEndDurationOrTS));
 	}
 
 	/**
@@ -383,7 +382,6 @@ contract OriginsBase is OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _vestOrLockCliff The Vest/Lock Cliff = A * LockedFund.Interval, where A is the cliff.
 	 * @param _vestOrLockDuration The Vest/Lock Duration = A * LockedFund.Interval, where A is the duration.
-	 * @param _unlockedTokenWithdrawTS The unlocked token withdraw timestamp.
 	 * @param _unlockedBP The unlocked token amount in BP.
 	 * @param _transferType The Tier Transfer Type for the Tier.
 	 */
@@ -391,7 +389,6 @@ contract OriginsBase is OriginsEvents {
 		uint256 _tierID,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
-		uint256 _unlockedTokenWithdrawTS,
 		uint256 _unlockedBP,
 		TransferType _transferType
 	) internal {
@@ -402,7 +399,6 @@ contract OriginsBase is OriginsEvents {
 		tiers[_tierID].vestOrLockCliff = _vestOrLockCliff;
 		tiers[_tierID].vestOrLockDuration = _vestOrLockDuration;
 		/// @notice Zero is also an accepted value, which means the unlock time is not yet decided.
-		tiers[_tierID].unlockedTokenWithdrawTS = _unlockedTokenWithdrawTS;
 		tiers[_tierID].unlockedBP = _unlockedBP;
 		tiers[_tierID].transferType = _transferType;
 
@@ -411,7 +407,6 @@ contract OriginsBase is OriginsEvents {
 			_tierID,
 			_vestOrLockCliff,
 			_vestOrLockDuration,
-			_unlockedTokenWithdrawTS,
 			_unlockedBP,
 			_transferType
 		);
@@ -496,24 +491,33 @@ contract OriginsBase is OriginsEvents {
 		if (_tierDetails.transferType == TransferType.Unlocked) {
 			bool txStatus = token.transfer(msg.sender, _tokensBought);
 			require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
-		} else if (_tierDetails.transferType == TransferType.WaitedUnlock) {
-			/// TODO Call LockedFund Contract to release the token after a certain period.
-			/// TODO approve LockedFund
-			revert("Not implemented yet.");
-		} else if (_tierDetails.transferType == TransferType.Vested) {
+		} else {
 			token.approve(address(lockedFund), _tokensBought);
-			lockedFund.depositVested(
-				msg.sender,
-				_tokensBought,
-				_tierDetails.vestOrLockCliff,
-				_tierDetails.vestOrLockDuration,
-				_tierDetails.unlockedBP
-			);
-		} else if (_tierDetails.transferType == TransferType.Locked) {
-			/// TODO Call the LockedFund Contract with simple lock on the received token.
-			/// Don't forget the immediate unlocked amount after the unlockTimestamp.
-			/// TODO approve LockedFund
-			revert("Not implemented yet.");
+			if (_tierDetails.transferType == TransferType.WaitedUnlock) {
+				lockedFund.depositWaitedUnlocked(
+					msg.sender,
+					_tokensBought,
+					_tierDetails.unlockedBP
+				);
+			} else if (_tierDetails.transferType == TransferType.Vested) {
+				lockedFund.depositVested(
+					msg.sender,
+					_tokensBought,
+					_tierDetails.vestOrLockCliff,
+					_tierDetails.vestOrLockDuration,
+					_tierDetails.unlockedBP,
+					uint256(unlockType.Waited)
+				);
+			} else if (_tierDetails.transferType == TransferType.Locked) {
+				lockedFund.depositLocked(
+					msg.sender,
+					_tokensBought,
+					_tierDetails.vestOrLockCliff,
+					_tierDetails.vestOrLockDuration,
+					_tierDetails.unlockedBP,
+					uint256(unlockType.Waited)
+				);
+			}
 		}
 	}
 
@@ -714,7 +718,6 @@ contract OriginsBase is OriginsEvents {
 	 * @return _remainingTokens Contains the remaining tokens for sale.
 	 * @return _saleStartTS Contains the timestamp for the sale to start. Before which no user will be able to buy tokens.
 	 * @return _saleEnd Contains the duration or timestamp for the sale to end. After which no user will be able to buy tokens.
-	 * @return _unlockedTokenWithdrawTS Contains the timestamp for the waited unlocked tokens to be withdrawn.
 	 * @return _unlockedBP Contains the unlock amount in Basis Point for Vesting/Lock.
 	 * @return _vestOrLockCliff Contains the cliff of the vesting/lock for distribution.
 	 * @return _vestOrLockDuration Contains the duration of the vesting/lock for distribution.
@@ -729,7 +732,6 @@ contract OriginsBase is OriginsEvents {
 			uint256 _remainingTokens,
 			uint256 _saleStartTS,
 			uint256 _saleEnd,
-			uint256 _unlockedTokenWithdrawTS,
 			uint256 _unlockedBP,
 			uint256 _vestOrLockCliff,
 			uint256 _vestOrLockDuration,
@@ -743,7 +745,6 @@ contract OriginsBase is OriginsEvents {
 			tier.remainingTokens,
 			tier.saleStartTS,
 			tier.saleEnd,
-			tier.unlockedTokenWithdrawTS,
 			tier.unlockedBP,
 			tier.vestOrLockCliff,
 			tier.vestOrLockDuration,
