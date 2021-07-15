@@ -32,6 +32,9 @@ contract LockedFund is ILockedFund {
 	/// @notice The Vesting registry contract.
 	IVestingRegistry public vestingRegistry;
 
+	/// @notice TODO
+	enum unlockType { None, Immediate, Waited }
+
 	/// @notice The vested balances.
 	mapping(address => uint256) public vestedBalances;
 	/// @notice The locked user balances. Not used right now.
@@ -93,6 +96,20 @@ contract LockedFund is ILockedFund {
 		uint256 _amount,
 		uint256 _cliff,
 		uint256 _duration,
+		uint256 _basisPoint
+	);
+
+	/**
+	 * @notice Emitted when a new deposit is made.
+	 * @param _initiator The address which initiated this event to be emitted.
+	 * @param _userAddress The user to whose un/locked balance a new deposit was made.
+	 * @param _amount The amount of Token to be added to the un/locked balance.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 */
+	event WaitedUnlockedDeposited(
+		address indexed _initiator,
+		address indexed _userAddress,
+		uint256 _amount,
 		uint256 _basisPoint
 	);
 
@@ -202,7 +219,8 @@ contract LockedFund is ILockedFund {
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
-	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
+	 * @param _unlockedOrWaited TODO
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -210,9 +228,54 @@ contract LockedFund is ILockedFund {
 		uint256 _amount,
 		uint256 _cliff,
 		uint256 _duration,
+		uint256 _basisPoint,
+		uint256 _unlockedOrWaited
+	) public onlyAdmin {
+		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint, unlockType(_unlockedOrWaited));
+	}
+
+	/**
+	 * @notice Adds Token to the user balance (Locked and Waited Unlocked Balance based on `_basisPoint`).
+	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
+	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
+	 * @param _cliff The cliff for vesting.
+	 * @param _duration The duration for vesting.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @param _unlockedOrWaited TODO
+	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
+	 */
+	function depositLocked(
+		address _userAddress,
+		uint256 _amount,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _basisPoint,
+		uint256 _unlockedOrWaited
+	) public onlyAdmin {
+		// TODO
+		// _depositLocked(_userAddress, _amount, _cliff, _duration, _basisPoint, unlockType(_unlockedOrWaited));
+		// An array with timestamp and a mapping from timestamp to the amount.
+		// Array will be unsorted, so there should be two ways to withdraw this to avoid out of gas problem.
+		// One should be normal one which will loop through all the timestamp in array.
+		// The other should be which allows certain index to be passed to get the array elements.
+		// There should also be a check to see if the timestamp is already in array. It can be done through checking the mapping.
+		// If the mapping already has some amount, then that timestamp will be in array.
+		// The the mapping has no amount, then the timestamp has to be added to the array.
+	}
+
+	/**
+	 * @notice Adds Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
+	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
+	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
+	 */
+	function depositWaitedUnlocked(
+		address _userAddress,
+		uint256 _amount,
 		uint256 _basisPoint
 	) public onlyAdmin {
-		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint);
+		_depositWaitedUnlocked(_userAddress, _amount, _basisPoint);
 	}
 
 	/**
@@ -252,21 +315,12 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
-	 * @notice Withdraws unlocked tokens and Stakes Locked tokens for a user who already have a vesting created.
+	 * @notice Withdraws unlocked tokens and Stakes Vested token balance for a user who already have a vesting created.
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external {
 		_withdrawWaitedUnlockedBalance(msg.sender, _receiverAddress);
 		_createVestingAndStake(msg.sender);
-	}
-
-	/**
-	 * @notice Withdraws unlocked tokens and Stakes Locked tokens for a user who already have a vesting created.
-	 * @param _userAddress The address of user tokens will be withdrawn.
-	 */
-	function withdrawAndStakeTokensFrom(address _userAddress) external {
-		_withdrawWaitedUnlockedBalance(_userAddress, _userAddress);
-		_createVestingAndStake(_userAddress);
 	}
 
 	/* Internal Functions */
@@ -326,13 +380,15 @@ contract LockedFund is ILockedFund {
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
+	 * @param _unlockedOrWaited TODO
 	 */
 	function _depositVested(
 		address _userAddress,
 		uint256 _amount,
 		uint256 _cliff,
 		uint256 _duration,
-		uint256 _basisPoint
+		uint256 _basisPoint,
+		unlockType _unlockedOrWaited
 	) internal {
 		/// If duration is also zero, then it is similar to Unlocked Token.
 		require(_duration != 0, "LockedFund: Duration cannot be zero.");
@@ -343,15 +399,54 @@ contract LockedFund is ILockedFund {
 		bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
 		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
 
-		uint256 waitedUnlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
+		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
-		waitedUnlockedBalances[_userAddress] = waitedUnlockedBalances[_userAddress].add(waitedUnlockedBal);
-		vestedBalances[_userAddress] = vestedBalances[_userAddress].add(_amount).sub(waitedUnlockedBal);
+		if(_unlockedOrWaited == unlockType.Immediate) {
+			unlockedBalances[_userAddress] = unlockedBalances[_userAddress].add(unlockedBal);
+			// TODO emit unlocked deposited event.
+		}
+		else if(_unlockedOrWaited == unlockType.Waited) {
+			waitedUnlockedBalances[_userAddress] = waitedUnlockedBalances[_userAddress].add(unlockedBal);
+			// TODO emit waited unlocked deposited event.
+		}
+		else {
+			unlockedBal = 0;
+		}
+
+		vestedBalances[_userAddress] = vestedBalances[_userAddress].add(_amount).sub(unlockedBal);
 
 		cliff[_userAddress] = _cliff * INTERVAL;
 		duration[_userAddress] = _duration * INTERVAL;
 
 		emit VestedDeposited(msg.sender, _userAddress, _amount, _cliff, _duration, _basisPoint);
+		// TODO Edit the amount based on the waited/unlocked balance.
+	}
+
+	/**
+	 * @notice Internal function to add Token to the user balance (Waited Unlocked and Unlocked Balance based on `_basisPoint`).
+	 * @param _userAddress The user whose waited unlocked balance has to be updated with `_amount`.
+	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
+	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
+	 */
+	function _depositWaitedUnlocked(
+		address _userAddress,
+		uint256 _amount,
+		uint256 _basisPoint
+	) internal {
+		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
+		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
+		bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
+		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+
+		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
+
+		if(unlockedBal > 0){
+			unlockedBalances[_userAddress] = unlockedBalances[_userAddress].add(unlockedBal);
+			// TODO emit unlocked deposited event.
+		}
+		waitedUnlockedBalances[_userAddress] = waitedUnlockedBalances[_userAddress].add(_amount).sub(unlockedBal);
+
+		emit WaitedUnlockedDeposited(msg.sender, _userAddress, _amount, _basisPoint);
 	}
 
 	/**
