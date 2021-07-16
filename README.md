@@ -93,6 +93,10 @@ P.S. It is a simple project, isn't it?
 
 ![UML Diagram](UML.svg)
 
+## Inheritance
+
+![Inheritance](Inheritance.svg)
+
 ## Explanation
 
 TODO
