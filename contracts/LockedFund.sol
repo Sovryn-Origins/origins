@@ -141,7 +141,7 @@ contract LockedFund is ILockedFund {
 	/**
 	 * @notice Modifier to check only admin is allowed for certain functions.
 	 */
-	modifier onlyAdmin {
+	modifier onlyAdmin() {
 		require(isAdmin[msg.sender], "LockedFund: Only admin can call this.");
 		_;
 	}
