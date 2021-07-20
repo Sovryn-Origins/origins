@@ -23,7 +23,11 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		[creator, ownerOne, ownerTwo, ownerThree, verifierOne, verifierTwo, verifierThree, userOne] = accounts;
 
 		// Creating the instance of OriginsAdmin Contract.
-		originsAdmin = await OriginsAdmin.new([ownerOne]);
+		originsAdmin = await OriginsAdmin.new([ownerOne], { from: creator });
+	});
+
+	it("Creator should not be able to create an instance with same owner address twice.", async () => {
+		await expectRevert(OriginsAdmin.new([ownerOne, ownerOne], { from: creator }), "OriginsAdmin: Each owner can be added only once.");
 	});
 
 	it("Creator should not be able to add another owner.", async () => {

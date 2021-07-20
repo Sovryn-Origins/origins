@@ -23,7 +23,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		[creator, ownerOne, ownerTwo, ownerThree, verifierOne, verifierTwo, verifierThree, userOne] = accounts;
 
 		// Creating the instance of OriginsAdmin Contract.
-		originsAdmin = await OriginsAdmin.new([ownerOne]);
+		originsAdmin = await OriginsAdmin.new([ownerOne], { from: creator });
 	});
 
 	it("Owner should be able to add another owner.", async () => {

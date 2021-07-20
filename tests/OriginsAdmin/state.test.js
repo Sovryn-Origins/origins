@@ -23,7 +23,7 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		[creator, ownerOne, ownerTwo, ownerThree, verifierOne, verifierTwo, verifierThree, userOne] = accounts;
 
 		// Creating the instance of OriginsAdmin Contract.
-		originsAdmin = await OriginsAdmin.new([ownerOne]);
+		originsAdmin = await OriginsAdmin.new([ownerOne], { from: creator });
 	});
 
 	it("Owner should be able to add another owner.", async () => {
@@ -48,5 +48,16 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 		await originsAdmin.removeVerifier(verifierOne, { from: ownerOne });
 		let isVerifier = await originsAdmin.checkVerifier(verifierOne);
 		assert.strictEqual(isVerifier, false, "Verifier status not udpated correctly.");
+	});
+
+	it("Owner should be able to get owner list.", async () => {
+		let owners = await originsAdmin.getOwners({ from: ownerOne });
+		assert.strictEqual(owners[0], ownerOne, "Owner address incorrect.");
+	});
+
+	it("Owner should be able to get verifier list.", async () => {
+		await originsAdmin.addVerifier(verifierOne, { from: ownerOne });
+		let verifiers = await originsAdmin.getVerifiers({ from: ownerOne });
+		assert.strictEqual(verifiers[0], verifierOne, "Verifier address incorrect.");
 	});
 });
