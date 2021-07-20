@@ -1,9 +1,9 @@
 {
-	"Token_Name": "Babelfish",
-	"Token_Symbol": "FISH",
-	"Token_Decimal": "18",
-	"Token_Amount": "420000000",
-	"Token": "0xF769f619E3b9DBCd552E62dF217D5DC095f6a42b",
+	"tokenName": "Babelfish",
+	"tokenSymbol": "FISH",
+	"tokenDecimal": "18",
+	"tokenAmount": "420000000",
+	"token": "0xF769f619E3b9DBCd552E62dF217D5DC095f6a42b",
 	"multisig": "0xad48087BaaEEe65b919CE62c052A833545f2f882",
 	"multisigOwners": [
 		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
