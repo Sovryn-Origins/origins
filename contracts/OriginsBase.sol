@@ -23,7 +23,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		address _token,
 		address payable _depositAddress
 	) public OriginsAdmin(_owners) {
-		require(_token != address(0), "Token Address cannot be zero.");
+		require(_token != address(0), "OriginsBase: Token Address cannot be zero.");
 
 		token = IERC20(_token);
 
@@ -424,7 +424,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		} else if ((_saleStartTS != 0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
 			require(_saleStartTS < _saleEnd, "OriginsBase: The sale start TS cannot be after sale end TS.");
 		}
-		if (saleEndTS != 0) {
+
+		if (saleEndTS != 0 && _saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
 			require(saleEndTS > block.timestamp, "OriginsBase: The sale end duration cannot be past already.");
 		}
 
@@ -460,10 +461,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		require(!tierSaleEnded[_id], "OriginsBase: Sale ended.");
 		if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None) {
 			return false;
-		} else if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.UntilSupply && tiers[_id].remainingTokens == 0) {
-			tierSaleEnded[_id] = true;
-			return false;
-		} else if (tiers[_id].saleEnd < block.timestamp) {
+		} else if (tiers[_id].saleEnd < block.timestamp && tiers[_id].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
 			tierSaleEnded[_id] = true;
 			return false;
 		}
@@ -479,7 +477,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tokensBought The number of tokens bought.
 	 */
 	function _tokenTransferOnBuy(Tier memory _tierDetails, uint256 _tokensBought) internal {
-		require(_tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner");
+		require(_tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner.");
 
 		if (_tierDetails.transferType == TransferType.Unlocked) {
 			bool txStatus = token.transfer(msg.sender, _tokensBought);
@@ -543,12 +541,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _tokensBoughtByAddress,
 		uint256 _tokensBought
 	) internal {
-		if (_deposit > 0) {
-			if (_tokensBoughtByAddress == 0) {
-				participatingWalletCountPerTier[_tierID]++;
-			}
-			tokensSoldPerTier[_tierID] = tokensSoldPerTier[_tierID].add(_tokensBought);
+		if (_tokensBoughtByAddress == 0) {
+			participatingWalletCountPerTier[_tierID]++;
 		}
+		tokensSoldPerTier[_tierID] = tokensSoldPerTier[_tierID].add(_tokensBought);
 	}
 
 	/**
@@ -631,7 +627,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @dev In the future this could be made to be accessible only to seller, rather than owner.
 	 */
 	function _withdrawSaleDeposit() internal {
-		require(checkOwner(msg.sender) || depositAddress == msg.sender, "Only owner or deposit address can call this function.");
+		require(checkOwner(msg.sender) || depositAddress == msg.sender, "OriginsBase: Only owner or deposit address can call this function.");
 		/// @notice Checks if deposit address is set or not.
 		address payable receiver = msg.sender;
 		if (depositAddress != address(0)) {
