@@ -93,19 +93,31 @@ contract("LockedFund (Creator Functions)", (accounts) => {
 	});
 
 	it("Creator should not be able to create a lockedFund contract with zero as waited timestamp.", async () => {
-		await expectRevert(LockedFund.new(0, token.address, vestingRegistry.address, [admin], { from: creator }), "LockedFund: Waited TS cannot be zero.");
+		await expectRevert(
+			LockedFund.new(0, token.address, vestingRegistry.address, [admin], { from: creator }),
+			"LockedFund: Waited TS cannot be zero."
+		);
 	});
 
 	it("Creator should not be able to create a lockedFund contract with zero address for token.", async () => {
-		await expectRevert(LockedFund.new(waitedTS, zeroAddress, vestingRegistry.address, [admin], { from: creator }), "LockedFund: Invalid Token Address.");
+		await expectRevert(
+			LockedFund.new(waitedTS, zeroAddress, vestingRegistry.address, [admin], { from: creator }),
+			"LockedFund: Invalid Token Address."
+		);
 	});
 
 	it("Creator should not be able to create a lockedFund contract with zero address as vesting registry.", async () => {
-		await expectRevert(LockedFund.new(waitedTS, token.address, zeroAddress, [admin], { from: creator }), "LockedFund: Vesting registry address is invalid.");
+		await expectRevert(
+			LockedFund.new(waitedTS, token.address, zeroAddress, [admin], { from: creator }),
+			"LockedFund: Vesting registry address is invalid."
+		);
 	});
 
 	it("Creator should not be able to create a lockedFund contract with invalid admin address.", async () => {
-		await expectRevert(LockedFund.new(waitedTS, token.address, vestingRegistry.address, [zeroAddress], { from: creator }), "LockedFund: Invalid Address.");
+		await expectRevert(
+			LockedFund.new(waitedTS, token.address, vestingRegistry.address, [zeroAddress], { from: creator }),
+			"LockedFund: Invalid Address."
+		);
 	});
 
 	it("Creator should not be able to add another admin.", async () => {

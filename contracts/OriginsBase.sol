@@ -627,7 +627,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @dev In the future this could be made to be accessible only to seller, rather than owner.
 	 */
 	function _withdrawSaleDeposit() internal {
-		require(checkOwner(msg.sender) || depositAddress == msg.sender, "OriginsBase: Only owner or deposit address can call this function.");
+		require(
+			checkOwner(msg.sender) || depositAddress == msg.sender,
+			"OriginsBase: Only owner or deposit address can call this function."
+		);
 		/// @notice Checks if deposit address is set or not.
 		address payable receiver = msg.sender;
 		if (depositAddress != address(0)) {

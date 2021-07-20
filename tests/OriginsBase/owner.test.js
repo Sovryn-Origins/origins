@@ -98,7 +98,7 @@ function randomValue() {
  *
  * @return {number} Current Unix Timestamp.
  */
- async function currentTimestamp() {
+async function currentTimestamp() {
 	let timestamp = await time.latest();
 	return timestamp;
 }
@@ -177,7 +177,6 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		waitedTS = timestamp;
 		firstSaleStartTS = timestamp;
 		secondSaleStartTS = timestamp;
-
 	});
 
 	it("Owner should be able to set deposit address.", async () => {
@@ -626,7 +625,9 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 			{ from: owner }
 		);
 		await expectRevert(
-			originsBase.setTierTime(1, await currentTimestamp() - 1000, await currentTimestamp() - 100, saleEndDurationOrTSTimestamp, { from: owner }),
+			originsBase.setTierTime(1, (await currentTimestamp()) - 1000, (await currentTimestamp()) - 100, saleEndDurationOrTSTimestamp, {
+				from: owner,
+			}),
 			"OriginsBase: The sale end duration cannot be past already."
 		);
 	});
@@ -728,8 +729,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(userTwo, amount);
 		await token.approve(originsBase.address, amount, { from: userTwo });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount });
-		await time.increase(firstSaleEnd+100)
+		await time.increase(firstSaleEnd + 100);
 		await originsBase.withdrawSaleDeposit({ from: owner });
 	});
-
 });

@@ -98,7 +98,7 @@ function randomValue() {
  *
  * @return {number} Current Unix Timestamp.
  */
- async function currentTimestamp() {
+async function currentTimestamp() {
 	let timestamp = await time.latest();
 	return timestamp;
 }

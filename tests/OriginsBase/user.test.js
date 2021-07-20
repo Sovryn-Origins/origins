@@ -312,7 +312,10 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		let amount = 10000;
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Transfer Type not set by owner.");
+		await expectRevert(
+			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
+			"OriginsBase: Transfer Type not set by owner."
+		);
 	});
 
 	it("User should not be allowed to buy if sale end duration or TS not set.", async () => {
@@ -322,7 +325,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
-			await currentTimestamp() + 1000,
+			(await currentTimestamp()) + 1000,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -345,7 +348,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstMaxAmount,
 			firstRemainingTokens,
 			zero,
-			await currentTimestamp() + 1000,
+			(await currentTimestamp()) + 1000,
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
@@ -608,5 +611,4 @@ contract("OriginsBase (User Functions)", (accounts) => {
 	it("User should be able to check Sale Ended.", async () => {
 		let saleEnded = await originsBase.checkSaleEnded(1, { from: userOne });
 	});
-
 });

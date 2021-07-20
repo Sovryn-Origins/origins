@@ -202,7 +202,6 @@ contract("LockedFund (State Change)", (accounts) => {
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
 	});
 
-
 	it("Admin should be able to add another admin.", async () => {
 		await lockedFund.addAdmin(newAdmin, { from: admin });
 		await checkStatus(
@@ -731,5 +730,4 @@ contract("LockedFund (State Change)", (accounts) => {
 		assert.equal(detail[0].toNumber() / fourWeeks, cliff, "Cliff does not match.");
 		assert.equal(detail[1].toNumber() / fourWeeks, duration, "Duration does not match.");
 	});
-
 });
