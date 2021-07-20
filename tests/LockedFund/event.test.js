@@ -59,36 +59,37 @@ contract("LockedFund (Events)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero, "Test Token", "TST", 18);
+		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
 		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address);
-		staking = await StakingProxy.new(token.address);
-		await staking.setImplementation(stakingLogic.address);
+		stakingLogic = await StakingLogic.new(token.address, { from: creator });
+		staking = await StakingProxy.new(token.address, { from: creator });
+		await staking.setImplementation(stakingLogic.address, { from: creator });
 		staking = await StakingLogic.at(staking.address);
 
 		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address);
+		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
 
 		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new();
-		vestingFactory = await VestingFactory.new(vestingLogic.address);
+		vestingLogic = await VestingLogic.new({ from: creator });
+		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
 		vestingRegistry = await VestingRegistry.new(
 			vestingFactory.address,
 			token.address,
 			staking.address,
 			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
+			creator, // This should be Governance Timelock Contract.
+			{ from: creator }
 		);
-		vestingFactory.transferOwnership(vestingRegistry.address);
+		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
 	});
 
 	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
 		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [admin]);
+		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [admin], { from: creator });
 
 		// Adding lockedFund as an admin in the Vesting Registry.
-		await vestingRegistry.addAdmin(lockedFund.address);
+		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
 	});
 
 	it("Adding another admin should emit AdminAdded.", async () => {

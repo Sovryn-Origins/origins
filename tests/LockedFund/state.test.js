@@ -26,6 +26,7 @@ let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
 let waitedTS = currentTimestamp();
+let unlockTypeNone = 0;
 let unlockTypeImmediate = 1;
 let unlockTypeWaited = 2;
 
@@ -82,31 +83,23 @@ async function checkStatus(
 	isAdmin
 ) {
 	if (checkArray[0] == 1) {
-		let cValue = await contractInstance.waitedTS();
+		let cValue = await contractInstance.getWaitedTS();
 		assert.strictEqual(waitedTS, cValue.toNumber(), "The waited timestamp does not match.");
 	}
 	if (checkArray[1] == 1) {
-		let cValue = await contractInstance.token();
+		let cValue = await contractInstance.getToken();
 		assert.strictEqual(token, cValue, "The token does not match.");
 	}
 	if (checkArray[2] == 1) {
 		let cValue = await contractInstance.cliff(userAddr);
-		// console.log("cliff: "+cliff);
-		// console.log(cliff);
-		// console.log("cliff.toNumber(): "+cliff.toNumber());
-		// console.log(cliff.toNumber());
-		// console.log("cValue: "+cValue);
-		// console.log(cValue);
-		// console.log("cValue.toNumber(): "+cValue.toNumber());
-		// console.log(cValue.toNumber());
-		assert.strictEqual(cliff, cValue.toNumber() / fourWeeks, "The cliff does not match.");
+		assert.equal(cliff, cValue.toNumber() / fourWeeks, "The cliff does not match.");
 	}
 	if (checkArray[3] == 1) {
 		let cValue = await contractInstance.duration(userAddr);
-		assert.strictEqual(duration, cValue.toNumber() / fourWeeks, "The duration does not match.");
+		assert.equal(duration, cValue.toNumber() / fourWeeks, "The duration does not match.");
 	}
 	if (checkArray[4] == 1) {
-		let cValue = await contractInstance.vestingRegistry();
+		let cValue = await contractInstance.getVestingDetails();
 		assert.strictEqual(vestingRegistry, cValue, "The vesting registry does not match.");
 	}
 	if (checkArray[5] == 1) {
@@ -176,37 +169,39 @@ contract("LockedFund (State Change)", (accounts) => {
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
 		// Creating the instance of Test Token.
-		token = await Token.new(zero, "Test Token", "TST", 18);
+		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
 		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address);
-		staking = await StakingProxy.new(token.address);
-		await staking.setImplementation(stakingLogic.address);
+		stakingLogic = await StakingLogic.new(token.address, { from: creator });
+		staking = await StakingProxy.new(token.address, { from: creator });
+		await staking.setImplementation(stakingLogic.address, { from: creator });
 		staking = await StakingLogic.at(staking.address);
 
 		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address);
+		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
 
 		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new();
-		vestingFactory = await VestingFactory.new(vestingLogic.address);
+		vestingLogic = await VestingLogic.new({ from: creator });
+		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
 		vestingRegistry = await VestingRegistry.new(
 			vestingFactory.address,
 			token.address,
 			staking.address,
 			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
+			creator, // This should be Governance Timelock Contract.
+			{ from: creator }
 		);
-		vestingFactory.transferOwnership(vestingRegistry.address);
+		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
 	});
 
 	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
 		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [admin]);
+		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [admin], { from: creator });
 
 		// Adding lockedFund as an admin in the Vesting Registry.
-		await vestingRegistry.addAdmin(lockedFund.address);
+		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
 	});
+
 
 	it("Admin should be able to add another admin.", async () => {
 		await lockedFund.addAdmin(newAdmin, { from: admin });
@@ -309,7 +304,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		);
 	});
 
-	it("Admin should be able to deposit using depositVested().", async () => {
+	it("Admin should be able to deposit using depositVested() and unlock as waited.", async () => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -326,6 +321,102 @@ contract("LockedFund (State Change)", (accounts) => {
 			Math.ceil(value / 2),
 			zero,
 			Math.floor(value / 2),
+			zero,
+			false
+		);
+	});
+
+	it("Admin should be able to deposit using depositVested() and unlock as immediate.", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeImmediate, { from: admin });
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			Math.ceil(value / 2),
+			zero,
+			zero,
+			Math.floor(value / 2),
+			false
+		);
+	});
+
+	it("Admin should be able to deposit using depositVested() and unlock as none.", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeNone, { from: admin });
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			cliff,
+			duration,
+			vestingRegistry.address,
+			value,
+			zero,
+			zero,
+			zero,
+			false
+		);
+	});
+
+	it("Admin should be able to deposit using depositLocked().", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositLocked(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		// TODO
+	});
+
+	it("Admin should be able to deposit using depositWaitedUnlocked() with non zero basis point.", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositWaitedUnlocked(userOne, value, fiftyBasisPoint, { from: admin });
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			Math.ceil(value / 2),
+			Math.floor(value / 2),
+			false
+		);
+	});
+
+	it("Admin should be able to deposit using depositWaitedUnlocked() with zero basis point.", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositWaitedUnlocked(userOne, value, zeroBasisPoint, { from: admin });
+		await checkStatus(
+			lockedFund,
+			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			userOne,
+			waitedTS,
+			token.address,
+			zero,
+			zero,
+			vestingRegistry.address,
+			zero,
+			zero,
+			value,
 			zero,
 			false
 		);
@@ -630,4 +721,15 @@ contract("LockedFund (State Change)", (accounts) => {
 		let newBalances = await getTokenBalances(userTwo, token, lockedFund);
 		assert.strictEqual(newBalances[0].toNumber(), oldBalances[0].toNumber() + Math.floor(value / 2), "Token Balance not matching.");
 	});
+
+	it("Admin should be able to get the cliff and duration of a user.", async () => {
+		let value = randomValue();
+		token.mint(admin, value, { from: creator });
+		token.approve(lockedFund.address, value, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		let detail = await lockedFund.getCliffAndDuration(userOne, { from: admin });
+		assert.equal(detail[0].toNumber() / fourWeeks, cliff, "Cliff does not match.");
+		assert.equal(detail[1].toNumber() / fourWeeks, duration, "Duration does not match.");
+	});
+
 });
