@@ -21,7 +21,7 @@ CI:
 
 Code Coverage:
 
-[![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=initial)](https://coveralls.io/github/DistributedCollective/origins?branch=initial)
+[![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=main)](https://coveralls.io/github/DistributedCollective/origins?branch=main)
 
 Code Style:
 

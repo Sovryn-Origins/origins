@@ -1383,15 +1383,15 @@
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1212.7631,-4669.9052C1243.7716,-4671.0195 1279.152,-4678.3047 1301.499,-4702 1356.4597,-4760.2766 1267.6161,-4822.7234 1322.5767,-4881 1341.3322,-4900.887 1369.2683,-4909.2149 1396.0952,-4912.0368"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1396.0517,-4915.5446 1406.3012,-4912.8614 1396.6155,-4908.5674 1396.0517,-4915.5446"/>
 </g>
-<!-- LockedFund.unlockType -->
+<!-- LockedFund.UnlockType -->
 <g id="node401" class="node">
-<title>LockedFund.unlockType</title>
+<title>LockedFund.UnlockType</title>
 <ellipse fill="#edad56" stroke="#edad56" stroke-width="3" cx="1474.6077" cy="-4314" rx="57.3282" ry="18"/>
-<text text-anchor="middle" x="1474.6077" y="-4309.8" font-family="Times,serif" font-size="14.00" fill="#000000">unlockType</text>
+<text text-anchor="middle" x="1474.6077" y="-4309.8" font-family="Times,serif" font-size="14.00" fill="#000000">UnlockType</text>
 </g>
-<!-- ILockedFund.depositVested&#45;&gt;LockedFund.unlockType -->
+<!-- ILockedFund.depositVested&#45;&gt;LockedFund.UnlockType -->
 <g id="edge286" class="edge">
-<title>ILockedFund.depositVested-&gt;LockedFund.unlockType</title>
+<title>ILockedFund.depositVested-&gt;LockedFund.UnlockType</title>
 <path fill="none" stroke="#1bc6a6" stroke-width="2" d="M1212.0946,-4680.5732C1243.5094,-4679.7224 1279.4664,-4672.5312 1301.499,-4648 1347.1927,-4597.1246 1276.8831,-4391.8754 1322.5767,-4341 1344.142,-4316.9892 1379.0471,-4309.5905 1409.9759,-4308.4896"/>
 <polygon fill="#1bc6a6" stroke="#1bc6a6" stroke-width="2" points="1410.3382,-4311.9849 1420.2873,-4308.3428 1410.2384,-4304.9856 1410.3382,-4311.9849"/>
 </g>

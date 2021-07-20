@@ -38,7 +38,7 @@ contract LockedFund is ILockedFund {
 	 * Immediate - The tokens will be unlocked immediately.
 	 * Waited - The tokens will be unlocked only after a particular time period.
 	 */
-	enum unlockType {
+	enum UnlockType {
 		None,
 		Immediate,
 		Waited
@@ -235,7 +235,7 @@ contract LockedFund is ILockedFund {
 		uint256 _basisPoint,
 		uint256 _unlockedOrWaited
 	) public onlyAdmin {
-		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint, unlockType(_unlockedOrWaited));
+		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited));
 	}
 
 	/**
@@ -257,7 +257,7 @@ contract LockedFund is ILockedFund {
 		uint256 _unlockedOrWaited
 	) public onlyAdmin {
 		// TODO
-		// _depositLocked(_userAddress, _amount, _cliff, _duration, _basisPoint, unlockType(_unlockedOrWaited));
+		// _depositLocked(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited));
 		// An array with timestamp and a mapping from timestamp to the amount.
 		// Array will be unsorted, so there should be two ways to withdraw this to avoid out of gas problem.
 		// One should be normal one which will loop through all the timestamp in array.
@@ -392,7 +392,7 @@ contract LockedFund is ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		unlockType _unlockedOrWaited
+		UnlockType _unlockedOrWaited
 	) internal {
 		/// If duration is also zero, then it is similar to Unlocked Token.
 		require(_duration != 0, "LockedFund: Duration cannot be zero.");
@@ -405,10 +405,10 @@ contract LockedFund is ILockedFund {
 
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
-		if (_unlockedOrWaited == unlockType.Immediate) {
+		if (_unlockedOrWaited == UnlockType.Immediate) {
 			unlockedBalances[_userAddress] = unlockedBalances[_userAddress].add(unlockedBal);
 			// TODO emit unlocked deposited event.
-		} else if (_unlockedOrWaited == unlockType.Waited) {
+		} else if (_unlockedOrWaited == UnlockType.Waited) {
 			waitedUnlockedBalances[_userAddress] = waitedUnlockedBalances[_userAddress].add(unlockedBal);
 			// TODO emit waited unlocked deposited event.
 		} else {

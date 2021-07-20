@@ -493,7 +493,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 					_tierDetails.vestOrLockCliff,
 					_tierDetails.vestOrLockDuration,
 					_tierDetails.unlockedBP,
-					uint256(unlockType.Waited)
+					uint256(UnlockType.Waited)
 				);
 			} else if (_tierDetails.transferType == TransferType.Locked) {
 				lockedFund.depositLocked(
@@ -502,7 +502,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 					_tierDetails.vestOrLockCliff,
 					_tierDetails.vestOrLockDuration,
 					_tierDetails.unlockedBP,
-					uint256(unlockType.Waited)
+					uint256(UnlockType.Waited)
 				);
 			}
 		}

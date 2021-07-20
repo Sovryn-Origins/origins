@@ -17,7 +17,7 @@ contract OriginsStorage {
 	/// @notice This determines the number of tiers in the system. When creating a tier, it should always start at 1.
 	uint256 internal tierCount;
 	/// @notice The maximum allowed Basis Point.
-	uint256 constant MAX_BASIS_POINT = 10000;
+	uint256 internal constant MAX_BASIS_POINT = 10000;
 
 	/// @notice The address to deposit the raised amount. If not set, will be holded in this contract itself, withdrawable by any owner.
 	address payable internal depositAddress;
@@ -81,7 +81,7 @@ contract OriginsStorage {
 	 * Immediate - The tokens will be unlocked immediately.
 	 * Waited - The tokens will be unlocked only after a particular time period.
 	 */
-	enum unlockType {
+	enum UnlockType {
 		None,
 		Immediate,
 		Waited
