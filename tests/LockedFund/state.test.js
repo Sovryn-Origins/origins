@@ -374,7 +374,7 @@ contract("LockedFund (State Change)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositLocked(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
-		// TODO
+		// TODO: Check status
 	});
 
 	it("Admin should be able to deposit using depositWaitedUnlocked() with non zero basis point.", async () => {
