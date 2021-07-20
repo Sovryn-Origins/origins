@@ -35,11 +35,15 @@ Metrics & Activity:
 
 ## Main Contracts
 
-- OriginsAdmin
 - OriginsStorage
+- OriginsAdmin
 - OriginsEvents
 - OriginsBase
 - LockedFund
+
+### OriginsStorage
+
+A contract with all the storage of `OriginsBase`. Basically acts as the harddisk of the system.
 
 ### OriginsAdmin
 
@@ -49,11 +53,7 @@ A basic contract with currently two main roles:
 
 An owner has the right on major decision making functions. The owner has too many rights, including the withdrawal of proceedings, thus it is recommended to use a multisig for the same.
 
-A Verifier currently has the right to add any address as verified.
-
-### OriginsStorage
-
-A contract with all the storage of `OriginsBase`. Basically acts as the harddisk of the system.
+A Verifier currently has the right to add any address as verified. To make someone a verifier, owner should call the `addVerifier` function in OriginsAdmin.
 
 ### OriginsEvents
 
@@ -73,7 +73,14 @@ Sale time is also dependent on two different methods mainly, one is duration (ca
 
 Deposit asset can be either RBTC or any other ERC20 Compliant Token as well, and it can be unique for each tier also.
 
-Transfer Type can be None, Unlocked Immediately, Waited Unlock, which means the unlock will happen after a certain period, Locked, which means the tokens will be a linear vesting, and finally Vested, which is tokens vested linearly, but the difference being the voting power in Governance. The current version only support None, Unlocked and Vested for now.
+Transfer Type can be:
+- `None`, Transfer hasn't set yet. This is default.
+- `Unlocked`, Tokens are unlocked immediately
+- `WaitedUnlock`, which means the unlock will happen after a certain period
+- `Locked`, which means the tokens will be a linear vesting
+- `Vested`, which is tokens vested linearly, but the difference being the voting power in Governance.
+
+The current version only support None, Unlocked, Waited Unlock and Vested for now.
 
 The contract also keeps track of participating wallets per tier, the number of tokens sold per tier, etc.
 
@@ -97,19 +104,16 @@ P.S. It is a simple project, isn't it?
 
 ![Inheritance](Inheritance.svg)
 
-## Explanation
-
-TODO
-
 ## Deployment
 
-- TODO
-- TODO: Setting `waitedTS` in LockedFund.
-- TODO: Setting `OriginsBase` as an admin of LockedFund for calling deposit function.
+Deployment README's are mentioned in the scripts folder. There are mainly two.
+
+- Origins - The script contains all the Origins and LockedFund related deployment and interaction script.
+- Token - The script contains all the Token, Governance, Staking, Vesting, etc related deployment and interaction script.
 
 ### Deployment Parameters
 
-TODO
+Please make sure to read the README mentioned in the scripts folder before running it.
 
 ## Assumptions
 
@@ -126,7 +130,6 @@ TODO
 - NFT Based Sale.
 - Decoupling Tier for lesser gas usage and minimize the stack too deep error.
 - Fee for use of Origins platform (Contracts, UI and Setup).
-- Divide the contract based on Verification Type, Vesting/Locked Type, Deposit by Token or RBTC, etc to make the contract size and interaction gas cost to the minimum without losing the Origins Granularity. This will be a new contract which will be inheriting from OriginsBase, with OriginsBase itself inheriting a unique OriginsStorage based on the granularity.
 - Maybe a single contract can act as the platform if instead of different tiers based on ID, the tiers are based on token address (which is to be sold), thus having multiple tiers based on that. So, a single contract can handle multiple sales at once with multiple tiers. This can only be done after struct decoupling and gas profiling of each function and possible gas saving methods added.
 - Total unique wallets participated in all tiers. Currently only unique wallets participated in a each tier is counted, which is not the same as unique wallets participated in all tiers combined. New storage structure will be required.
 - Tests related to other type of sales to be added.
