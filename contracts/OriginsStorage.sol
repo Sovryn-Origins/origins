@@ -75,7 +75,12 @@ contract OriginsStorage {
 		Locked
 	}
 
-	/// @notice TODO
+	/**
+	 * @notice The type of Unlock.
+	 * None - The unlock is not set yet.
+	 * Immediate - The tokens will be unlocked immediately.
+	 * Waited - The tokens will be unlocked only after a particular time period.
+	 */
 	enum unlockType {
 		None,
 		Immediate,

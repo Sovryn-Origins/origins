@@ -32,7 +32,12 @@ contract LockedFund is ILockedFund {
 	/// @notice The Vesting registry contract.
 	IVestingRegistry public vestingRegistry;
 
-	/// @notice TODO
+	/**
+	 * @notice The type of Unlock.
+	 * None - The unlock is not set yet.
+	 * Immediate - The tokens will be unlocked immediately.
+	 * Waited - The tokens will be unlocked only after a particular time period.
+	 */
 	enum unlockType {
 		None,
 		Immediate,
@@ -219,7 +224,7 @@ contract LockedFund is ILockedFund {
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
-	 * @param _unlockedOrWaited TODO
+	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -239,8 +244,8 @@ contract LockedFund is ILockedFund {
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
-	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
-	 * @param _unlockedOrWaited TODO
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
+	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositLocked(
@@ -378,8 +383,8 @@ contract LockedFund is ILockedFund {
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
-	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
-	 * @param _unlockedOrWaited TODO
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
+	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
 	 */
 	function _depositVested(
 		address _userAddress,
@@ -416,7 +421,7 @@ contract LockedFund is ILockedFund {
 		duration[_userAddress] = _duration * INTERVAL;
 
 		emit VestedDeposited(msg.sender, _userAddress, _amount, _cliff, _duration, _basisPoint);
-		// TODO Edit the amount based on the waited/unlocked balance.
+		// TODO Edit the amount subtracted from the amount of waited/unlocked balance, if basis point was higher than zero.
 	}
 
 	/**

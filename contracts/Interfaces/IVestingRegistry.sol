@@ -1,7 +1,7 @@
 pragma solidity ^0.5.17;
 
 /**
- * TODO
+ * @title Vesting Registry Interface
  */
 contract IVestingRegistry {
 	/**

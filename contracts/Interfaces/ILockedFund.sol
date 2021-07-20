@@ -39,8 +39,8 @@ contract ILockedFund {
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
-	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
-	 * @param _unlockedOrWaited TODO
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
+	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -58,8 +58,8 @@ contract ILockedFund {
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _cliff The cliff for vesting.
 	 * @param _duration The duration for vesting.
-	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
-	 * @param _unlockedOrWaited TODO
+	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
+	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositLocked(

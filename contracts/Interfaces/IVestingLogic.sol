@@ -3,7 +3,7 @@ pragma solidity ^0.5.17;
 import "../Sovryn/Governance/Vesting/VestingStorage.sol";
 
 /**
- * TODO
+ * @title Vesting Logic Interface
  */
 contract IVestingLogic is VestingStorage {
 	/* Functions */
