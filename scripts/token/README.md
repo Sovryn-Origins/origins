@@ -32,7 +32,7 @@ The deployment will take:
 - the token symbol from `tokenSymbol`
 - the token amount from `tokenAmount`
 - the decimals from `tokenDecimal`
-from the JSON files. `Amount * (10 ** Decimals)` will be done by the script.
+  from the JSON files. `Amount * (10 ** Decimals)` will be done by the script.
 
 It will also update the testnet/mainnet JSON file with the new contract addresses as well.
 
