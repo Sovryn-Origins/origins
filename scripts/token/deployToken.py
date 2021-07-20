@@ -63,10 +63,10 @@ def choice():
 
 # =========================================================================================================================================
 def deployToken():
-    tokenName = values["Token_Name"]
-    tokenSymbol = values["Token_Symbol"]
-    tokenDecimal = int(values["Token_Decimal"])
-    tokenAmount = int(values["Token_Amount"]) * (10 ** tokenDecimal)
+    tokenName = values["tokenName"]
+    tokenSymbol = values["tokenSymbol"]
+    tokenDecimal = int(values["tokenDecimal"])
+    tokenAmount = int(values["tokenAmount"]) * (10 ** tokenDecimal)
     print("=============================================================")
     print("Deployment Parameters")
     print("=============================================================")
@@ -88,15 +88,15 @@ def deployToken():
     print("Token Balance with Decimal:      ", tokenAmount/(10 ** tokenDecimal))
     print("Token Balance without Decimal:   ", tokenAmount)
     print("=============================================================")
-    values["Token"] = str(TokenObj)
+    values["token"] = str(TokenObj)
     origins["token"] = str(TokenObj)
-    origins["decimal"] = values["Token_Decimal"]
+    origins["decimal"] = values["tokenDecimal"]
     writeToJSON()
 
 
 # =========================================================================================================================================
 def transferTokenOwnership():
-    tokenAddress = values["Token"]
+    tokenAddress = values["token"]
     multisig = values["multisig"]
     TokenObj = Contract.from_abi("Staking", address=tokenAddress, abi=Token.abi, owner=acct)
     print("Current Token Owner of:", tokenAddress, "is", TokenObj.owner())
