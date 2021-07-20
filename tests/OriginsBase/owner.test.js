@@ -11,7 +11,8 @@ const VestingRegistry = artifacts.require("VestingRegistry3");
 const {
 	BN, // Big Number support.
 	constants,
-	expectRevert, // Assertions for transactions that should fail.
+	expectRevert,
+	time, // Assertions for transactions that should fail.
 } = require("@openzeppelin/test-helpers");
 const { current } = require("@openzeppelin/test-helpers/src/balance");
 
@@ -27,7 +28,7 @@ let twentyBasisPoint = 2000;
 let fiftyBasisPoint = 5000;
 let hundredBasisPoint = 10000;
 let invalidBasisPoint = 10001;
-let waitedTS = currentTimestamp();
+let waitedTS = 0;
 let depositTypeRBTC = 0;
 let depositTypeToken = 1;
 let saleEndDurationOrTSNone = 0;
@@ -48,7 +49,7 @@ let firstMinAmount = 1;
 let firstMaxAmount = new BN(50000);
 let firstRemainingTokens = new BN(6000000);
 let [firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstTransferType] = [0, 1, 11, transferTypeVested];
-let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [currentTimestamp(), 86400, saleEndDurationOrTSDuration];
+let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [0, 86400, saleEndDurationOrTSDuration];
 let [
 	secondMinAmount,
 	secondMaxAmount,
@@ -68,7 +69,7 @@ let [
 	1,
 	new BN(75000),
 	new BN(10000000),
-	currentTimestamp(),
+	0,
 	86400,
 	5000,
 	1,
@@ -97,8 +98,9 @@ function randomValue() {
  *
  * @return {number} Current Unix Timestamp.
  */
-function currentTimestamp() {
-	return Math.floor(Date.now() / 1000);
+ async function currentTimestamp() {
+	let timestamp = await time.latest();
+	return timestamp;
 }
 
 /**
@@ -127,43 +129,55 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		assert.isAtLeast(accounts.length, 9, "Alteast 9 accounts are required to test the contracts.");
 		[creator, owner, newOwner, userOne, userTwo, userThree, verifier, depositAddr, newDepositAddr] = accounts;
 
+		let timestamp = await currentTimestamp();
+		waitedTS = timestamp;
+		firstSaleStartTS = timestamp;
+		secondSaleStartTS = timestamp;
+
 		// Creating the instance of Test Token.
-		token = await Token.new(zero, "Test Token", "TST", 18);
+		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
 		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address);
-		staking = await StakingProxy.new(token.address);
-		await staking.setImplementation(stakingLogic.address);
-		staking = await StakingLogic.at(staking.address);
+		stakingLogic = await StakingLogic.new(token.address, { from: creator });
+		staking = await StakingProxy.new(token.address, { from: creator });
+		await staking.setImplementation(stakingLogic.address, { from: creator });
+		staking = await StakingLogic.at(staking.address, { from: creator });
 
 		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address);
+		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
 
 		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new();
-		vestingFactory = await VestingFactory.new(vestingLogic.address);
+		vestingLogic = await VestingLogic.new({ from: creator });
+		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
 		vestingRegistry = await VestingRegistry.new(
 			vestingFactory.address,
 			token.address,
 			staking.address,
 			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
+			creator, // This should be Governance Timelock Contract.
+			{ from: creator }
 		);
-		vestingFactory.transferOwnership(vestingRegistry.address);
+		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
 
 		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner]);
+		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
 	});
 
 	beforeEach("Creating New OriginsBase Contract Instance.", async () => {
 		// Creating the instance of OriginsBase Contract.
-		originsBase = await OriginsBase.new([owner], token.address, depositAddr);
+		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
 
 		// Setting lockedFund in Origins.
 		await originsBase.setLockedFund(lockedFund.address, { from: owner });
 
 		// Added Origins as an admin of LockedFund.
 		await lockedFund.addAdmin(originsBase.address, { from: owner });
+
+		let timestamp = await currentTimestamp();
+		waitedTS = timestamp;
+		firstSaleStartTS = timestamp;
+		secondSaleStartTS = timestamp;
+
 	});
 
 	it("Owner should be able to set deposit address.", async () => {
@@ -293,6 +307,49 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		);
 	});
 
+	it("Owner should be able to set Tier Deposit Parameters with correct deposit token address if deposit type is Token.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		let newToken = await Token.new(zero, "Test Token", "TST", 18);
+		await originsBase.setTierDeposit(1, secondDepositRate, newToken.address, depositTypeToken, { from: owner });
+	});
+
+	it("Owner should be able to set Tier Deposit Parameters with deposit token as zero address if deposit type is RBTC.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		await originsBase.setTierDeposit(1, secondDepositRate, zeroAddress, depositTypeRBTC, { from: owner });
+	});
+
 	it("Owner should be able to set Tier Token Limit Parameters.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
@@ -338,7 +395,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		);
 	});
 
-	it("Owner should be able to set Tier Token Amount Parameters.", async () => {
+	it("Owner should be able to set Tier Token Amount Parameters where extra is provided.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
@@ -359,6 +416,27 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(owner, secondRemainingTokens);
 		await token.approve(originsBase.address, secondRemainingTokens, { from: owner });
 		await originsBase.setTierTokenAmount(1, secondRemainingTokens, { from: owner });
+	});
+
+	it("Owner should be able to set Tier Token Amount Parameters where extra is returned.", async () => {
+		await token.mint(owner, secondRemainingTokens);
+		await token.approve(originsBase.address, secondRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			secondRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		await originsBase.setTierTokenAmount(1, firstRemainingTokens, { from: owner });
 	});
 
 	it("Owner should not be able to set Tier Token Amount Parameters with remaining token as zero.", async () => {
@@ -548,7 +626,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 			{ from: owner }
 		);
 		await expectRevert(
-			originsBase.setTierTime(1, currentTimestamp() - 1000, currentTimestamp() - 100, saleEndDurationOrTSTimestamp, { from: owner }),
+			originsBase.setTierTime(1, await currentTimestamp() - 1000, await currentTimestamp() - 100, saleEndDurationOrTSTimestamp, { from: owner }),
 			"OriginsBase: The sale end duration cannot be past already."
 		);
 	});
@@ -623,4 +701,35 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await originsBase.buy(tierCount, zero, { from: userThree, value: amount });
 		await originsBase.withdrawSaleDeposit({ from: owner });
 	});
+
+	it("Owner should be able to withdraw the sale deposit and remaining tokens to deposit address.", async () => {
+		await token.mint(owner, firstRemainingTokens);
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstDepositRate,
+			firstDepositType,
+			verificationTypeEveryone,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		let amount = 20000;
+		await token.mint(userOne, amount);
+		await token.approve(originsBase.address, amount, { from: userOne });
+		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
+		await token.mint(userTwo, amount);
+		await token.approve(originsBase.address, amount, { from: userTwo });
+		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount });
+		await time.increase(firstSaleEnd+100)
+		await originsBase.withdrawSaleDeposit({ from: owner });
+	});
+
 });
