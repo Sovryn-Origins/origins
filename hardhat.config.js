@@ -8,7 +8,7 @@ require("hardhat-contract-sizer"); //yarn run hardhat size-contracts
 require("solidity-coverage"); // $ npx hardhat coverage
 require("hardhat-log-remover");
 require("hardhat-gas-reporter");
-require('hardhat-docgen');
+require("hardhat-docgen");
 
 module.exports = {
 	solidity: {
@@ -27,7 +27,7 @@ module.exports = {
 	},
 	networks: {
 		hardhat: {
-			blockGasLimit: 6800000
+			blockGasLimit: 6800000,
 		},
 		rskPublicTestnet: {
 			url: "https://public-node.testnet.rsk.co/",
@@ -66,10 +66,10 @@ module.exports = {
 		timeout: 800000,
 	},
 	docgen: {
-		path: './docs',
-		clear: true
+		path: "./docs",
+		clear: true,
 	},
 	gasReporter: {
-		enabled: true
-	}
+		enabled: true,
+	},
 };
