@@ -14,13 +14,9 @@ Issue & PR:
 ![GitHub issues](https://img.shields.io/github/issues/DistributedCollective/origins)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/DistributedCollective/origins)
 
-CI:
+CI & Code Coverage:
 
 [![Node.js CI](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml)
-[![Build Status](https://travis-ci.org/DistributedCollective/origins.svg?branch=main)](https://travis-ci.org/DistributedCollective/origins)
-
-Code Coverage:
-
 [![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=main)](https://coveralls.io/github/DistributedCollective/origins?branch=main)
 
 Code Style:
@@ -48,6 +44,7 @@ A contract with all the storage of `OriginsBase`. Basically acts as the harddisk
 ### OriginsAdmin
 
 A basic contract with currently two main roles:
+
 - Owner
 - Verifier
 
@@ -74,6 +71,7 @@ Sale time is also dependent on two different methods mainly, one is duration (ca
 Deposit asset can be either RBTC or any other ERC20 Compliant Token as well, and it can be unique for each tier also.
 
 Transfer Type can be:
+
 - `None`, Transfer hasn't set yet. This is default.
 - `Unlocked`, Tokens are unlocked immediately
 - `WaitedUnlock`, which means the unlock will happen after a certain period
