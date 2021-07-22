@@ -1,15 +1,9 @@
 // Independent Variables
-let {
-	saleEndDurationOrTSDuration,
-	saleEndDurationOrTSTimestamp
-} = require("./variable.js");
+let { saleEndDurationOrTSDuration, saleEndDurationOrTSTimestamp } = require("./variable.js");
 
 // Independent Constants
 
-const {
-	zeroAddress,
-	fourWeeks,
-} = require("./constants.js");
+const { zeroAddress, fourWeeks } = require("./constants.js");
 
 // External Functions
 

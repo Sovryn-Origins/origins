@@ -3,7 +3,7 @@ const {
 } = require("@openzeppelin/test-helpers");
 
 const {
-    zeroAddress,
+	zeroAddress,
 	depositTypeRBTC,
 	verificationTypeEveryone,
 	verificationTypeByAddress,
@@ -83,9 +83,9 @@ let [
 ];
 
 module.exports = {
-    cliff,
-    duration,
-    waitedTS,
+	cliff,
+	duration,
+	waitedTS,
 	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
@@ -114,4 +114,4 @@ module.exports = {
 	secondVerificationType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
-}
+};
