@@ -12,19 +12,9 @@ const {
 	VestingRegistry,
 } = require("../utils");
 
-const {
-	zero,
-	zeroAddress,
-	zeroBasisPoint,
-	fiftyBasisPoint,
-	unlockTypeWaited,
-} = require("../constants");
+const { zero, zeroAddress, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited } = require("../constants");
 
-let {
-	cliff,
-	duration,
-	waitedTS,
-} = require("../variable");
+let { cliff, duration, waitedTS } = require("../variable");
 
 contract("LockedFund (User Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic;

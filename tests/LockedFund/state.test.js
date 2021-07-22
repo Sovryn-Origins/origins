@@ -25,11 +25,7 @@ const {
 	unlockTypeWaited,
 } = require("../constants");
 
-let {
-	cliff,
-	duration,
-	waitedTS,
-} = require("../variable");
+let { cliff, duration, waitedTS } = require("../variable");
 
 contract("LockedFund (State Change)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic;

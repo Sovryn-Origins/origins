@@ -6,9 +6,7 @@ const {
 	OriginsAdmin,
 } = require("../utils");
 
-const {
-	zeroAddress,
-} = require("../constants");
+const { zeroAddress } = require("../constants");
 
 contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	let originsAdmin;

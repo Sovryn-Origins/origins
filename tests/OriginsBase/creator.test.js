@@ -11,10 +11,7 @@ const {
 	OriginsBase,
 } = require("../utils");
 
-const {
-	zero,
-	zeroAddress,
-} = require("../constants");
+const { zero, zeroAddress } = require("../constants");
 
 let {
 	waitedTS,

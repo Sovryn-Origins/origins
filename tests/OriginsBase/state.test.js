@@ -13,10 +13,7 @@ const {
 	OriginsBase,
 } = require("../utils");
 
-const {
-	zero,
-	verificationTypeEveryone,
-} = require("../constants");
+const { zero, verificationTypeEveryone } = require("../constants");
 
 let {
 	waitedTS,
