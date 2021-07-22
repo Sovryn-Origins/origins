@@ -1,56 +1,79 @@
-const Token = artifacts.require("Token");
-const LockedFund = artifacts.require("LockedFund");
-const OriginsBase = artifacts.require("OriginsBase");
-const StakingLogic = artifacts.require("Staking");
-const StakingProxy = artifacts.require("StakingProxy");
-const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
-const VestingLogic = artifacts.require("VestingLogic");
-const VestingFactory = artifacts.require("VestingFactory");
-const VestingRegistry = artifacts.require("VestingRegistry3");
-
 const {
-	BN, // Big Number support.
+	// External Functions
+	BN,
 	constants,
 	expectRevert,
-	time, // Assertions for transactions that should fail.
-} = require("@openzeppelin/test-helpers");
-const { current } = require("@openzeppelin/test-helpers/src/balance");
+	expectEvent,
+	time,
+	balance,
+	assert,
+	// Custom Functions
+	randomValue,
+	currentTimestamp,
+	createStakeAndVest,
+	checkStatus,
+	getTokenBalances,
+	userMintAndApprove,
+	checkTier,
+	// Contract Artifacts
+	Token,
+	LockedFund,
+	StakingLogic,
+	StakingProxy,
+	FeeSharingProxy,
+	VestingLogic,
+	VestingFactory,
+	VestingRegistry,
+	OriginsAdmin,
+	OriginsBase,
+} = require("../utils");
 
-const { assert } = require("chai");
+const {
+    zero,
+    zeroAddress,
+    fourWeeks,
+    zeroBasisPoint,
+    twentyBasisPoint,
+    fiftyBasisPoint,
+    hundredBasisPoint,
+    invalidBasisPoint,
+    depositTypeRBTC,
+    depositTypeToken,
+    unlockTypeNone,
+    unlockTypeImmediate,
+    unlockTypeWaited,
+    saleEndDurationOrTSNone,
+    saleEndDurationOrTSUntilSupply,
+    saleEndDurationOrTSDuration,
+    saleEndDurationOrTSTimestamp,
+    verificationTypeNone,
+    verificationTypeEveryone,
+    verificationTypeByAddress,
+    transferTypeNone,
+    transferTypeUnlocked,
+    transferTypeWaitedUnlock,
+    transferTypeVested,
+    transferTypeLocked,
+} = require("../constants");
 
-// Some constants we would be using in the contract.
-let zero = new BN(0);
-let zeroAddress = constants.ZERO_ADDRESS;
-let cliff = 1; // This is in 4 weeks. i.e. 1 * 4 weeks.
-let duration = 11; // This is in 4 weeks. i.e. 11 * 4 weeks.
-let zeroBasisPoint = 0;
-let twentyBasisPoint = 2000;
-let fiftyBasisPoint = 5000;
-let hundredBasisPoint = 10000;
-let invalidBasisPoint = 10001;
-let waitedTS = 0;
-let depositTypeRBTC = 0;
-let depositTypeToken = 1;
-let saleEndDurationOrTSNone = 0;
-let saleEndDurationOrTSUntilSupply = 1;
-let saleEndDurationOrTSDuration = 2;
-let saleEndDurationOrTSTimestamp = 3;
-let verificationTypeNone = 0;
-let verificationTypeEveryone = 1;
-let verificationTypeByAddress = 2;
-let transferTypeNone = 0;
-let transferTypeUnlocked = 1;
-let transferTypeWaitedUnlock = 2;
-let transferTypeVested = 3;
-let transferTypeLocked = 4;
-let firstVerificationType = verificationTypeByAddress;
-let [firstDepositRate, firstDepositToken, firstDepositType] = [100, zeroAddress, depositTypeRBTC];
-let firstMinAmount = 1;
-let firstMaxAmount = new BN(50000);
-let firstRemainingTokens = new BN(6000000);
-let [firstUnlockedBP, firstVestOrLockCliff, firstVestOfLockDuration, firstTransferType] = [0, 1, 11, transferTypeVested];
-let [firstSaleStartTS, firstSaleEnd, firstSaleEndDurationOrTS] = [0, 86400, saleEndDurationOrTSDuration];
-let [
+let {
+    cliff,
+    duration,
+    waitedTS,
+	firstMinAmount,
+	firstMaxAmount,
+	firstRemainingTokens,
+	firstSaleStartTS,
+	firstSaleEnd,
+	firstUnlockedBP,
+	firstVestOrLockCliff,
+	firstVestOfLockDuration,
+	firstDepositRate,
+	firstDepositToken,
+	firstDepositType,
+	firstVerificationType,
+	firstSaleEndDurationOrTS,
+	firstTransferType,
 	secondMinAmount,
 	secondMaxAmount,
 	secondRemainingTokens,
@@ -65,59 +88,7 @@ let [
 	secondVerificationType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
-] = [
-	1,
-	new BN(75000),
-	new BN(10000000),
-	0,
-	86400,
-	5000,
-	1,
-	11,
-	50,
-	zeroAddress,
-	depositTypeRBTC,
-	verificationTypeEveryone,
-	saleEndDurationOrTSDuration,
-	transferTypeVested,
-];
-
-/**
- * Function to create a random value.
- * It expects no parameter.
- *
- * @return {number} Random Value.
- */
-function randomValue() {
-	return Math.floor(Math.random() * 10000) + 10000;
-}
-
-/**
- * Function to get back the current timestamp in seconds.
- * It expects no parameter.
- *
- * @return {number} Current Unix Timestamp.
- */
-async function currentTimestamp() {
-	let timestamp = await time.latest();
-	return timestamp;
-}
-
-/**
- * Mints random token for user account and then approve a contract.
- *
- * @param tokenContract The Token Contract.
- * @param userAddr User Address.
- * @param toApprove User Address who is approved.
- *
- * @returns value The token amount which was minted by user.
- */
-async function userMintAndApprove(tokenContract, userAddr, toApprove) {
-	let value = randomValue();
-	await tokenContract.mint(userAddr, value);
-	await tokenContract.approve(toApprove, value, { from: userAddr });
-	return value;
-}
+} = require("../variable");
 
 contract("OriginsBase (Owner Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic, originsBase;
@@ -131,33 +102,12 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 
 		let timestamp = await currentTimestamp();
 		waitedTS = timestamp;
-		firstSaleStartTS = timestamp;
-		secondSaleStartTS = timestamp;
 
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address, { from: creator });
-		staking = await StakingProxy.new(token.address, { from: creator });
-		await staking.setImplementation(stakingLogic.address, { from: creator });
-		staking = await StakingLogic.at(staking.address, { from: creator });
-
-		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
-
-		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new({ from: creator });
-		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
-		vestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator, // This should be Governance Timelock Contract.
-			{ from: creator }
-		);
-		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
+		// Creating the Staking and Vesting
+		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
 
 		// Creating the instance of LockedFund Contract.
 		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });

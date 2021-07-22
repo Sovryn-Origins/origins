@@ -1,53 +1,94 @@
-const Token = artifacts.require("Token");
-const LockedFund = artifacts.require("LockedFund");
-const StakingLogic = artifacts.require("Staking");
-const StakingProxy = artifacts.require("StakingProxy");
-const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
-const VestingLogic = artifacts.require("VestingLogic");
-const VestingFactory = artifacts.require("VestingFactory");
-const VestingRegistry = artifacts.require("VestingRegistry3");
+const {
+	// External Functions
+	BN,
+	constants,
+	expectRevert,
+	expectEvent,
+	time,
+	balance,
+	assert,
+	// Custom Functions
+	randomValue,
+	currentTimestamp,
+	createStakeAndVest,
+	checkStatus,
+	getTokenBalances,
+	userMintAndApprove,
+	checkTier,
+	// Contract Artifacts
+	Token,
+	LockedFund,
+	StakingLogic,
+	StakingProxy,
+	FeeSharingProxy,
+	VestingLogic,
+	VestingFactory,
+	VestingRegistry,
+	OriginsAdmin,
+	OriginsBase,
+} = require("../utils");
 
 const {
-	BN, // Big Number support.
-	constants,
-	expectRevert, // Assertions for transactions that should fail.
-} = require("@openzeppelin/test-helpers");
+    zero,
+    zeroAddress,
+    fourWeeks,
+    zeroBasisPoint,
+    twentyBasisPoint,
+    fiftyBasisPoint,
+    hundredBasisPoint,
+    invalidBasisPoint,
+    depositTypeRBTC,
+    depositTypeToken,
+    unlockTypeNone,
+    unlockTypeImmediate,
+    unlockTypeWaited,
+    saleEndDurationOrTSNone,
+    saleEndDurationOrTSUntilSupply,
+    saleEndDurationOrTSDuration,
+    saleEndDurationOrTSTimestamp,
+    verificationTypeNone,
+    verificationTypeEveryone,
+    verificationTypeByAddress,
+    transferTypeNone,
+    transferTypeUnlocked,
+    transferTypeWaitedUnlock,
+    transferTypeVested,
+    transferTypeLocked,
+} = require("../constants");
 
-const { assert } = require("chai");
-
-// Some constants we would be using in the contract.
-let zero = new BN(0);
-let zeroAddress = constants.ZERO_ADDRESS;
-let cliff = 1; // This is in 4 weeks. i.e. 1 * 4 weeks.
-let duration = 11; // This is in 4 weeks. i.e. 11 * 4 weeks.
-let zeroBasisPoint = 0;
-let twentyBasisPoint = 2000;
-let fiftyBasisPoint = 5000;
-let hundredBasisPoint = 10000;
-let invalidBasisPoint = 10001;
-let waitedTS = currentTimestamp();
-let unlockTypeImmediate = 1;
-let unlockTypeWaited = 2;
-
-/**
- * Function to create a random value.
- * It expects no parameter.
- *
- * @return {number} Random Value.
- */
-function randomValue() {
-	return Math.floor(Math.random() * 10000) + 10000;
-}
-
-/**
- * Function to get back the current timestamp in seconds.
- * It expects no parameter.
- *
- * @return {number} Current Unix Timestamp.
- */
-function currentTimestamp() {
-	return Math.floor(Date.now() / 1000);
-}
+let {
+    cliff,
+    duration,
+    waitedTS,
+	firstMinAmount,
+	firstMaxAmount,
+	firstRemainingTokens,
+	firstSaleStartTS,
+	firstSaleEnd,
+	firstUnlockedBP,
+	firstVestOrLockCliff,
+	firstVestOfLockDuration,
+	firstDepositRate,
+	firstDepositToken,
+	firstDepositType,
+	firstVerificationType,
+	firstSaleEndDurationOrTS,
+	firstTransferType,
+	secondMinAmount,
+	secondMaxAmount,
+	secondRemainingTokens,
+	secondSaleStartTS,
+	secondSaleEnd,
+	secondUnlockedBP,
+	secondVestOrLockCliff,
+	secondVestOfLockDuration,
+	secondDepositRate,
+	secondDepositToken,
+	secondDepositType,
+	secondVerificationType,
+	secondSaleEndDurationOrTS,
+	secondTransferType,
+} = require("../variable");
 
 contract("LockedFund (User Functions)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic;
@@ -58,30 +99,13 @@ contract("LockedFund (User Functions)", (accounts) => {
 		assert.isAtLeast(accounts.length, 8, "Alteast 8 accounts are required to test the contracts.");
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
+		waitedTS = await currentTimestamp();
+
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address, { from: creator });
-		staking = await StakingProxy.new(token.address, { from: creator });
-		await staking.setImplementation(stakingLogic.address, { from: creator });
-		staking = await StakingLogic.at(staking.address);
-
-		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
-
-		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new({ from: creator });
-		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
-		vestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator, // This should be Governance Timelock Contract.
-			{ from: creator }
-		);
-		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
+		// Creating the Staking and Vesting
+		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
 	});
 
 	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
@@ -151,7 +175,8 @@ contract("LockedFund (User Functions)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
-		await lockedFund.changeWaitedTS(currentTimestamp() + 10000, { from: admin });
+		let timestamp = await currentTimestamp();
+		await lockedFund.changeWaitedTS(timestamp + 10000, { from: admin });
 		await expectRevert(
 			lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne }),
 			"LockedFund: Wait Timestamp not yet passed."

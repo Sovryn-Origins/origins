@@ -1,17 +1,94 @@
-const OriginsAdmin = artifacts.require("OriginsAdmin");
+const {
+	// External Functions
+	BN,
+	constants,
+	expectRevert,
+	expectEvent,
+	time,
+	balance,
+	assert,
+	// Custom Functions
+	randomValue,
+	currentTimestamp,
+	createStakeAndVest,
+	checkStatus,
+	getTokenBalances,
+	userMintAndApprove,
+	checkTier,
+	// Contract Artifacts
+	Token,
+	LockedFund,
+	StakingLogic,
+	StakingProxy,
+	FeeSharingProxy,
+	VestingLogic,
+	VestingFactory,
+	VestingRegistry,
+	OriginsAdmin,
+	OriginsBase,
+} = require("../utils");
 
 const {
-	BN, // Big Number support.
-	constants,
-	expectEvent,
-	expectRevert, // Assertions for transactions that should fail.
-} = require("@openzeppelin/test-helpers");
+    zero,
+    zeroAddress,
+    fourWeeks,
+    zeroBasisPoint,
+    twentyBasisPoint,
+    fiftyBasisPoint,
+    hundredBasisPoint,
+    invalidBasisPoint,
+    depositTypeRBTC,
+    depositTypeToken,
+    unlockTypeNone,
+    unlockTypeImmediate,
+    unlockTypeWaited,
+    saleEndDurationOrTSNone,
+    saleEndDurationOrTSUntilSupply,
+    saleEndDurationOrTSDuration,
+    saleEndDurationOrTSTimestamp,
+    verificationTypeNone,
+    verificationTypeEveryone,
+    verificationTypeByAddress,
+    transferTypeNone,
+    transferTypeUnlocked,
+    transferTypeWaitedUnlock,
+    transferTypeVested,
+    transferTypeLocked,
+} = require("../constants");
 
-const { assert } = require("chai");
-
-// Some constants we would be using in the contract.
-let zero = new BN(0);
-let zeroAddress = constants.ZERO_ADDRESS;
+let {
+    cliff,
+    duration,
+    waitedTS,
+	firstMinAmount,
+	firstMaxAmount,
+	firstRemainingTokens,
+	firstSaleStartTS,
+	firstSaleEnd,
+	firstUnlockedBP,
+	firstVestOrLockCliff,
+	firstVestOfLockDuration,
+	firstDepositRate,
+	firstDepositToken,
+	firstDepositType,
+	firstVerificationType,
+	firstSaleEndDurationOrTS,
+	firstTransferType,
+	secondMinAmount,
+	secondMaxAmount,
+	secondRemainingTokens,
+	secondSaleStartTS,
+	secondSaleEnd,
+	secondUnlockedBP,
+	secondVestOrLockCliff,
+	secondVestOfLockDuration,
+	secondDepositRate,
+	secondDepositToken,
+	secondDepositType,
+	secondVerificationType,
+	secondSaleEndDurationOrTS,
+	secondTransferType,
+} = require("../variable");
 
 contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	let originsAdmin;

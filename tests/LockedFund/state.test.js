@@ -1,163 +1,94 @@
-const Token = artifacts.require("Token");
-const LockedFund = artifacts.require("LockedFund");
-const StakingLogic = artifacts.require("Staking");
-const StakingProxy = artifacts.require("StakingProxy");
-const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
-const VestingLogic = artifacts.require("VestingLogic");
-const VestingFactory = artifacts.require("VestingFactory");
-const VestingRegistry = artifacts.require("VestingRegistry3");
+const {
+	// External Functions
+	BN,
+	constants,
+	expectRevert,
+	expectEvent,
+	time,
+	balance,
+	assert,
+	// Custom Functions
+	randomValue,
+	currentTimestamp,
+	createStakeAndVest,
+	checkStatus,
+	getTokenBalances,
+	userMintAndApprove,
+	checkTier,
+	// Contract Artifacts
+	Token,
+	LockedFund,
+	StakingLogic,
+	StakingProxy,
+	FeeSharingProxy,
+	VestingLogic,
+	VestingFactory,
+	VestingRegistry,
+	OriginsAdmin,
+	OriginsBase,
+} = require("../utils");
 
 const {
-	BN, // Big Number support.
-	constants, // Assertions for transactions that should fail.
-} = require("@openzeppelin/test-helpers");
+    zero,
+    zeroAddress,
+    fourWeeks,
+    zeroBasisPoint,
+    twentyBasisPoint,
+    fiftyBasisPoint,
+    hundredBasisPoint,
+    invalidBasisPoint,
+    depositTypeRBTC,
+    depositTypeToken,
+    unlockTypeNone,
+    unlockTypeImmediate,
+    unlockTypeWaited,
+    saleEndDurationOrTSNone,
+    saleEndDurationOrTSUntilSupply,
+    saleEndDurationOrTSDuration,
+    saleEndDurationOrTSTimestamp,
+    verificationTypeNone,
+    verificationTypeEveryone,
+    verificationTypeByAddress,
+    transferTypeNone,
+    transferTypeUnlocked,
+    transferTypeWaitedUnlock,
+    transferTypeVested,
+    transferTypeLocked,
+} = require("../constants");
 
-const { assert } = require("chai");
-
-// Some constants we would be using in the contract.
-let zero = new BN(0);
-let zeroAddress = constants.ZERO_ADDRESS;
-let cliff = 1; // This is in 4 weeks. i.e. 1 * 4 weeks.
-let duration = 11; // This is in 4 weeks. i.e. 11 * 4 weeks.
-let fourWeeks = 4 * 7 * 24 * 60 * 60;
-let zeroBasisPoint = 0;
-let twentyBasisPoint = 2000;
-let fiftyBasisPoint = 5000;
-let hundredBasisPoint = 10000;
-let invalidBasisPoint = 10001;
-let waitedTS = currentTimestamp();
-let unlockTypeNone = 0;
-let unlockTypeImmediate = 1;
-let unlockTypeWaited = 2;
-
-/**
- * Function to create a random value.
- * It expects no parameter.
- *
- * @return {number} Random Value.
- */
-function randomValue() {
-	return Math.floor(Math.random() * 10000) + 10000;
-}
-
-/**
- * Function to get back the current timestamp in seconds.
- * It expects no parameter.
- *
- * @return {number} Current Unix Timestamp.
- */
-function currentTimestamp() {
-	return Math.floor(Date.now() / 1000);
-}
-
-/**
- * Function to check the contract state.
- *
- * @param contractInstance The contract instance.
- * @param checkArray The items to be checked.
- * @param userAddr The user address for any particular check.
- * @param waitedTS Whether the waited unlock started or not.
- * @param token The token address which is being locked, unlocked, vested, etc.
- * @param cliff Wait period after which locked token starts unlocking, represented in 4 weeks duration. 2 means 8 weeks.
- * @param duration Duration of the entire staking, represented similar to cliff.
- * @param vestingRegistry The vesting registry address.
- * @param vestedBalance The vested balance of the `userAddr`.
- * @param lockedBalance The locked balance of the `userAddr`.
- * @param waitedUnlockedBalance The waited unlocked balance of the `userAddr`.
- * @param unlockedBalance The unlocked balance of the `userAddr`.
- * @param isAdmin True if `userAddr` is an admin, false otherwise.
- */
-async function checkStatus(
-	contractInstance,
-	checkArray,
-	userAddr,
-	waitedTS,
-	token,
-	cliff,
-	duration,
-	vestingRegistry,
-	vestedBalance,
-	lockedBalance,
-	waitedUnlockedBalance,
-	unlockedBalance,
-	isAdmin
-) {
-	if (checkArray[0] == 1) {
-		let cValue = await contractInstance.getWaitedTS();
-		assert.strictEqual(waitedTS, cValue.toNumber(), "The waited timestamp does not match.");
-	}
-	if (checkArray[1] == 1) {
-		let cValue = await contractInstance.getToken();
-		assert.strictEqual(token, cValue, "The token does not match.");
-	}
-	if (checkArray[2] == 1) {
-		let cValue = await contractInstance.cliff(userAddr);
-		assert.equal(cliff, cValue.toNumber() / fourWeeks, "The cliff does not match.");
-	}
-	if (checkArray[3] == 1) {
-		let cValue = await contractInstance.duration(userAddr);
-		assert.equal(duration, cValue.toNumber() / fourWeeks, "The duration does not match.");
-	}
-	if (checkArray[4] == 1) {
-		let cValue = await contractInstance.getVestingDetails();
-		assert.strictEqual(vestingRegistry, cValue, "The vesting registry does not match.");
-	}
-	if (checkArray[5] == 1) {
-		let cValue = await contractInstance.getVestedBalance(userAddr);
-		assert.equal(vestedBalance, cValue.toNumber(), "The vested balance does not match.");
-	}
-	if (checkArray[6] == 1) {
-		let cValue = await contractInstance.getLockedBalance(userAddr);
-		assert.equal(lockedBalance, cValue.toNumber(), "The locked balance does not match.");
-	}
-	if (checkArray[7] == 1) {
-		let cValue = await contractInstance.getWaitedUnlockedBalance(userAddr);
-		assert.equal(waitedUnlockedBalance, cValue.toNumber(), "The waited unlocked balance does not match.");
-	}
-	if (checkArray[8] == 1) {
-		let cValue = await contractInstance.getUnlockedBalance(userAddr);
-		assert.equal(unlockedBalance, cValue.toNumber(), "The unlocked balance does not match.");
-	}
-	if (checkArray[9] == 1) {
-		let cValue = await contractInstance.adminStatus(userAddr);
-		assert.equal(isAdmin, cValue, "The admin status does not match.");
-	}
-}
-
-/**
- * Function to get the current token balance in contract & wallet.
- * It expects user address along with contract & token instances as parameters.
- *
- * @param addr The user/contract address.
- * @param tokenContract The Token Contract.
- * @param lockedFundContract The Locked Fund Contract.
- *
- * @return [Token Balance, Vested Balance, Locked Balance, Waited Unlocked Balance, Unlocked Balance].
- */
-async function getTokenBalances(addr, tokenContract, lockedFundContract) {
-	let tokenBal = await tokenContract.balanceOf(addr);
-	let vestedBal = await lockedFundContract.getVestedBalance(addr);
-	let lockedBal = await lockedFundContract.getLockedBalance(addr);
-	let waitedUnlockedBal = await lockedFundContract.getWaitedUnlockedBalance(addr);
-	let unlockedBal = await lockedFundContract.getUnlockedBalance(addr);
-	return [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal];
-}
-
-/**
- * Mints random token for user account and then approve a contract.
- *
- * @param tokenContract The Token Contract.
- * @param userAddr User Address.
- * @param toApprove User Address who is approved.
- *
- * @returns value The token amount which was minted by user.
- */
-async function userMintAndApprove(tokenContract, userAddr, toApprove) {
-	let value = randomValue();
-	await tokenContract.mint(userAddr, value);
-	await tokenContract.approve(toApprove, value, { from: userAddr });
-	return value;
-}
+let {
+    cliff,
+    duration,
+    waitedTS,
+	firstMinAmount,
+	firstMaxAmount,
+	firstRemainingTokens,
+	firstSaleStartTS,
+	firstSaleEnd,
+	firstUnlockedBP,
+	firstVestOrLockCliff,
+	firstVestOfLockDuration,
+	firstDepositRate,
+	firstDepositToken,
+	firstDepositType,
+	firstVerificationType,
+	firstSaleEndDurationOrTS,
+	firstTransferType,
+	secondMinAmount,
+	secondMaxAmount,
+	secondRemainingTokens,
+	secondSaleStartTS,
+	secondSaleEnd,
+	secondUnlockedBP,
+	secondVestOrLockCliff,
+	secondVestOfLockDuration,
+	secondDepositRate,
+	secondDepositToken,
+	secondDepositType,
+	secondVerificationType,
+	secondSaleEndDurationOrTS,
+	secondTransferType,
+} = require("../variable");
 
 contract("LockedFund (State Change)", (accounts) => {
 	let token, lockedFund, vestingRegistry, vestingLogic, stakingLogic;
@@ -168,30 +99,13 @@ contract("LockedFund (State Change)", (accounts) => {
 		assert.isAtLeast(accounts.length, 8, "Alteast 8 accounts are required to test the contracts.");
 		[creator, admin, newAdmin, userOne, userTwo, userThree, userFour, userFive] = accounts;
 
+		waitedTS = await currentTimestamp();
+
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking Instance.
-		stakingLogic = await StakingLogic.new(token.address, { from: creator });
-		staking = await StakingProxy.new(token.address, { from: creator });
-		await staking.setImplementation(stakingLogic.address, { from: creator });
-		staking = await StakingLogic.at(staking.address);
-
-		// Creating the FeeSharing Instance.
-		feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
-
-		// Creating the Vesting Instance.
-		vestingLogic = await VestingLogic.new({ from: creator });
-		vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
-		vestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator, // This should be Governance Timelock Contract.
-			{ from: creator }
-		);
-		vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
+		// Creating the Staking and Vesting
+		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
 	});
 
 	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
