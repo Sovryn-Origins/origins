@@ -1,0 +1,67 @@
+{
+	"token": "0xBcb61491F1859f53438918F1A5aFCA542Af9D397",
+	"decimal": "18",
+	"multisigOwners": [
+		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
+		"0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435",
+		"0xe1a148735f07bc5fe7cfb60499d325c8380488a8"
+	],
+	"multisig": "0x42E8D004c84E6B5Bad559D3b5CE7947AADb9E0bc",
+	"originsVerifiers": ["0x4C3d3505d34213751c4b4d621cB6bDe7E664E222", "0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435"],
+	"depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
+	"waitedTimestamp": "1626270000",
+	"vestingRegistry": "0xA95916C3D979400C7443961330b3092510a229Ba",
+	"origins": "0x34b97ffa01dc0DC959c5f1176273D0de3be914C1",
+	"lockedFund": "0xF06D5f5BfFFCB6a52c84cfebc03AD35637728E73",
+	"tiers": [
+		{
+			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+		},
+		{
+			"minimumAmount": "1",
+			"maximumAmount": "50000000000000000",
+			"tokensForSale": "11508000",
+			"saleStartTimestamp": "1626270000",
+			"saleEnd": "259200",
+			"unlockedBP": "0",
+			"vestOrLockCliff": "1",
+			"vestOrLockDuration": "11",
+			"depositRate": "100",
+			"depositToken": "0x0000000000000000000000000000000000000000",
+			"depositType": "0",
+			"verificationType": "2",
+			"saleEndDurationOrTimestamp": "2",
+			"transferType": "3"
+		},
+		{
+			"minimumAmount": "1",
+			"maximumAmount": "75000000000000000",
+			"tokensForSale": "20000000",
+			"saleStartTimestamp": "1626270000",
+			"saleEnd": "259200",
+			"unlockedBP": "5000",
+			"vestOrLockCliff": "1",
+			"vestOrLockDuration": "11",
+			"depositRate": "50",
+			"depositToken": "0x0000000000000000000000000000000000000000",
+			"depositType": "0",
+			"verificationType": "1",
+			"saleEndDurationOrTimestamp": "2",
+			"transferType": "3"
+		}
+	],
+	"toVerify": [
+		"0x531FFAb0A033707f3794222b9ba6c64D0099374A",
+		"0x54b8Aef719B63Ef9354b618AC1828b71EE6e496D",
+		"0xa41f08993b6d4dE3281F31492F7a93D6F403806B",
+		"0xdd771DdF2e13632ECccC4057690e35338b20FdF3",
+		"0x7d20eaa96aDbFe158C222210E7A8c05c44Da9d15",
+		"0x2bD2201bfe156a71EB0d02837172FFc237218505",
+		"0xA987a709f4A93eC25738FeC0F8d6189260459ed7",
+		"0xAB3d3DB6c8AF12B47a249451AAAde546a1A617Ea",
+		"0x48343139f46EA80422F7820cC0eBE5B77bbB1818",
+		"0xCB1857547a18837155694b4E267d3C64e677A2Ed",
+		"0x01e1205a5c3B6ffa3859Ab8E18134763132A422A"
+	],
+	"verified": []
+}
