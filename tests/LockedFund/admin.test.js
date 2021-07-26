@@ -6,9 +6,9 @@ const {
 	randomValue,
 	currentTimestamp,
 	createStakeAndVest,
+	createLockedFund,
 	// Contract Artifacts
 	Token,
-	LockedFund,
 	VestingRegistry,
 } = require("../utils");
 
@@ -32,11 +32,9 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 
 		// Creating the Staking and Vesting
 		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-	});
 
-	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
 		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [admin], { from: creator });
+		lockedFund = await createLockedFund(waitedTS, token, vestingRegistry, [admin], creator);
 
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
@@ -51,12 +49,10 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	});
 
 	it("Admin should not be able to add another admin more than once.", async () => {
-		await lockedFund.addAdmin(newAdmin, { from: admin });
 		await expectRevert(lockedFund.addAdmin(newAdmin, { from: admin }), "LockedFund: Address is already admin.");
 	});
 
 	it("Admin should be able to remove an admin.", async () => {
-		await lockedFund.addAdmin(newAdmin, { from: admin });
 		await lockedFund.removeAdmin(newAdmin, { from: admin });
 	});
 

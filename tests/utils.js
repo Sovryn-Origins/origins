@@ -42,6 +42,11 @@ async function currentTimestamp() {
 }
 /**
  * Function to create staking and vesting details.
+ *
+ * @param creator The address which creates all those staking and vesting addresses.
+ * @param token The token address.
+ *
+ * @return [staking, vestingLogic, vestingRegistry] The objects of staking, vesting logics and vesting registry.
  */
 async function createStakeAndVest(creator, token) {
 	// Creating the Staking Instance.
@@ -154,11 +159,11 @@ async function checkStatus(
  * @return [Token Balance, Vested Balance, Locked Balance, Waited Unlocked Balance, Unlocked Balance].
  */
 async function getTokenBalances(addr, tokenContract, lockedFundContract) {
-	let tokenBal = await tokenContract.balanceOf(addr);
-	let vestedBal = await lockedFundContract.getVestedBalance(addr);
-	let lockedBal = await lockedFundContract.getLockedBalance(addr);
-	let waitedUnlockedBal = await lockedFundContract.getWaitedUnlockedBalance(addr);
-	let unlockedBal = await lockedFundContract.getUnlockedBalance(addr);
+	let tokenBal = (await tokenContract.balanceOf(addr)).toNumber();
+	let vestedBal = (await lockedFundContract.getVestedBalance(addr)).toNumber();
+	let lockedBal = (await lockedFundContract.getLockedBalance(addr)).toNumber();
+	let waitedUnlockedBal = (await lockedFundContract.getWaitedUnlockedBalance(addr)).toNumber();
+	let unlockedBal = (await lockedFundContract.getUnlockedBalance(addr)).toNumber();
 	return [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal];
 }
 
@@ -180,6 +185,23 @@ async function userMintAndApprove(tokenContract, userAddr, toApprove) {
 
 /**
  * Checks Tier Details.
+ *
+ * @param _originsBase The origins contract object.
+ * @param _tierCount The tier count.
+ * @param _minAmount The minimum tier deposit amount.
+ * @param _maxAmount The maximum tier deposit amount.
+ * @param _remainingTokens The remamining tokens in the tier for sale.
+ * @param _saleStartTS The sale start timestamp for the tier.
+ * @param _saleEnd The sale end timestamp for the tier.
+ * @param _unlockedBP The unlocked amount specified in basis point.
+ * @param _vestOrLockCliff The cliff for vesting or locking tokens.
+ * @param _vestOrLockDuration The duration for vesting or locking tokens.
+ * @param _depositRate The deposit rate for the particular tier.
+ * @param _depositToken The deposit token for the particular tier (if deposit type as token).
+ * @param _depositType The deposit type (RBTC or Token).
+ * @param _verificationType The verification type for the tier.
+ * @param _saleEndDurationOrTS The sale end duration specified as duration or timestamp.
+ * @param _transferType The transfer type for the tier.
  */
 async function checkTier(
 	_originsBase,
@@ -221,6 +243,23 @@ async function checkTier(
 	assert(tierPartB._transferType.eq(new BN(_transferType)), "Transfer Type is not correctly set.");
 }
 
+/**
+ * Function to create a locked fund contract.
+ *
+ * @param waitedTS The time after which waited unlock will be unlocked.
+ * @param token The token address.
+ * @param vestingRegistry The vesting registry address.
+ * @param adminList The admin list for locked fund.
+ * @param creator The address used to create the locked fund.
+ *
+ * @return lockedFund contract object.
+ */
+async function createLockedFund(waitedTS, token, vestingRegistry, adminList, creator) {
+	lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, adminList, { from: creator });
+
+	return lockedFund;
+}
+
 // Contract Artifacts
 const Token = artifacts.require("Token");
 const LockedFund = artifacts.require("LockedFund");
@@ -250,6 +289,7 @@ module.exports = {
 	getTokenBalances,
 	userMintAndApprove,
 	checkTier,
+	createLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,

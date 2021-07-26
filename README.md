@@ -132,3 +132,4 @@ Please make sure to read the README mentioned in the scripts folder before runni
 - Total unique wallets participated in all tiers. Currently only unique wallets participated in a each tier is counted, which is not the same as unique wallets participated in all tiers combined. New storage structure will be required.
 - Tests related to other type of sales to be added.
 - Reduce the reason string text size, or use a numbering system with errors in mainly LockedFund and OriginsBase.
+- `saleEndDurationOrTS` in OriginsBase has little upside for storing and might be removable in the future.
