@@ -42,12 +42,12 @@ async function currentTimestamp() {
 }
 /**
  * Function to create staking and vesting details.
- * 
+ *
  * @param creator The address which creates all those staking and vesting addresses.
  * @param token The token address.
- * 
+ *
  * @return [staking, vestingLogic, vestingRegistry] The objects of staking, vesting logics and vesting registry.
-*/
+ */
 async function createStakeAndVest(creator, token) {
 	// Creating the Staking Instance.
 	stakingLogic = await StakingLogic.new(token.address, { from: creator });
@@ -185,7 +185,7 @@ async function userMintAndApprove(tokenContract, userAddr, toApprove) {
 
 /**
  * Checks Tier Details.
- * 
+ *
  * @param _originsBase The origins contract object.
  * @param _tierCount The tier count.
  * @param _minAmount The minimum tier deposit amount.
@@ -245,13 +245,13 @@ async function checkTier(
 
 /**
  * Function to create a locked fund contract.
- * 
+ *
  * @param waitedTS The time after which waited unlock will be unlocked.
  * @param token The token address.
  * @param vestingRegistry The vesting registry address.
  * @param adminList The admin list for locked fund.
  * @param creator The address used to create the locked fund.
- * 
+ *
  * @return lockedFund contract object.
  */
 async function createLockedFund(waitedTS, token, vestingRegistry, adminList, creator) {

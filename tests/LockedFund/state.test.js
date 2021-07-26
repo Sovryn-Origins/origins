@@ -315,7 +315,7 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[newTokenBal,,,,] = await getTokenBalances(userOne, token, lockedFund);
+		[newTokenBal, , , ,] = await getTokenBalances(userOne, token, lockedFund);
 		assert.strictEqual(newTokenBal, oldTokenBal + waitedUnlockedBal, "Token Balance not matching.");
 	});
 
@@ -340,7 +340,7 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal,,,,] = await getTokenBalances(userTwo, token, lockedFund);
+		[oldTokenBal, , , ,] = await getTokenBalances(userTwo, token, lockedFund);
 		await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
 		await checkStatus(
 			lockedFund,
@@ -357,7 +357,7 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[newTokenBal,,,,] = await getTokenBalances(userTwo, token, lockedFund);
+		[newTokenBal, , , ,] = await getTokenBalances(userTwo, token, lockedFund);
 		assert.strictEqual(newTokenBal, oldTokenBal + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
@@ -566,7 +566,7 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal,,,,] = await getTokenBalances(userTwo, token, lockedFund);
+		[oldTokenBal, , , ,] = await getTokenBalances(userTwo, token, lockedFund);
 		await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
 		await checkStatus(
 			lockedFund,
@@ -583,7 +583,7 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[newTokenBal,,,,] = await getTokenBalances(userTwo, token, lockedFund);
+		[newTokenBal, , , ,] = await getTokenBalances(userTwo, token, lockedFund);
 		assert.strictEqual(newTokenBal, oldTokenBal + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
