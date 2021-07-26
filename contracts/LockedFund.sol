@@ -324,6 +324,7 @@ contract LockedFund is ILockedFund {
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external {
 		_withdrawWaitedUnlockedBalance(msg.sender, _receiverAddress);
+		// TODO: Withdraw Unlocked Balances as well.
 		_createVestingAndStake(msg.sender);
 	}
 
