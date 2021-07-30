@@ -45,7 +45,7 @@ def loadConfig():
 # =========================================================================================================================================
 def deployStakingAndVesting():
     multisig = values["multisig"]
-    token = values["Token"]
+    token = values["token"]
     feeSharing = values["feeSharing"]
 
     print("\nDeploying the staking logic...\n")
