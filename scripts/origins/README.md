@@ -9,10 +9,10 @@ These are the scripts which will be used to deploy the Origins Platform.
 Please fill the below details in mainnet.json (or the corresponding network JSON files):
 
 - Multisig Owners in `multisigOwners`
-- Initial Admin in `initialAdmin`, this should be the EOA which runs this script. Don't forget to remove this address as an admin. It is recommended to use a multisig as the sole admin after initial setup.
 - Verifier in `originsVerifiers`, this address will be adding the address list which has to be verified to a particular tier.
 - Deposit Address in `depositAddress`, this address will receive the sale proceedings from the sale. Recommended to use a multisig provided by the Token Owners.
 - Token Release Time in `waitedTimestamp`, after this time, users who bought tokens in any tier with Transfer Type of Sale anything apart from `Unlocked` will be able to claim/vest their token in Locked Fund Contract.
+-  `vestOrLockCliff` and `vestOrLockDuration` is mentioned in 4 weeks time period. So, if it is mention as `1`, then that means `1 * 4 weeks` is stored in the smart contract.
 - Populate the tiers as per the tier details.
 
 ## Steps:
