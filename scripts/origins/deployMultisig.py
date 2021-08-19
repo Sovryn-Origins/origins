@@ -70,7 +70,7 @@ def deployMultisig():
 def writeToJSON():
     if thisNetwork == "development":
         fileHandle = open('./scripts/origins/values/development.json', "w")
-    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/origins/values/mainnet.json', "w")
