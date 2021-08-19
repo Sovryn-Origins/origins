@@ -45,7 +45,7 @@
 			"unlockedBP": "5000",
 			"vestOrLockCliff": "1",
 			"vestOrLockDuration": "10",
-			"depositRate": "242",
+			"depositRate": "50",
 			"depositToken": "0x0000000000000000000000000000000000000000",
 			"depositType": "0",
 			"verificationType": "1",
