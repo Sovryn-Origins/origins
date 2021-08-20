@@ -1,65 +1,62 @@
 {
-    "token": "0xaa7038D80521351F243168FefE0352194e3f83C3",
-    "decimal": "18",
-    "multisigOwners": [
-        "0xe8789B348C978b19dfb915a10b761069915c237B",
-        "0x9E0816a71B53ca67201a5088df960fE90910DE55",
-        "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
-    ],
-    "multisig": "0x30bdc896Ab0CE5D3A9a112174F814E2Eb9c18911",
-    "originsVerifiers": [
-        "0x9E0816a71B53ca67201a5088df960fE90910DE55",
-        "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
-    ],
-    "depositAddress": "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
-    "waitedTimestamp": "1629590400",
-    "vestingRegistry": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41",
-    "origins": "0xef0CF4969a9c0F55716327a63E05BCF9c7a7b472",
-    "lockedFund": "0xF5655Fb1d8A97828dF5Ab095DF81789db03B8dC0",
-    "tiers": [
-        {
-            "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
-        },
-        {
-            "minimumAmount": "1",
-            "maximumAmount": "4500000",
-            "tokensForSale": "32508000",
-            "saleStartTimestamp": "1629417600",
-            "saleEnd": "57600",
-            "unlockedBP": "0",
-            "vestOrLockCliff": "1",
-            "vestOrLockDuration": "10",
-            "depositRate": "154",
-            "depositToken": "0x0000000000000000000000000000000000000000",
-            "depositType": "0",
-            "verificationType": "2",
-            "saleEndDurationOrTimestamp": "2",
-            "transferType": "3"
-        },
-        {
-            "minimumAmount": "1",
-            "maximumAmount": "6430826",
-            "tokensForSale": "19992000",
-            "saleStartTimestamp": "1629475260",
-            "saleEnd": "115200",
-            "unlockedBP": "5000",
-            "vestOrLockCliff": "1",
-            "vestOrLockDuration": "10",
-            "depositRate": "242",
-            "depositToken": "0x0000000000000000000000000000000000000000",
-            "depositType": "0",
-            "verificationType": "1",
-            "saleEndDurationOrTimestamp": "2",
-            "transferType": "3"
-        }
-    ],
-    "toVerify": [
-        "0xe8789B348C978b19dfb915a10b761069915c237B",
-        "0x9E0816a71B53ca67201a5088df960fE90910DE55",
-        "0x2bD2201bfe156a71EB0d02837172FFc237218505",
-        "0x35f690b13C7D2EFd6d0403Efd07585113066d1F1",
-        "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
-        "0xcaB74E724B0Bc1e7Eb05449073B87f6cE7FA8919"
-    ],
-    "verified": []
+	"token": "0xaa7038D80521351F243168FefE0352194e3f83C3",
+	"decimal": "18",
+	"multisigOwners": [
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
+	],
+	"multisig": "0x30bdc896Ab0CE5D3A9a112174F814E2Eb9c18911",
+	"originsVerifiers": ["0x9E0816a71B53ca67201a5088df960fE90910DE55", "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"],
+	"depositAddress": "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
+	"waitedTimestamp": "1629590400",
+	"vestingRegistry": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41",
+	"origins": "0xef0CF4969a9c0F55716327a63E05BCF9c7a7b472",
+	"lockedFund": "0xF5655Fb1d8A97828dF5Ab095DF81789db03B8dC0",
+	"tiers": [
+		{
+			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+		},
+		{
+			"minimumAmount": "1",
+			"maximumAmount": "4500000",
+			"tokensForSale": "32508000",
+			"saleStartTimestamp": "1629417600",
+			"saleEnd": "57600",
+			"unlockedBP": "0",
+			"vestOrLockCliff": "1",
+			"vestOrLockDuration": "10",
+			"depositRate": "154",
+			"depositToken": "0x0000000000000000000000000000000000000000",
+			"depositType": "0",
+			"verificationType": "2",
+			"saleEndDurationOrTimestamp": "2",
+			"transferType": "3"
+		},
+		{
+			"minimumAmount": "1",
+			"maximumAmount": "6430826",
+			"tokensForSale": "19992000",
+			"saleStartTimestamp": "1629475260",
+			"saleEnd": "115200",
+			"unlockedBP": "5000",
+			"vestOrLockCliff": "1",
+			"vestOrLockDuration": "10",
+			"depositRate": "242",
+			"depositToken": "0x0000000000000000000000000000000000000000",
+			"depositType": "0",
+			"verificationType": "1",
+			"saleEndDurationOrTimestamp": "2",
+			"transferType": "3"
+		}
+	],
+	"toVerify": [
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x2bD2201bfe156a71EB0d02837172FFc237218505",
+		"0x35f690b13C7D2EFd6d0403Efd07585113066d1F1",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
+		"0xcaB74E724B0Bc1e7Eb05449073B87f6cE7FA8919"
+	],
+	"verified": []
 }

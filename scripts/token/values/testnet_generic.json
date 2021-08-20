@@ -1,19 +1,19 @@
 {
-    "tokenName": "Babelfish",
-    "tokenSymbol": "FISH",
-    "tokenDecimal": "18",
-    "tokenAmount": "420000000",
-    "token": "",
-    "multisig": "",
-    "multisigOwners": [
-        "0xe8789B348C978b19dfb915a10b761069915c237B",
-        "0x9E0816a71B53ca67201a5088df960fE90910DE55",
-        "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
-    ],
-    "stakingLogic": "",
-    "staking": "",
-    "feeSharing": "0x0000000000000000000000000000000000000001",
-    "vestingLogic": "",
-    "vestingFactory": "",
-    "vestingRegistry": ""
+	"tokenName": "Babelfish",
+	"tokenSymbol": "FISH",
+	"tokenDecimal": "18",
+	"tokenAmount": "420000000",
+	"token": "",
+	"multisig": "",
+	"multisigOwners": [
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
+	],
+	"stakingLogic": "",
+	"staking": "",
+	"feeSharing": "0x0000000000000000000000000000000000000001",
+	"vestingLogic": "",
+	"vestingFactory": "",
+	"vestingRegistry": ""
 }
