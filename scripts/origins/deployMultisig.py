@@ -23,10 +23,7 @@ def loadConfig():
     if thisNetwork == "development":
         acct = accounts[0]
         configFile = open('./scripts/origins/values/development.json')
-    elif thisNetwork == "testnet":
-        acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/origins/values/testnet.json')
-    elif thisNetwork == "testnet-ws":
+    elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":

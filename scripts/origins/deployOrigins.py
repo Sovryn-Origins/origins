@@ -27,7 +27,7 @@ def loadConfig():
     if thisNetwork == "development":
         acct = accounts[0]
         configFile = open('./scripts/origins/values/development.json')
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
@@ -481,7 +481,7 @@ def getVerifierList():
 def writeToJSON():
     if thisNetwork == "development":
         fileHandle = open('./scripts/origins/values/development.json', "w")
-    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/origins/values/mainnet.json', "w")

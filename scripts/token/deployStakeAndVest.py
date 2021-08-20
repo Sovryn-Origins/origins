@@ -23,7 +23,7 @@ def loadConfig():
         acct = accounts[0]
         configFile = open('./scripts/token/values/development.json')
         originsFile = open('./scripts/origins/values/development.json')
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/token/values/testnet.json')
         originsFile = open('./scripts/origins/values/testnet.json')
@@ -84,7 +84,7 @@ def writeToJSON():
     if thisNetwork == "development":
         tokenHandle = open('./scripts/token/values/development.json', "w")
         originsHandle = open('./scripts/origins/values/development.json', "w")
-    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         tokenHandle = open('./scripts/token/values/testnet.json', "w")
         originsHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
