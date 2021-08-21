@@ -60,7 +60,7 @@ def choice():
         print("11 for Buying Tokens.")
         print("12 for Adding Myself as a Verifier.")
         print("13 for Verified my wallet with Tier ID")
-        print("14 for Verifying Wallet List with Tier ID")
+        print("14 for Whitelisting addresses with Tier ID")
         print("15 for Removing Myself as an Owner.")
         print("16 for Removing Myself as a Verifier.")
         print("17 for getting the Tier Count.")
@@ -373,7 +373,7 @@ def buyTokens():
     tierID = readTier("buy tokens in")
     amount = 0
     rbtcAmount = 0
-    print("\nIf you want to send just `X` RBTC/Token, put 1 itself, (X * (10 ** Decimals)) is done behind the screen.")
+    print("\nIf you want to send just `X` RBTC/Token, put 1 itself, (X * (10 ** Decimals)) is done behind the scene.")
     amount = float(input("Enter the amount of tokens/RBTC you want to send: "))
     if(values['tiers'][tierID]['depositToken'] != '0x0000000000000000000000000000000000000000'):
         token = Contract.from_abi("Token", address=values['tiers'][tierID]['depositToken'], abi=Token.abi, owner=acct)
@@ -384,6 +384,7 @@ def buyTokens():
         decimal = 18
         amount = amount * (10 ** decimal)
         rbtcAmount = amount
+    print('amount: ',amount,'rbtcAmount: ', rbtcAmount)
     origins.buy(tierID, amount, {'value':rbtcAmount})
 
 # =========================================================================================================================================

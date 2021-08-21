@@ -124,6 +124,7 @@ contract LockedFund is ILockedFund {
 	 * @param _amount The amount of Token withdrawn from the unlocked balance.
 	 */
 	event Withdrawn(address indexed _initiator, address indexed _userAddress, uint256 _amount);
+	event WithdrawnUnlockedBalance(address indexed _initiator, address indexed _userAddress, uint256 _amount);
 
 	/**
 	 * @notice Emitted when a user creates a vesting for himself.
@@ -324,7 +325,7 @@ contract LockedFund is ILockedFund {
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external {
 		_withdrawWaitedUnlockedBalance(msg.sender, _receiverAddress);
-		// TODO: Withdraw Unlocked Balances as well.
+		// TODO: tests & audit _withdrawUnlockedBalance(msg.sender, _receiverAddress);
 		_createVestingAndStake(msg.sender);
 	}
 
@@ -472,6 +473,25 @@ contract LockedFund is ILockedFund {
 		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
 
 		emit Withdrawn(_sender, userAddr, amount);
+	}
+
+	/**
+	 * @notice A function to withdraw the waited unlocked balance.
+	 * @param _sender The one who initiates the call, from this user the balance will be taken.
+	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
+	 */
+	function _withdrawUnlockedBalance(address _sender, address _receiverAddress) internal {
+		require(unlockedBalances[_sender] > 0, "LockedFund: unlockedBalance is 0 - nothing to withdraw");
+
+		address userAddr = _receiverAddress == address(0) ? _sender : _receiverAddress;
+
+		uint256 amount = unlockedBalances[_sender];
+		unlockedBalances[_sender] = 0;
+
+		bool txStatus = token.transfer(userAddr, amount);
+		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+
+		emit WithdrawnUnlockedBalance(_sender, userAddr, amount);
 	}
 
 	/**
