@@ -74,6 +74,7 @@
 		}
 	},
 	"dependencies": {
+		"hardhat-abi-exporter": "^2.2.1",
 		"yarn": "^1.22.10"
 	}
 }
