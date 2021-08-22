@@ -47,34 +47,54 @@ def deployStakingAndVesting():
     multisig = values["multisig"]
     token = values["token"]
     feeSharing = values["feeSharing"]
+    vestingFactory = ''
+    stakingLogic = ''
+    staking = ''
+    vestingRegistry = ''
 
-    print("\nDeploying the staking logic...\n")
-    stakingLogic = acct.deploy(Staking)
-    values["stakingLogic"] = str(stakingLogic)
+    if values["stakingLogic"] == "":
+        print("\nDeploying the staking logic...\n")
+        stakingLogic = acct.deploy(Staking)
+        values["stakingLogic"] = str(stakingLogic)
+        writeToJSON()
     
-    print("Deploying the staking proxy...\n")
-    staking = acct.deploy(StakingProxy, token)
-    values["staking"] = str(staking)
+    if values["staking"] == "":
+        print("Deploying the staking proxy...\n")
+        staking = acct.deploy(StakingProxy, token)
+        values["staking"] = str(staking)
+        writeToJSON()
+    else:
+        staking = Contract.from_abi("StakingProxy", address=values['staking'], abi=StakingProxy.abi, owner=acct)
 
-    print("Setting the staking logic to proxy...\n")
-    staking.setImplementation(stakingLogic.address)
-    staking = Contract.from_abi("Staking", address=staking.address, abi=Staking.abi, owner=acct)
+    if staking.getImplementation() != values["stakingLogic"]:
+        print("Setting the staking logic to proxy...\n")
+        staking.setImplementation(stakingLogic.address)
+        staking = Contract.from_abi("Staking", address=values["staking"], abi=Staking.abi, owner=acct)
 
-    print("Setting the Fee Sharing into Staking...\n")
-    staking.setFeeSharing(feeSharing)
+    if staking.feeSharing() != values["feeSharing"]:
+        print("Setting the Fee Sharing into Staking...\n")
+        staking.setFeeSharing(feeSharing)
 
-    print("Deploying the vesting logic...\n")
-    vestingLogic = acct.deploy(VestingLogic)
-    values["vestingLogic"] = str(vestingLogic)
+    if values["vestingLogic"] == "":
+        print("Deploying the vesting logic...\n")
+        vestingLogic = acct.deploy(VestingLogic)
+        values["vestingLogic"] = str(vestingLogic)
+        writeToJSON()
+    else:
+        vestingLogic = Contract.from_abi("VestingLogic", address=values['vestingLogic'], abi=VestingLogic.abi, owner=acct)
 
-    print("Deploying the vesting factory...\n")
-    vestingFactory = acct.deploy(VestingFactory, vestingLogic.address)
-    values["vestingFactory"] = str(vestingFactory)
+    if values["vestingFactory"] == "":
+        print("Deploying the vesting factory...\n")
+        vestingFactory = acct.deploy(VestingFactory, values["vestingLogic"])
+        values["vestingFactory"] = str(vestingFactory)
+        writeToJSON()
 
-    print("Deploying the vesting registry...\n")
-    vestingRegistry = acct.deploy(VestingRegistry3, vestingFactory.address, token, staking.address, feeSharing, multisig)
-    values["vestingRegistry"] = str(vestingRegistry)
-    origins["vestingRegistry"] = str(vestingRegistry)
+    if values["vestingRegistry"] == "":
+        print("Deploying the vesting registry...\n")
+        vestingRegistry = acct.deploy(VestingRegistry3, values["vestingFactory"], token, staking.address, feeSharing, multisig)
+        values["vestingRegistry"] = str(vestingRegistry)
+        origins["vestingRegistry"] = str(vestingRegistry)
+        writeToJSON()
 
     print("Almost finished, writing the values to json.")
     writeToJSON()
