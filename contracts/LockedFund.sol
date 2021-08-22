@@ -476,7 +476,7 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
-	 * @notice A function to withdraw the waited unlocked balance.
+	 * @notice A function to withdraw unlocked balance.
 	 * @param _sender The one who initiates the call, from this user the balance will be taken.
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
 	 */
