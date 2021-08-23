@@ -6,7 +6,7 @@ def main():
 
     balanceBefore = acct.balance()
     # Function Call
-    deployMultisig()
+    deployDepositOriginsMultisig()
     balanceAfter = acct.balance()
 
     print("=============================================================")
@@ -39,15 +39,15 @@ def loadConfig():
     values = json.load(configFile)
 
 # == Multisig Deployment ==================================================================================================================
-def deployMultisig():
-    owners = values["multisigOwners"]
+def deployDepositOriginsMultisig():
+    owners = values["multisigDepositAddressOwners"]
     requiredConf = 1
     if network.show_active() == "mainnet":
         requiredConf = int(len(owners)/2 + 1)
     print("=============================================================")
     print("Deployment Parameters")
     print("=============================================================")
-    print("Multisig Owners:         ", owners)
+    print("Multisig Deposit Owners:         ", owners)
     print("Required Confirmations:  ", requiredConf)
     print("=============================================================")
 
@@ -60,7 +60,7 @@ def deployMultisig():
     print("=============================================================")
 
     # Updating the JSON Values.    
-    values["multisig"] = str(multisig)
+    values["depositAddress"] = str(multisig)
     writeToJSON()
 
 # =========================================================================================================================================
