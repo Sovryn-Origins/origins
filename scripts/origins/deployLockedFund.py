@@ -57,7 +57,7 @@ def choice():
         if(selection == 1):
             deployLockedFund()
         elif(selection == 2):
-            addLockedFundAsVestingAdmin()
+            addLockedFundAsVestingRegistryAdmin()
         elif(selection == 3):
             addOriginsAsAdmin()
         elif(selection == 4):
@@ -74,8 +74,7 @@ def choice():
 # == Locked Fund Deployment ===============================================================================================================
 def deployLockedFund():
     waitedTS = values['waitedTimestamp']
-    #if thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
-    if waitedTS == "":
+    if thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         waitedTS = int(time.time()) + (3*24*60*60)
     token = values['token']
     vestingRegistry = values['vestingRegistry']
@@ -94,13 +93,13 @@ def deployLockedFund():
     values['lockedFund'] = str(lockedFund.address)
     print("\nLocked Fund Deployed.")
 
-    addLockedFundAsVestingAdmin()
+    addLockedFundAsVestingRegistryAdmin()
     updateWaitedTS()
 
     writeToJSON()
 
 # =========================================================================================================================================
-def addLockedFundAsVestingAdmin():
+def addLockedFundAsVestingRegistryAdmin():
     vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
     print("\nAdding LockedFund as an admin of Vesting Registry.\n")
     vestingRegistry.addAdmin(values['lockedFund'])
