@@ -44,6 +44,7 @@
 		"hardhat-docgen": "^1.1.1",
 		"hardhat-gas-reporter": "^1.0.4",
 		"hardhat-log-remover": "^2.0.0",
+		"hardhat-abi-exporter": "^2.2.1",
 		"husky": "^4.3.6",
 		"prettier": "^2.2.1",
 		"prettier-plugin-solidity": "^1.0.0-beta.2",
@@ -74,7 +75,6 @@
 		}
 	},
 	"dependencies": {
-		"hardhat-abi-exporter": "^2.2.1",
 		"yarn": "^1.22.10"
 	}
 }
