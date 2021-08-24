@@ -235,7 +235,7 @@ def makeAllowance(tokenObj, spender, amount):
 # =========================================================================================================================================
 def checkAllowance(tokenObj, spender, amount):
     if(tokenObj.allowance(acct, spender) < amount):
-        if thisNetwork == "rsk-mainnet":
+        if thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
             print("\nNot enough token approved. Please approve the spender.")
             print("1 for approve.")
             print("Anything else for exit.")

@@ -91,7 +91,11 @@ def deployStakingAndVesting():
 
     if values["vestingRegistry"] == "":
         print("Deploying the vesting registry...\n")
+        vestingFactory = Contract.from_abi("VestingFactory", address=values['vestingFactory'], abi=VestingFactory.abi, owner=acct)
         vestingRegistry = acct.deploy(VestingRegistry3, values["vestingFactory"], token, staking.address, feeSharing, multisig)
+        print("Transfering ownership of vestingFactory to vestingRegistry...\n")
+        vestingFactory.transferOwnership(vestingRegistry.address)   
+        
         values["vestingRegistry"] = str(vestingRegistry)
         origins["vestingRegistry"] = str(vestingRegistry)
         writeToJSON()

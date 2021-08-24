@@ -6,7 +6,7 @@ def main():
 
     balanceBefore = acct.balance()
     # Function Call
-    deployDepositOriginsMultisig()
+    deployOriginsDepositAddressMultisig()
     balanceAfter = acct.balance()
 
     print("=============================================================")
@@ -29,7 +29,7 @@ def loadConfig():
     elif thisNetwork == "rsk-testnet":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/testnet.json')
-    elif thisNetwork == "rsk-mainnet":
+    elif thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/mainnet.json')
     else:
@@ -39,10 +39,10 @@ def loadConfig():
     values = json.load(configFile)
 
 # == Multisig Deployment ==================================================================================================================
-def deployDepositOriginsMultisig():
+def deployOriginsDepositAddressMultisig():
     owners = values["multisigDepositAddressOwners"]
     requiredConf = 1
-    if network.show_active() == "mainnet":
+    if network.show_active() == "rsk-mainnet" or network.show_active() == "mainnet":
         requiredConf = int(len(owners)/2 + 1)
     print("=============================================================")
     print("Deployment Parameters")
@@ -51,12 +51,12 @@ def deployDepositOriginsMultisig():
     print("Required Confirmations:  ", requiredConf)
     print("=============================================================")
 
-    print("Deploying the multisig...\n")
+    print("Deploying the Deposit Owner multisig...\n")
     multisig = acct.deploy(MultiSigWallet, owners, requiredConf)
     print("=============================================================")
     print("Deployed Details")
     print("=============================================================")
-    print("Multisig Address:        ", multisig)
+    print("Deposit Owner Multisig Address:        ", multisig)
     print("=============================================================")
 
     # Updating the JSON Values.    
@@ -69,6 +69,6 @@ def writeToJSON():
         fileHandle = open('./scripts/origins/values/development.json', "w")
     elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         fileHandle = open('./scripts/origins/values/testnet.json', "w")
-    elif thisNetwork == "rsk-mainnet":
+    elif thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
         fileHandle = open('./scripts/origins/values/mainnet.json', "w")
     json.dump(values, fileHandle, indent=4)
