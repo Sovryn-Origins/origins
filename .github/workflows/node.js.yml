@@ -25,7 +25,6 @@ jobs:
         run: npm ci
       - name: Checking Formatting
         run: npm run lint && npm run prettier-check
-      - name: Print working directory
       - name: Code Coverage
         run: npm run coverage
       - name: Coveralls GitHub Action
