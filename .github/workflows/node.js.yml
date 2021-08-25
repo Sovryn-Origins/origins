@@ -3,6 +3,7 @@
 
 name: Node.js CI
 
+
 on:
   push:
 
@@ -12,7 +13,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 14.x]
+        node-version: [12.x, 14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -24,7 +25,7 @@ jobs:
       - name: Installing Packages
         run: npm ci
       - name: Checking Formatting
-        run: npm run lint && npm run prettier-check
+        run: npm run lint && npm run prettier --write && npm run prettier-check
       - name: Code Coverage
         run: npm run coverage
       - name: Coveralls GitHub Action
