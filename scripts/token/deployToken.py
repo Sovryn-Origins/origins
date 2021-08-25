@@ -101,6 +101,7 @@ def transferTokenOwnership():
     TokenObj = Contract.from_abi("Staking", address=tokenAddress, abi=Token.abi, owner=acct)
     print("Current Token Owner of:", tokenAddress, "is", TokenObj.owner())
     TokenObj.transferOwnership(multisig)
+    #TODO: add transferring balance too
     waitTime()
     print("New Token Owner of:", tokenAddress, "is", TokenObj.owner())
 

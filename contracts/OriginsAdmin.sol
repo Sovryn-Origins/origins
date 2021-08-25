@@ -120,6 +120,7 @@ contract OriginsAdmin is OriginsStorage {
 	 * @dev Only callable by an Owner.
 	 */
 	function removeVerifier(address _verifierToRemove) public onlyOwner {
+		//TODO: it should be owner or verifyer to remove himself
 		_removeVerifier(_verifierToRemove);
 	}
 
