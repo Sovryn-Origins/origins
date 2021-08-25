@@ -52,7 +52,7 @@ jobs:
          solc-select install 0.6.12
          solc-select use 0.6.12
          pip3 install slither-analyzer
-         pip install -r requirements-dev.txt
+        #  pip install -r requirements-dev.txt
       # - name: Prepare contracts
       #   shell: bash
       #   run: |
