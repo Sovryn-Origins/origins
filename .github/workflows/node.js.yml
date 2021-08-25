@@ -47,10 +47,10 @@ jobs:
          python-version: '3.8'
       - name: Prepare environment
         run: |
-         npm install -g ganache-cli@6.12.1
+         npm install -g ganache-cli@0.5.17
          pip3 install solc-select
-         solc-select install 0.6.12
-         solc-select use 0.6.12
+         solc-select install 0.5.17
+         solc-select use 0.5.17
          pip3 install slither-analyzer
         #  pip install -r requirements-dev.txt
       # - name: Prepare contracts
@@ -61,7 +61,7 @@ jobs:
       - name: Slither Static Analysis
         uses: luisfontes19/slither-static-analysis-action@v0.3.2
         with:
-          slither-version: '0.6.13'
+          slither-version: '0.5.17'
           run-npm-install: true
           high-threshold: 0
           medium-threshold: 20
