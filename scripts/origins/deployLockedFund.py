@@ -134,6 +134,23 @@ def updateWaitedTS():
     print("Updated Waited Timestamp as", values['waitedTimestamp'], "of LockedFund...\n")
 
 # =========================================================================================================================================
+def updateWaitedTSMultisig():
+    values['waitedTimestamp'] = 1630173600
+
+    lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
+    print("\nUpdating Waited Timestamp of LockedFund...\n")
+
+    data = lockedFund.changeWaitedTS.encode_input(values['waitedTimestamp'])
+    print(data)
+
+    multisig = Contract.from_abi("MultiSig", address=contracts['multisig'], abi=MultiSigWallet.abi, owner=acct)
+    tx = multisig.submitTransaction(lockedFund.address,0,data)
+    txId = tx.events["Submission"]["transactionId"]
+    print(txId)
+
+    print("Updated Waited Timestamp as", values['waitedTimestamp'], "of LockedFund...\n")
+
+# =========================================================================================================================================
 def writeToJSON():
     if thisNetwork == "development":
         fileHandle = open('./scripts/origins/values/development.json', "w")

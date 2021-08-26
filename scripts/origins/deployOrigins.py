@@ -368,6 +368,23 @@ def setTierTime():
     print("Tier Time Updated.")
 
 # =========================================================================================================================================
+def setTierTimeMultisig():
+    tierID = 2
+    values['tiers'][tierID]['saleStartTimestamp'] = 1630000800
+    values['tiers'][tierID]['saleEnd'] = 1630087200
+    values['tiers'][tierID]['saleEndDurationOrTimestamp'] = 2
+
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    data = origins.setTierTime.encode_input(tierID, values['tiers'][tierID]['saleStartTimestamp'], values['tiers'][tierID]['saleEnd'], values['tiers'][tierID]['saleEndDurationOrTimestamp'])
+    print(data)
+
+    multisig = Contract.from_abi("MultiSig", address=contracts['multisig'], abi=MultiSigWallet.abi, owner=acct)
+    tx = multisig.submitTransaction(origins.address,0,data)
+    txId = tx.events["Submission"]["transactionId"]
+    print(txId)
+
+# =========================================================================================================================================
+
 def buyTokens():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     tierID = readTier("buy tokens in")
