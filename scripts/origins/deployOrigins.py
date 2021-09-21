@@ -60,7 +60,7 @@ def choice():
         print("11 for Buying Tokens.")
         print("12 for Adding Myself as a Verifier.")
         print("13 for Verified my wallet with Tier ID")
-        print("14 for Whitelisting addresses with Tier ID")
+        print("14 for Verifying wallet addresses with Tier ID")
         print("15 for Removing Myself as an Owner.")
         print("16 for Removing Myself as a Verifier.")
         print("17 for getting the Tier Count.")
