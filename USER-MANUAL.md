@@ -29,23 +29,9 @@ Details of the above steps are below.
 
 ## Settings files
 
-[testnet: /scripts/origins/values/testnet.json](/scripts/origins/values/testnet.json)
+[Development: /scripts/origins/values/development.json](/scripts/origins/values/development.json)
 
-- Admin has a lot of power, and is assumed to be the right, fair and just person/party. It is highly advised to have a multisig as admin, rather than just a EOA.
+[Testnet: /scripts/origins/values/testnet.json](/scripts/origins/values/testnet.json)
 
-## Limitations
+[Mainnet: /scripts/origins/values/mainnet.json](/scripts/origins/values/mainnet.json)
 
-- If the deposit asset price is lower than the token which is sold, currently that is not possible with this system. A simple solution is to have a divisor constant or a numerator & denominator system instead of the rate system.
-- LockedFund can only have a single cliff and duration per person. Tier based system would be much better when the vesting registry is updated (waiting for a PR to be merged in Sovryn).
-- Address can only be validated, and cannot be invalidated. Adding a simple function should suffice. To be done in the next update.
-
-## TODOs
-
-- NFT Based Sale.
-- Decoupling Tier for lesser gas usage and minimize the stack too deep error.
-- Fee for use of Origins platform (Contracts, UI and Setup).
-- Maybe a single contract can act as the platform if instead of different tiers based on ID, the tiers are based on token address (which is to be sold), thus having multiple tiers based on that. So, a single contract can handle multiple sales at once with multiple tiers. This can only be done after struct decoupling and gas profiling of each function and possible gas saving methods added.
-- Total unique wallets participated in all tiers. Currently only unique wallets participated in a each tier is counted, which is not the same as unique wallets participated in all tiers combined. New storage structure will be required.
-- Tests related to other type of sales to be added.
-- Reduce the reason string text size, or use a numbering system with errors in mainly LockedFund and OriginsBase.
-- `saleEndDurationOrTS` in OriginsBase has little upside for storing and might be removable in the future.
