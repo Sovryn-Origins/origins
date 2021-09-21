@@ -34,4 +34,3 @@ Details of the above steps are below.
 [Testnet: /scripts/origins/values/testnet.json](/scripts/origins/values/testnet.json)
 
 [Mainnet: /scripts/origins/values/mainnet.json](/scripts/origins/values/mainnet.json)
-
