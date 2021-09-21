@@ -56,13 +56,11 @@ def deployStakingAndVesting():
         print("\nDeploying the staking logic...\n")
         stakingLogic = acct.deploy(Staking)
         values["stakingLogic"] = str(stakingLogic)
-        writeToJSON()
     
     if values["staking"] == "":
         print("Deploying the staking proxy...\n")
         staking = acct.deploy(StakingProxy, token)
         values["staking"] = str(staking)
-        writeToJSON()
     else:
         staking = Contract.from_abi("StakingProxy", address=values['staking'], abi=StakingProxy.abi, owner=acct)
 
@@ -79,7 +77,6 @@ def deployStakingAndVesting():
         print("Deploying the vesting logic...\n")
         vestingLogic = acct.deploy(VestingLogic)
         values["vestingLogic"] = str(vestingLogic)
-        writeToJSON()
     else:
         vestingLogic = Contract.from_abi("VestingLogic", address=values['vestingLogic'], abi=VestingLogic.abi, owner=acct)
 
@@ -87,7 +84,6 @@ def deployStakingAndVesting():
         print("Deploying the vesting factory...\n")
         vestingFactory = acct.deploy(VestingFactory, values["vestingLogic"])
         values["vestingFactory"] = str(vestingFactory)
-        writeToJSON()
 
     if values["vestingRegistry"] == "":
         print("Deploying the vesting registry...\n")
@@ -98,7 +94,6 @@ def deployStakingAndVesting():
         
         values["vestingRegistry"] = str(vestingRegistry)
         origins["vestingRegistry"] = str(vestingRegistry)
-        writeToJSON()
 
     print("Almost finished, writing the values to json.")
     writeToJSON()
