@@ -24,7 +24,7 @@ jobs:
       - name: Installing Packages
         run: npm ci
       - name: Checking Formatting
-        run: npm run lint && npm run prettier --write && npm run prettier-check
+        run: npm run lint && npm run prettier-check
       - name: Code Coverage
         run: npm run coverage
       - name: Coveralls GitHub Action
