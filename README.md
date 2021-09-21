@@ -29,8 +29,9 @@ Metrics & Activity:
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/y/DistributedCollective/origins)
 ![GitHub last commit](https://img.shields.io/github/last-commit/DistributedCollective/origins)
 
-## __User Manual__
-To skip general description and structure review and go over to creating/adding Origins sales/new tier (sale), jump to __[User Manual](USER-MANUAL.md)__
+## **User Manual**
+
+To skip general description and structure review and go over to creating/adding Origins sales/new tier (sale), jump to **[User Manual](USER-MANUAL.md)**
 
 ## Main Contracts
 
