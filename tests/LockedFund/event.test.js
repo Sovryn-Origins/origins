@@ -101,26 +101,26 @@ contract("LockedFund (Events)", (accounts) => {
 		});
 	});
 
-	it("Withdrawing waited unlocked balance using withdrawWaitedUnlockedBalance() should emit Withdrawn.", async () => {
+	it("Withdrawing waited unlocked balance using withdrawWaitedUnlockedBalance() should emit WithdrawnWaitedUnlockedBalance.", async () => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
-		expectEvent(txReceipt, "Withdrawn", {
+		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userOne,
 			_amount: new BN(Math.floor(value / 2)),
 		});
 	});
 
-	it("Withdrawing waited unlocked balance to another wallet using withdrawWaitedUnlockedBalance() should emit Withdrawn.", async () => {
+	it("Withdrawing waited unlocked balance to another wallet using withdrawWaitedUnlockedBalance() should emit WithdrawnWaitedUnlockedBalance.", async () => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
-		expectEvent(txReceipt, "Withdrawn", {
+		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userTwo,
 			_amount: new BN(Math.floor(value / 2)),
@@ -174,7 +174,7 @@ contract("LockedFund (Events)", (accounts) => {
 		});
 	});
 
-	it("Wthdrawing waited unlocked balance, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit Withdrawn, VestingCreated and TokenStaked.", async () => {
+	it("Wthdrawing waited unlocked balance, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit WithdrawnWaitedUnlockedBalance, VestingCreated and TokenStaked.", async () => {
 		vestingFactory = await VestingFactory.new(vestingLogic.address);
 		let newVestingRegistry = await VestingRegistry.new(
 			vestingFactory.address,
@@ -191,7 +191,7 @@ contract("LockedFund (Events)", (accounts) => {
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
-		expectEvent(txReceipt, "Withdrawn", {
+		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userOne,
 			_amount: new BN(Math.floor(value / 2)),
@@ -209,7 +209,7 @@ contract("LockedFund (Events)", (accounts) => {
 		});
 	});
 
-	it("Withdrawing waited unlocked balance to any wallet, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit Withdrawn, VestingCreated and TokenStaked.", async () => {
+	it("Withdrawing waited unlocked balance to any wallet, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit WithdrawnWaitedUnlockedBalance, VestingCreated and TokenStaked.", async () => {
 		vestingFactory = await VestingFactory.new(vestingLogic.address);
 		let newVestingRegistry = await VestingRegistry.new(
 			vestingFactory.address,
@@ -226,7 +226,7 @@ contract("LockedFund (Events)", (accounts) => {
 		token.approve(lockedFund.address, value, { from: admin });
 		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
-		expectEvent(txReceipt, "Withdrawn", {
+		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userTwo,
 			_amount: new BN(Math.floor(value / 2)),

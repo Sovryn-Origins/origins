@@ -1,0 +1,51 @@
+{
+	"token": "",
+	"decimal": "",
+	"multisigOwners": ["", "", ""],
+	"multisig": "",
+	"originsVerifiers": [""],
+	"depositAddress": "",
+	"waitedTimestamp": "",
+	"vestingRegistry": "",
+	"origins": "",
+	"lockedFund": "",
+	"tiers": [
+		{
+			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+		},
+		{
+			"minimumAmount": "",
+			"maximumAmount": "",
+			"tokensForSale": "",
+			"saleStartTimestamp": "",
+			"saleEnd": "",
+			"unlockedBP": "",
+			"vestOrLockCliff": "",
+			"vestOrLockDuration": "",
+			"depositRate": "",
+			"depositToken": "",
+			"depositType": "",
+			"verificationType": "",
+			"saleEndDurationOrTimestamp": "",
+			"transferType": ""
+		},
+		{
+			"minimumAmount": "",
+			"maximumAmount": "",
+			"tokensForSale": "",
+			"saleStartTimestamp": "",
+			"saleEnd": "",
+			"unlockedBP": "",
+			"vestOrLockCliff": "",
+			"vestOrLockDuration": "",
+			"depositRate": "",
+			"depositToken": "0x0000000000000000000000000000000000000000",
+			"depositType": "",
+			"verificationType": "",
+			"saleEndDurationOrTimestamp": "",
+			"transferType": ""
+		}
+	],
+	"toVerify": [],
+	"verified": []
+}

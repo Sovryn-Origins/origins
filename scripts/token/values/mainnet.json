@@ -3,13 +3,17 @@
 	"tokenSymbol": "FISH",
 	"tokenDecimal": "18",
 	"tokenAmount": "420000000",
-	"token": "",
-	"multisig": "",
-	"multisigOwners": ["", "0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435", "0xe1a148735f07bc5fe7cfb60499d325c8380488a8"],
-	"stakingLogic": "",
-	"staking": "",
+	"token": "0x055A902303746382FBB7D18f6aE0df56eFDc5213",
+	"multisig": "0x26712A09D40F11f34e6C14633eD2C7C34c903eF0",
+	"multisigOwners": [
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
+		"0xE1A148735F07bC5FE7CFb60499d325c8380488A8",
+		"0x0CBbbED82A0038d0f63C889Bb1296591136Be65D"
+	],
+	"stakingLogic": "0x843ad1a6494942Bec2B1423B322838FbeefC1331",
+	"staking": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41",
 	"feeSharing": "0x0000000000000000000000000000000000000001",
-	"vestingLogic": "",
-	"vestingFactory": "",
-	"vestingRegistry": ""
+	"vestingLogic": "0x9467785EECFE7199Fa0ceD74EEbFCda11035b147",
+	"vestingFactory": "0xef0CF4969a9c0F55716327a63E05BCF9c7a7b472",
+	"vestingRegistry": "0x036ab2DB0a3d1574469a4a7E09887Ed76fB56C41"
 }

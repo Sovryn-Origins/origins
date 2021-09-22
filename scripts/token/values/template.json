@@ -1,0 +1,15 @@
+{
+	"tokenName": "",
+	"tokenSymbol": "",
+	"tokenDecimal": "",
+	"tokenAmount": "",
+	"token": "",
+	"multisig": "",
+	"multisigOwners": ["", "", ""],
+	"stakingLogic": "",
+	"staking": "",
+	"feeSharing": "0x0000000000000000000000000000000000000001",
+	"vestingLogic": "",
+	"vestingFactory": "",
+	"vestingRegistry": ""
+}

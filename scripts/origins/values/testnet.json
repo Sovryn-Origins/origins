@@ -1,32 +1,38 @@
 {
-	"token": "0xF769f619E3b9DBCd552E62dF217D5DC095f6a42b",
+	"token": "0xaa7038D80521351F243168FefE0352194e3f83C3",
 	"decimal": "18",
 	"multisigOwners": [
-		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
-		"0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435",
-		"0xe1a148735f07bc5fe7cfb60499d325c8380488a8"
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
 	],
-	"multisig": "0x8f2608FA847A37989Df18E008ed476569AfE21D0",
-	"originsVerifiers": ["0x4C3d3505d34213751c4b4d621cB6bDe7E664E222", "0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435"],
-	"depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
-	"waitedTimestamp": "1627837200",
-	"vestingRegistry": "0xE402a46F372a461dD19ed34453253a0B5D1e0509",
-	"origins": "0xf4963730a7A1E1aA06E01A0C70Ae465Ba7C4a9E3",
-	"lockedFund": "0x0188907C12ddE77ddD41500Ae7263aD6BF243B29",
+	"multisig": "0x30bdc896Ab0CE5D3A9a112174F814E2Eb9c18911",
+	"multisigDepositAddressOwners": [
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
+	],
+	"multisigDepositAddress": "",
+	"originsVerifiers": ["0x9E0816a71B53ca67201a5088df960fE90910DE55", "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"],
+	"depositAddress": "0x52AD0a0b5Df441009fe1b1Ee83e41D74168928a0",
+	"waitedTimestamp": "1629720200",
+	"vestingRegistry": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41",
+	"origins": "0xef0CF4969a9c0F55716327a63E05BCF9c7a7b472",
+	"lockedFund": "0xF5655Fb1d8A97828dF5Ab095DF81789db03B8dC0",
 	"tiers": [
 		{
 			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
 		},
 		{
-			"minimumAmount": "1",
-			"maximumAmount": "50000000000000000",
-			"tokensForSale": "11508000",
-			"saleStartTimestamp": "1624473000",
-			"saleEnd": "259200",
+			"minimumAmount": "1478192854331",
+			"maximumAmount": "42234081552322100",
+			"tokensForSale": "32508000",
+			"saleStartTimestamp": "1629417600",
+			"saleEnd": "172800",
 			"unlockedBP": "0",
 			"vestOrLockCliff": "1",
-			"vestOrLockDuration": "11",
-			"depositRate": "100",
+			"vestOrLockDuration": "10",
+			"depositRate": "676502",
 			"depositToken": "0x0000000000000000000000000000000000000000",
 			"depositType": "0",
 			"verificationType": "2",
@@ -34,15 +40,15 @@
 			"transferType": "3"
 		},
 		{
-			"minimumAmount": "1",
-			"maximumAmount": "75000000000000000",
-			"tokensForSale": "20000000",
-			"saleStartTimestamp": "1624732200",
-			"saleEnd": "259200",
+			"minimumAmount": "2322874485378",
+			"maximumAmount": "63351122328483200",
+			"tokensForSale": "19992000",
+			"saleStartTimestamp": "1629590401",
+			"saleEnd": "129600",
 			"unlockedBP": "5000",
 			"vestOrLockCliff": "1",
-			"vestOrLockDuration": "11",
-			"depositRate": "50",
+			"vestOrLockDuration": "10",
+			"depositRate": "403501",
 			"depositToken": "0x0000000000000000000000000000000000000000",
 			"depositType": "0",
 			"verificationType": "1",
@@ -51,17 +57,19 @@
 		}
 	],
 	"toVerify": [
-		"0x531FFAb0A033707f3794222b9ba6c64D0099374A",
+		"0xe8789B348C978b19dfb915a10b761069915c237B",
+		"0x9E0816a71B53ca67201a5088df960fE90910DE55",
+		"0x2bD2201bfe156a71EB0d02837172FFc237218505",
+		"0x35f690b13C7D2EFd6d0403Efd07585113066d1F1",
+		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12",
+		"0xcaB74E724B0Bc1e7Eb05449073B87f6cE7FA8919",
 		"0x54b8Aef719B63Ef9354b618AC1828b71EE6e496D",
 		"0xa41f08993b6d4dE3281F31492F7a93D6F403806B",
-		"0xdd771DdF2e13632ECccC4057690e35338b20FdF3",
-		"0x7d20eaa96aDbFe158C222210E7A8c05c44Da9d15",
-		"0x2bD2201bfe156a71EB0d02837172FFc237218505",
-		"0xA987a709f4A93eC25738FeC0F8d6189260459ed7",
-		"0xAB3d3DB6c8AF12B47a249451AAAde546a1A617Ea",
-		"0x48343139f46EA80422F7820cC0eBE5B77bbB1818",
-		"0xCB1857547a18837155694b4E267d3C64e677A2Ed",
-		"0x01e1205a5c3B6ffa3859Ab8E18134763132A422A"
+		"0x1aEb6A6Deb55E68e91B79048E95d1BeE06D8ff1f",
+		"0x6cb36e292D1A590603EbD822D8c826799a1Bb836",
+		"0x9B3Bdd9284BA98BE288b18363F406310A4F79BC4",
+		"0xa987A709F4a93Ec25738FeC0f8d6189260459Ed7",
+		"0xEB19817335e5565cF9c4a791d58c2bfA0CE032C7"
 	],
 	"verified": []
 }

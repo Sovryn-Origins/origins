@@ -5,7 +5,8 @@ def main():
     loadConfig()
 
     balanceBefore = acct.balance()
-    deployMultisig()
+    # Function Call
+    deployOriginsDepositAddressMultisig()
     balanceAfter = acct.balance()
 
     print("=============================================================")
@@ -21,52 +22,53 @@ def loadConfig():
 
     if thisNetwork == "development":
         acct = accounts[0]
-        configFile = open('./scripts/token/values/development.json')
+        configFile = open('./scripts/origins/values/development.json')
     elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/token/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/token/values/testnet.json')
+        configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
         acct = accounts.load("rskdeployer")
-        configFile = open('./scripts/token/values/mainnet.json')
+        configFile = open('./scripts/origins/values/mainnet.json')
     else:
         raise Exception("Network not supported")
 
     # Load values & deployed contracts addresses.
     values = json.load(configFile)
 
-# =========================================================================================================================================
-def deployMultisig():
-    owners = values["multisigOwners"]
-    if network.show_active() == "development":
-        owners[0] = acct.address
+# == Multisig Deployment ==================================================================================================================
+def deployOriginsDepositAddressMultisig():
+    owners = values["multisigDepositAddressOwners"]
     requiredConf = 1
     if network.show_active() == "rsk-mainnet" or network.show_active() == "mainnet":
         requiredConf = int(len(owners)/2 + 1)
     print("=============================================================")
     print("Deployment Parameters")
     print("=============================================================")
-    print("Multisig Owners:         ", owners)
+    print("Multisig Deposit Owners:         ", owners)
     print("Required Confirmations:  ", requiredConf)
     print("=============================================================")
 
+    print("Deploying the Deposit Owner multisig...\n")
     multisig = acct.deploy(MultiSigWallet, owners, requiredConf)
     print("=============================================================")
     print("Deployed Details")
     print("=============================================================")
-    print("Multisig Address:        ", multisig)
+    print("Deposit Owner Multisig Address:        ", multisig)
     print("=============================================================")
-    values["multisig"] = str(multisig)
+
+    # Updating the JSON Values.    
+    values["depositAddress"] = str(multisig)
     writeToJSON()
 
 # =========================================================================================================================================
 def writeToJSON():
     if thisNetwork == "development":
-        fileHandle = open('./scripts/token/values/development.json', "w")
+        fileHandle = open('./scripts/origins/values/development.json', "w")
     elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
-        fileHandle = open('./scripts/token/values/testnet.json', "w")
+        fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
-        fileHandle = open('./scripts/token/values/mainnet.json', "w")
+        fileHandle = open('./scripts/origins/values/mainnet.json', "w")
     json.dump(values, fileHandle, indent=4)

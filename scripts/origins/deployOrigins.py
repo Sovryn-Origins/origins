@@ -27,7 +27,7 @@ def loadConfig():
     if thisNetwork == "development":
         acct = accounts[0]
         configFile = open('./scripts/origins/values/development.json')
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
@@ -60,7 +60,7 @@ def choice():
         print("11 for Buying Tokens.")
         print("12 for Adding Myself as a Verifier.")
         print("13 for Verified my wallet with Tier ID")
-        print("14 for Verifying Wallet List with Tier ID")
+        print("14 for Verifying wallet addresses with Tier ID")
         print("15 for Removing Myself as an Owner.")
         print("16 for Removing Myself as a Verifier.")
         print("17 for getting the Tier Count.")
@@ -235,7 +235,7 @@ def makeAllowance(tokenObj, spender, amount):
 # =========================================================================================================================================
 def checkAllowance(tokenObj, spender, amount):
     if(tokenObj.allowance(acct, spender) < amount):
-        if thisNetwork == "rsk-mainnet":
+        if thisNetwork == "rsk-mainnet" or thisNetwork == "mainnet":
             print("\nNot enough token approved. Please approve the spender.")
             print("1 for approve.")
             print("Anything else for exit.")
@@ -368,12 +368,29 @@ def setTierTime():
     print("Tier Time Updated.")
 
 # =========================================================================================================================================
+def setTierTimeMultisig():
+    tierID = 2
+    values['tiers'][tierID]['saleStartTimestamp'] = 1630000800
+    values['tiers'][tierID]['saleEnd'] = 1630087200
+    values['tiers'][tierID]['saleEndDurationOrTimestamp'] = 2
+
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    data = origins.setTierTime.encode_input(tierID, values['tiers'][tierID]['saleStartTimestamp'], values['tiers'][tierID]['saleEnd'], values['tiers'][tierID]['saleEndDurationOrTimestamp'])
+    print(data)
+
+    multisig = Contract.from_abi("MultiSig", address=contracts['multisig'], abi=MultiSigWallet.abi, owner=acct)
+    tx = multisig.submitTransaction(origins.address,0,data)
+    txId = tx.events["Submission"]["transactionId"]
+    print(txId)
+
+# =========================================================================================================================================
+
 def buyTokens():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     tierID = readTier("buy tokens in")
     amount = 0
     rbtcAmount = 0
-    print("\nIf you want to send just `X` RBTC/Token, put 1 itself, (X * (10 ** Decimals)) is done behind the screen.")
+    print("\nIf you want to send just `X` RBTC/Token, put 1 itself, (X * (10 ** Decimals)) is done behind the scene.")
     amount = float(input("Enter the amount of tokens/RBTC you want to send: "))
     if(values['tiers'][tierID]['depositToken'] != '0x0000000000000000000000000000000000000000'):
         token = Contract.from_abi("Token", address=values['tiers'][tierID]['depositToken'], abi=Token.abi, owner=acct)
@@ -384,6 +401,7 @@ def buyTokens():
         decimal = 18
         amount = amount * (10 ** decimal)
         rbtcAmount = amount
+    print('amount: ',amount,'rbtcAmount: ', rbtcAmount)
     origins.buy(tierID, amount, {'value':rbtcAmount})
 
 # =========================================================================================================================================
@@ -481,7 +499,7 @@ def getVerifierList():
 def writeToJSON():
     if thisNetwork == "development":
         fileHandle = open('./scripts/origins/values/development.json', "w")
-    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/origins/values/mainnet.json', "w")

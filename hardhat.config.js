@@ -9,6 +9,7 @@ require("solidity-coverage"); // $ npx hardhat coverage
 require("hardhat-log-remover");
 require("hardhat-gas-reporter");
 require("hardhat-docgen");
+require("hardhat-abi-exporter");
 
 module.exports = {
 	solidity: {
@@ -19,6 +20,14 @@ module.exports = {
 				runs: 200,
 			},
 		},
+	},
+	abiExporter: {
+		path: "./abi",
+		clear: true,
+		flat: false,
+		only: [],
+		except: [],
+		spacing: 4,
 	},
 	contractSizer: {
 		alphaSort: false,

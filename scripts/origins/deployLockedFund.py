@@ -26,7 +26,7 @@ def loadConfig():
     if thisNetwork == "development":
         acct = accounts[0]
         configFile = open('./scripts/origins/values/development.json')
-    elif thisNetwork == "testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "testnet-ws":
         acct = accounts.load("rskdeployer")
         configFile = open('./scripts/origins/values/testnet.json')
     elif thisNetwork == "rsk-testnet":
@@ -57,7 +57,7 @@ def choice():
         if(selection == 1):
             deployLockedFund()
         elif(selection == 2):
-            addLockedFundAsVestingAdmin()
+            addLockedFundAsVestingRegistryAdmin()
         elif(selection == 3):
             addOriginsAsAdmin()
         elif(selection == 4):
@@ -74,8 +74,8 @@ def choice():
 # == Locked Fund Deployment ===============================================================================================================
 def deployLockedFund():
     waitedTS = values['waitedTimestamp']
-    if thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
-        waitedTS = int(time.time()) + (4*24*60*60)
+    if thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
+        waitedTS = int(time.time()) + (3*24*60*60)
     token = values['token']
     vestingRegistry = values['vestingRegistry']
     adminList = [values['multisig'], acct]
@@ -93,13 +93,13 @@ def deployLockedFund():
     values['lockedFund'] = str(lockedFund.address)
     print("\nLocked Fund Deployed.")
 
-    addLockedFundAsVestingAdmin()
+    addLockedFundAsVestingRegistryAdmin()
     updateWaitedTS()
 
     writeToJSON()
 
 # =========================================================================================================================================
-def addLockedFundAsVestingAdmin():
+def addLockedFundAsVestingRegistryAdmin():
     vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
     print("\nAdding LockedFund as an admin of Vesting Registry.\n")
     vestingRegistry.addAdmin(values['lockedFund'])
@@ -134,10 +134,27 @@ def updateWaitedTS():
     print("Updated Waited Timestamp as", values['waitedTimestamp'], "of LockedFund...\n")
 
 # =========================================================================================================================================
+def updateWaitedTSMultisig():
+    values['waitedTimestamp'] = 1630173600
+
+    lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
+    print("\nUpdating Waited Timestamp of LockedFund...\n")
+
+    data = lockedFund.changeWaitedTS.encode_input(values['waitedTimestamp'])
+    print(data)
+
+    multisig = Contract.from_abi("MultiSig", address=contracts['multisig'], abi=MultiSigWallet.abi, owner=acct)
+    tx = multisig.submitTransaction(lockedFund.address,0,data)
+    txId = tx.events["Submission"]["transactionId"]
+    print(txId)
+
+    print("Updated Waited Timestamp as", values['waitedTimestamp'], "of LockedFund...\n")
+
+# =========================================================================================================================================
 def writeToJSON():
     if thisNetwork == "development":
         fileHandle = open('./scripts/origins/values/development.json', "w")
-    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet":
+    elif thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws":
         fileHandle = open('./scripts/origins/values/testnet.json', "w")
     elif thisNetwork == "rsk-mainnet":
         fileHandle = open('./scripts/origins/values/mainnet.json', "w")

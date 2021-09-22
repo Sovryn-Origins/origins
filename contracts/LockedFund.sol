@@ -118,12 +118,20 @@ contract LockedFund is ILockedFund {
 	event WaitedUnlockedDeposited(address indexed _initiator, address indexed _userAddress, uint256 _amount, uint256 _basisPoint);
 
 	/**
-	 * @notice Emitted when a user withdraws the fund.
+	 * @notice Emitted when a user withdraws the Waited Unlocked fund.
+	 * @param _initiator The address which initiated this event to be emitted.
+	 * @param _userAddress The user whose waited unlocked balance has to be withdrawn.
+	 * @param _amount The amount of Token withdrawn from the waited unlocked balance.
+	 */
+	event WithdrawnWaitedUnlockedBalance(address indexed _initiator, address indexed _userAddress, uint256 _amount);
+
+	/**
+	 * @notice Emitted when a user withdraws the Unlocked fund.
 	 * @param _initiator The address which initiated this event to be emitted.
 	 * @param _userAddress The user whose unlocked balance has to be withdrawn.
 	 * @param _amount The amount of Token withdrawn from the unlocked balance.
 	 */
-	event Withdrawn(address indexed _initiator, address indexed _userAddress, uint256 _amount);
+	event WithdrawnUnlockedBalance(address indexed _initiator, address indexed _userAddress, uint256 _amount);
 
 	/**
 	 * @notice Emitted when a user creates a vesting for himself.
@@ -324,7 +332,7 @@ contract LockedFund is ILockedFund {
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external {
 		_withdrawWaitedUnlockedBalance(msg.sender, _receiverAddress);
-		// TODO: Withdraw Unlocked Balances as well.
+		// TODO: Tests & Audit _withdrawUnlockedBalance(msg.sender, _receiverAddress);
 		_createVestingAndStake(msg.sender);
 	}
 
@@ -471,7 +479,24 @@ contract LockedFund is ILockedFund {
 		bool txStatus = token.transfer(userAddr, amount);
 		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
 
-		emit Withdrawn(_sender, userAddr, amount);
+		emit WithdrawnWaitedUnlockedBalance(_sender, userAddr, amount);
+	}
+
+	/**
+	 * @notice A function to withdraw unlocked balance.
+	 * @param _sender The one who initiates the call, from this user the balance will be taken.
+	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
+	 */
+	function _withdrawUnlockedBalance(address _sender, address _receiverAddress) internal {
+		address userAddr = _receiverAddress == address(0) ? _sender : _receiverAddress;
+
+		uint256 amount = unlockedBalances[_sender];
+		unlockedBalances[_sender] = 0;
+
+		bool txStatus = token.transfer(userAddr, amount);
+		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+
+		emit WithdrawnUnlockedBalance(_sender, userAddr, amount);
 	}
 
 	/**
