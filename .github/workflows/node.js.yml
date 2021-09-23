@@ -61,4 +61,4 @@ jobs:
           low-threshold: 30
           optimization-threshold: 5
           informative-threshold: 50
-          projectPath: "./contracts/*.sol"
+          projectPath: "./contracts"
