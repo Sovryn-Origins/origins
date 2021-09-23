@@ -3,7 +3,6 @@
 
 name: Node.js CI
 
-
 on:
   push:
 
@@ -41,32 +40,25 @@ jobs:
         uses: actions/checkout@v2
       - uses: actions/setup-node@v1.4.4
         with:
-          node-version: '12'
+          node-version: "12"
       - uses: actions/setup-python@v2
         with:
-         python-version: '3.8'
+          python-version: "3.8"
       - name: Prepare environment
         run: |
-         npm install -g ganache-cli@6.12.1
-         pip3 install solc-select
-         solc-select install 0.5.17
-         solc-select use 0.5.17
-         pip3 install slither-analyzer
-        #  pip install -r requirements-dev.txt
-      # - name: Prepare contracts
-      #   shell: bash
-      #   run: |
-      #     # npm run clone-packages
-      #     npm run sec:flatten
+          npm install -g ganache-cli@6.12.1
+          pip3 install solc-select
+          solc-select install 0.5.17
+          solc-select use 0.5.17
+          pip3 install slither-analyzer
       - name: Slither Static Analysis
         uses: luisfontes19/slither-static-analysis-action@v0.3.2
         with:
-          slither-version: '0.6.13'
+          slither-version: "0.6.13"
           run-npm-install: true
           high-threshold: 0
           medium-threshold: 20
           low-threshold: 30
           optimization-threshold: 5
           informative-threshold: 50
-          projectPath: "./contracts"
-          filterPath: "./contracts/Sovryn|./contracts/Openzeppelin"
+          projectPath: "./contracts/*.sol"
