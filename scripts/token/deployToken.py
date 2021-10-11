@@ -5,15 +5,15 @@ import time
 def main():
     loadConfig()
 
-    balanceBefore = acct.balance()
+    # balanceBefore = acct.balance()
     choice()
-    balanceAfter = acct.balance()
+    # balanceAfter = acct.balance()
 
-    print("=============================================================")
-    print("Balance Before:  ", balanceBefore)
-    print("Balance After:   ", balanceAfter)
-    print("Gas Used:        ", balanceBefore - balanceAfter)
-    print("=============================================================")
+    # print("=============================================================")
+    # print("Balance Before:  ", balanceBefore)
+    # print("Balance After:   ", balanceAfter)
+    # print("Gas Used:        ", balanceBefore - balanceAfter)
+    # print("=============================================================")
 
 # =========================================================================================================================================
 def loadConfig():
