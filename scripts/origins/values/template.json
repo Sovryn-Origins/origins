@@ -3,7 +3,7 @@
 	"decimal": "",
 	"multisigOwners": ["", "", ""],
 	"multisig": "",
-    "multisigDepositAddressOwners": ["", "", ""],
+	"multisigDepositAddressOwners": ["", "", ""],
 	"multisigDepositAddress": "",
 	"originsVerifiers": [""],
 	"waitedTimestamp": "",
