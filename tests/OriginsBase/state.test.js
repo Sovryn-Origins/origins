@@ -549,10 +549,10 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		let userVestedBalance = await lockedFund.getVestedBalance(userOne);
-		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, {from: userOne});
-		let participatingWalletCount = await originsBase.getParticipatingWalletCount({from: userOne});
-		let tokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, {from: userOne});
-		let tokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, {from: userOne});
+		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, { from: userOne });
+		let participatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
+		let tokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, { from: userOne });
+		let tokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
 		assert(participatingWalletCountPerTier.eq(new BN(1)), "Participating Wallet Count Per Tier is wrong.");
 		assert(participatingWalletCount.eq(new BN(1)), "Participating Wallet Count is wrong.");
 		assert(tokensBoughtByAddressOnTier.eq(new BN(amount).mul(new BN(firstDepositRate))), "Tokens Bought by Address Per Tier is wrong.");
@@ -562,20 +562,28 @@ contract("OriginsBase (State Functions)", (accounts) => {
 
 	it("User should be able to buy tokens multiple times until max asset amount reaches.", async () => {
 		let amount = 10000;
-		let oldTokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, {from: userOne});
-		let oldTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, {from: userOne});
+		let oldTokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, { from: userOne });
+		let oldTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		let userVestedBalance = await lockedFund.getVestedBalance(userOne);
-		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, {from: userOne});
-		let participatingWalletCount = await originsBase.getParticipatingWalletCount({from: userOne});
-		let newTokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, {from: userOne});
-		let newTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, {from: userOne});
+		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, { from: userOne });
+		let participatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
+		let newTokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, { from: userOne });
+		let newTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
 		assert(participatingWalletCountPerTier.eq(new BN(1)), "Participating Wallet Count Per Tier is wrong.");
 		assert(participatingWalletCount.eq(new BN(1)), "Participating Wallet Count is wrong.");
-		assert(newTokensBoughtByAddressOnTier.eq(oldTokensBoughtByAddressOnTier.add(new BN(3).mul(new BN(amount).mul(new BN(firstDepositRate))))), "Tokens Bought by Address Per Tier is wrong.");
-		assert(newTokensBoughtByAddress.eq(oldTokensBoughtByAddress.add(new BN(3).mul(new BN(amount).mul(new BN(firstDepositRate))))), "Tokens Bought by Address is wrong.");
+		assert(
+			newTokensBoughtByAddressOnTier.eq(
+				oldTokensBoughtByAddressOnTier.add(new BN(3).mul(new BN(amount).mul(new BN(firstDepositRate))))
+			),
+			"Tokens Bought by Address Per Tier is wrong."
+		);
+		assert(
+			newTokensBoughtByAddress.eq(oldTokensBoughtByAddress.add(new BN(3).mul(new BN(amount).mul(new BN(firstDepositRate))))),
+			"Tokens Bought by Address is wrong."
+		);
 		assert(userVestedBalance.eq(new BN(amount).mul(new BN(4)).mul(new BN(firstDepositRate))), "User Vesting Balance is wrong.");
 	});
 
@@ -594,17 +602,20 @@ contract("OriginsBase (State Functions)", (accounts) => {
 
 	it("Users buying on different tiers should be counted as one unique wallet.", async () => {
 		let amount = 10000;
-		let oldTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, {from: userOne});
-		let oldParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount-1, {from: userOne});
-		let oldParticipatingWalletCount = await originsBase.getParticipatingWalletCount({from: userOne});
-		await originsBase.buy(tierCount-1, zero, { from: userOne, value: amount });
-		let newTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, {from: userOne});
-		let newParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount-1, {from: userOne});
-		let newParticipatingWalletCount = await originsBase.getParticipatingWalletCount({from: userOne});
+		let oldTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
+		let oldParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount - 1, { from: userOne });
+		let oldParticipatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
+		await originsBase.buy(tierCount - 1, zero, { from: userOne, value: amount });
+		let newTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
+		let newParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount - 1, { from: userOne });
+		let newParticipatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
 		assert(oldParticipatingWalletCountPerTier.eq(new BN(0)), "Participating Wallet Count Per Tier is wrong.");
 		assert(newParticipatingWalletCountPerTier.eq(new BN(1)), "Participating Wallet Count Per Tier is wrong.");
 		assert(oldParticipatingWalletCount.eq(newParticipatingWalletCount), "Participating Wallet Count is wrong.");
-		assert(newTokensBoughtByAddress.eq(oldTokensBoughtByAddress.add(new BN(amount).mul(new BN(firstDepositRate)))), "Tokens Bought by Address is wrong.");
+		assert(
+			newTokensBoughtByAddress.eq(oldTokensBoughtByAddress.add(new BN(amount).mul(new BN(firstDepositRate)))),
+			"Tokens Bought by Address is wrong."
+		);
 	});
 
 	it("Owner should be able to withdraw the sale deposit to deposit address.", async () => {

@@ -541,7 +541,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	) internal {
 		if (_tokensBoughtByAddress == 0) {
 			participatingWalletCountPerTier[_tierID]++;
-			if(tokensBoughtByAddress[msg.sender] == 0) {
+			if (tokensBoughtByAddress[msg.sender] == 0) {
 				participatingWalletCount++;
 			}
 		}
