@@ -494,8 +494,16 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		let tokenAddress = await originsBase.getToken({ from: userOne });
 	});
 
+	it("User should be able to get Tokens Bought By Address.", async () => {
+		let tokensBought = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
+	});
+
 	it("User should be able to get Tokens Bought By Address On Tier.", async () => {
 		let tokensBought = await originsBase.getTokensBoughtByAddressOnTier(userOne, 1, { from: userOne });
+	});
+
+	it("User should be able to get Participating Wallet Count.", async () => {
+		let participatingWallet = await originsBase.getParticipatingWalletCount({ from: userOne });
 	});
 
 	it("User should be able to get Participating Wallet Count Per Tier.", async () => {

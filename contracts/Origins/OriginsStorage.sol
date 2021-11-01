@@ -18,6 +18,8 @@ contract OriginsStorage {
 	uint256 internal tierCount;
 	/// @notice The maximum allowed Basis Point.
 	uint256 internal constant MAX_BASIS_POINT = 10000;
+	/// @notice Contains the number of unique wallets who participated in the sale.
+	uint256 internal participatingWalletCount;
 
 	/// @notice The address to deposit the raised amount. If not set, will be holded in this contract itself, withdrawable by any owner.
 	address payable internal depositAddress;
@@ -95,6 +97,8 @@ contract OriginsStorage {
 	mapping(address => mapping(uint256 => uint256)) internal tokensBoughtByAddressOnTier;
 	/// @notice Contains the number of unique wallets who participated in the sale in a particular Tier.
 	mapping(uint256 => uint256) internal participatingWalletCountPerTier;
+	/// @notice The address to uint mapping which contains the amount of tokens bought by that particular address.
+	mapping(address => uint256) internal tokensBoughtByAddress;
 	/// @notice Contains the amount of token allocation provided by the tier.
 	mapping(uint256 => uint256) internal totalTokenAllocationPerTier;
 	/// @notice Contains the amount of tokens sold in a particular Tier.

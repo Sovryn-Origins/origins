@@ -531,20 +531,23 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Internal function to update the wallet count and tier token sold stat.
 	 * @notice _tierID The Tier ID whose stat has to be updated.
-	 * @notice _deposit The amount of asset deposited by the user.
 	 * @notice _tokensBoughtByAddress The amount of tokens bought by the user previously.
 	 * @notice _tokensBought The amount of tokens bought during the current buy.
 	 */
 	function _updateWalletCount(
 		uint256 _tierID,
-		uint256 _deposit,
 		uint256 _tokensBoughtByAddress,
 		uint256 _tokensBought
 	) internal {
 		if (_tokensBoughtByAddress == 0) {
 			participatingWalletCountPerTier[_tierID]++;
+			if(tokensBoughtByAddress[msg.sender] == 0) {
+				participatingWalletCount++;
+			}
 		}
 		tokensSoldPerTier[_tierID] = tokensSoldPerTier[_tierID].add(_tokensBought);
+		tokensBoughtByAddress[msg.sender] = tokensBoughtByAddress[msg.sender].add(_tokensBought);
+		tokensBoughtByAddressOnTier[msg.sender][_tierID] = tokensBoughtByAddressOnTier[msg.sender][_tierID].add(_tokensBought);
 	}
 
 	/**
@@ -598,7 +601,6 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice actual buying happens here.
 		uint256 tokensBought = deposit.mul(tierDetails.depositRate);
 		tiers[_tierID].remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
-		tokensBoughtByAddressOnTier[msg.sender][_tierID] = tokensBoughtByAddressOnTier[msg.sender][_tierID].add(tokensBought);
 
 		/// @notice Checking what type of Transfer to do.
 		_tokenTransferOnBuy(tierDetails, tokensBought);
@@ -607,7 +609,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		_updateTierTokenDetailsAfterBuy(_tierID);
 
 		/// @notice Updating the stats.
-		_updateWalletCount(_tierID, deposit, tokensBoughtByAddress, tokensBought);
+		_updateWalletCount(_tierID, tokensBoughtByAddress, tokensBought);
 
 		/// @notice Refunding the excess funds.
 		if (refund > 0) {
@@ -768,6 +770,24 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			uint256(tier.saleEndDurationOrTS),
 			uint256(tier.transferType)
 		);
+	}
+
+	/**
+	 * @notice Function to read tokens bought by an address.
+	 * @param  _addr The address which has to be checked.
+	 * @return The amount of tokens bought by the address.
+	 */
+	function getTokensBoughtByAddress(address _addr) external view returns (uint256) {
+		return tokensBoughtByAddress[_addr];
+	}
+
+	/**
+	 * @notice Function to read participating wallet count.
+	 * @return The number of wallets who participated in that Tier.
+	 * @dev Total participation of wallets can be determined by this.
+	 */
+	function getParticipatingWalletCount() external view returns (uint256) {
+		return participatingWalletCount;
 	}
 
 	/**
