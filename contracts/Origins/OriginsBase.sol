@@ -1,6 +1,6 @@
 pragma solidity ^0.5.17;
 
-import "./Interfaces/IOrigins.sol";
+import "../Interfaces/IOrigins.sol";
 import "./OriginsEvents.sol";
 
 /**

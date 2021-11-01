@@ -1,8 +1,8 @@
 pragma solidity ^0.5.17;
 
-import "./Interfaces/IERC20.sol";
-import "./Openzeppelin/SafeMath.sol";
-import "./Interfaces/ILockedFund.sol";
+import "../Interfaces/IERC20.sol";
+import "../Openzeppelin/SafeMath.sol";
+import "../Interfaces/ILockedFund.sol";
 
 /**
  *  @title A storage contract for Origins Platform.
