@@ -70,6 +70,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * Some are currently sent with default value due to Stack Too Deep problem.
 	 */
 	function createTier(
+		// uint256 _minAmount,
 		uint256 _maxAmount,
 		uint256 _remainingTokens,
 		uint256 _saleStartTS,
@@ -82,6 +83,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _verificationType,
 		uint256 _saleEndDurationOrTS,
 		uint256 _transferType
+		// uint256 _saleType
 	) external onlyOwner returns (uint256 _tierID) {
 		/// @notice `tierCount` should always start at 1, because else default value zero will result in verification process.
 		tierCount++;
@@ -96,9 +98,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		/// @notice Deposit Parameters. (IMPORTANT TODO, change deposit token address here.)
 		_setTierDeposit(_tierID, _depositRate, address(0), DepositType(_depositType));
+		/// _setTierDeposit(_tierID, _depositRate, _depositToken, DepositType(_depositType));
 
 		/// @notice Token Amount Limit Parameters. (IMPORTANT TODO, change minimum amount.)
 		_setTierTokenLimit(_tierID, 0, _maxAmount);
+		/// _setTierTokenLimit(_tierID, _minAmount, _maxAmount);
 
 		/// @notice Tier Token Amount Parameters.
 		_setTierTokenAmount(_tierID, _remainingTokens);
@@ -108,6 +112,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		/// @notice Time Parameters.
 		_setTierTime(_tierID, _saleStartTS, _saleEnd, SaleEndDurationOrTS(_saleEndDurationOrTS));
+
+		/// @notice Sale Type Parameters. TODO: It exceeds the limit for the function. Optimization required.
+		/// _setTierSaleType(_tierID, SaleType(_saleType));
 	}
 
 	/**
@@ -208,6 +215,18 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
+	 * @notice Function to set the Tier Sale Type Parameters.
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _saleType TODO.
+	 */
+	function setTierSaleType(
+		uint256 _tierID,
+		uint256 _saleType
+	) external onlyOwner {
+		_setTierSaleType(_tierID, SaleType(_saleType));
+	}
+
+	/**
 	 * @notice Function to verify a single address with a single tier.
 	 * @param _addressToBeVerified The address which has to be veriried for the sale.
 	 * @param _tierID The tier for which the address has to be verified.
@@ -258,6 +277,13 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function buy(uint256 _tierID, uint256 _amount) external payable {
 		_buy(_tierID, _amount);
+	}
+
+	/**
+	 * TODO
+	 */
+	function claimPooled(uint256 _tierID) external {
+		_claimPooled(_tierID);
 	}
 
 	/**
@@ -485,6 +511,20 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
+	 * @notice Internal function to set the Tier Sale Type Parameters.
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _saleType TODO.
+	 */
+	function _setTierSaleType(
+		uint256 _tierID,
+		SaleType _saleType
+	) internal {
+		tiers[_tierID].saleType = _saleType;
+
+		emit TierSaleTypeUpdated(msg.sender, _tierID, _saleType);
+	}
+
+	/**
 	 * @notice Internal function to verify a single address with a single tier.
 	 * @param _addressToBeVerified The address which has to be veriried for the sale.
 	 * @param _tierID The tier for which the address has to be verified.
@@ -505,8 +545,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return True if the sale is allowed on that tier, False otherwise.
 	 */
 	function _saleAllowed(uint256 _id) internal returns (bool) {
-		require(tiers[_id].saleStartTS != 0, "OriginsBase: Sale has not started yet.");
-		require(!tierSaleEnded[_id], "OriginsBase: Sale ended.");
+		/// @notice Sale has not started yet.
+		if(tiers[_id].saleStartTS == 0) {
+			return false;
+		}
+		if(tierSaleEnded[_id]){
+			/// @notice Sale Ended.
+			return false;
+		}
 		if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None) {
 			return false;
 		} else if (tiers[_id].saleEnd < block.timestamp && tiers[_id].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
@@ -561,9 +607,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * @notice Internal Function to transfer the token during buying.
+	 * @notice Internal Function to transfer the token during buying or claiming.
 	 * @param _tierDetails The Tier from which the tokens were bought.
-	 * @param _tokensBought The number of tokens bought.
+	 * @param _tokensBought The number of tokens bought or alloted.
 	 */
 	function _tokenTransferOnBuy(Tier memory _tierDetails, uint256 _tokensBought) internal {
 		require(_tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner.");
@@ -600,6 +646,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Internal Function to update the Tier Token Details.
 	 * @param _tierID The Tier ID whose Token Details are updated.
+	 * TODO: Update for a pooled system.
 	 */
 	function _updateTierTokenDetailsAfterBuy(uint256 _tierID) internal {
 		Tier memory _tierDetails = tiers[_tierID];
@@ -684,13 +731,16 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		/// @notice actual buying happens here.
 		uint256 tokensBought = deposit.mul(tierDetails.depositRate);
-		tiers[_tierID].remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
 
-		/// @notice Checking what type of Transfer to do.
-		_tokenTransferOnBuy(tierDetails, tokensBought);
+		if(tierDetails.saleType != SaleType.Pooled){
+			tiers[_tierID].remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
 
-		/// @notice Updating the tier token parameters.
-		_updateTierTokenDetailsAfterBuy(_tierID);
+			/// @notice Checking what type of Transfer to do.
+			_tokenTransferOnBuy(tierDetails, tokensBought);
+
+			/// @notice Updating the tier token parameters.
+			_updateTierTokenDetailsAfterBuy(_tierID);
+		}
 
 		/// @notice Updating the stats.
 		_updateWalletCount(_tierID, tokensBoughtByAddress, tokensBought);
@@ -706,6 +756,32 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		}
 
 		emit TokenBuy(msg.sender, _tierID, tokensBought);
+	}
+
+	/**
+	 * TODO
+	 */
+	function _claimPooled(uint256 _tierID) internal {
+		Tier memory _tierDetails = tiers[_tierID];
+		require(!_saleAllowed(_tierID), "OriginsBase: Claim can only be done after sale.");
+		require(_tierDetails.saleType == SaleType.Pooled, "OriginsBase: Sale Type should be Pooled.");
+		require(tokensBoughtByAddressOnTier[msg.sender][_tierID] > 0, "OriginsBase: No tokens to be claimed.");
+		require(!userPoolClaimed[msg.sender], "OriginsBase: User already claimed.");
+
+		userPoolClaimed[msg.sender] = true;
+		uint256 _tokensBought = tokensBoughtByAddressOnTier[msg.sender][_tierID].min256(totalTokenAllocationPerTier[_tierID].mul(tokensBoughtByAddressOnTier[msg.sender][_tierID]).div(tokensSoldPerTier[_tierID]));
+		_tokenTransferOnBuy(_tierDetails, _tokensBought);
+		/// @notice Refund the extra (if any). TODO: This can be avoided if the price can vary based on demand.
+		if(_tokensBought < tokensBoughtByAddressOnTier[msg.sender][_tierID]) {
+			uint256 refund = (tokensBoughtByAddressOnTier[msg.sender][_tierID].sub(_tokensBought)).div(_tierDetails.depositRate);
+			if (_tierDetails.depositType == DepositType.RBTC) {
+				msg.sender.transfer(refund);
+			} else {
+				bool txStatus = _tierDetails.depositToken.transfer(msg.sender, refund);
+				require(txStatus, "OriginsBase: Token refund not received by user correctly.");
+			}
+		}
+		emit PoolClaimed(msg.sender, _tierID, _tokensBought);
 	}
 
 	/**
@@ -727,7 +803,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		for (uint256 index = 1; index <= tierCount; index++) {
 			if ((tierSaleEnded[index] || !_saleAllowed(index)) && !tierSaleWithdrawn[index]) {
 				tierSaleWithdrawn[index] = true;
+
 				uint256 amount = tokensSoldPerTier[index].div(tiers[index].depositRate);
+				/// @notice If Pool Based system, total token bought might be higher than 
+				if(tiers[index].saleType == SaleType.Pooled && tokensSoldPerTier[index] > totalTokenAllocationPerTier[index]) {
+					amount = totalTokenAllocationPerTier[index].div(tiers[index].depositRate);
+				}
 
 				if (tiers[index].depositType == DepositType.RBTC) {
 					receiver.transfer(amount);
@@ -917,7 +998,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Function to check if a tier sale ended or not.
 	 * @param _tierID The Tier whose info is to be read.
-	 * @return True is sale ended, False otherwise.
+	 * @return True if sale ended, False otherwise.
 	 * @dev A return of false does not necessary mean the sale is active. It can also be in inactive state.
 	 */
 	function checkSaleEnded(uint256 _tierID) external view returns (bool _status) {

@@ -263,7 +263,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		let amount = 10000;
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale has not started yet.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if the token sale has ended.", async () => {
@@ -287,7 +287,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if sale end is not set.", async () => {
@@ -335,7 +335,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		tierCount = await originsBase.getTierCount();
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if total tokens are sold with Sale End as Until Supply.", async () => {
@@ -360,7 +360,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		tierCount = await originsBase.getTierCount();
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if Verification is not set.", async () => {

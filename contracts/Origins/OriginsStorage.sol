@@ -81,7 +81,19 @@ contract OriginsStorage {
 	}
 
 	/**
-	 * @notice The type of Unlock.
+	 * @notice The method by which the sale is happening.
+	 * None - TODO.
+	 * FCFS - TODO.
+	 * Pooled - TODO.
+	 */
+	enum SaleType {
+		None,
+		FCFS,
+		Pooled
+	}
+
+	/**
+	 * @notice The type of Unlock for LockedFund.
 	 * None - The unlock is not set yet.
 	 * Immediate - The tokens will be unlocked immediately.
 	 * Waited - The tokens will be unlocked only after a particular time period.
@@ -115,6 +127,8 @@ contract OriginsStorage {
 	mapping(address => mapping(uint256 => bool)) internal addressApproved;
 	/// @notice The uint to Stake mapping to see the particular stake conditions.
 	mapping(uint256 => Stake) internal stakeCondition;
+	/// @notice The address to bool mapping to see if user already claimed token in pool sale type or not.
+	mapping(address => bool) internal userPoolClaimed;
 
 	/**
 	 * @notice The Stake Structure
@@ -160,5 +174,6 @@ contract OriginsStorage {
 		VerificationType verificationType;
 		SaleEndDurationOrTS saleEndDurationOrTS;
 		TransferType transferType;
+		SaleType saleType;
 	}
 }

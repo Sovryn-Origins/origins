@@ -133,11 +133,27 @@ contract OriginsEvents is OriginsAdmin {
 	);
 
 	/**
+	 * @notice Emitted when the Tier Sale Type is updated.
+	 * @param _initiator The one who initiates this event.
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _saleType The type of sale for the particular sale.
+	 */
+	event TierSaleTypeUpdated(address indexed _initiator, uint256 _tierID, SaleType _saleType);
+
+	/**
 	 * @notice Emitted when the Tier Sale Ends.
 	 * @param _initiator The one who initiates this event.
 	 * @param _tierID The Tier ID which is being updated.
 	 */
 	event TierSaleEnded(address indexed _initiator, uint256 _tierID);
+
+	/**
+	 * @notice Emitted when the Token on Pool based Sale is Claimed.
+	 * @param _initiator The one who initiates this event.
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _tokensBought The amount of tokens claimed.
+	 */
+	event PoolClaimed(address indexed _initiator, uint256 _tierID, uint256 _tokensBought);
 
 	/**
 	 * @notice Emitted when the Tier Sale Minimum Deposit Amount is updated.
