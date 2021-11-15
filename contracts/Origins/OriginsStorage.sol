@@ -3,6 +3,7 @@ pragma solidity ^0.5.17;
 import "../Interfaces/IERC20.sol";
 import "../Openzeppelin/SafeMath.sol";
 import "../Interfaces/ILockedFund.sol";
+import "../Interfaces/IStaking.sol";
 
 /**
  *  @title A storage contract for Origins Platform.
@@ -55,11 +56,13 @@ contract OriginsStorage {
 	 * None - The type is not set, so no one is approved for sale.
 	 * Everyone - This type is set to allow everyone.
 	 * ByAddress - This type is set to allow only verified addresses.
+	 * ByStake - This type is set to allow only addresses with minimum stake requirement.
 	 */
 	enum VerificationType {
 		None,
 		Everyone,
-		ByAddress
+		ByAddress,
+		ByStake
 	}
 	/**
 	 * @notice The method by which the distribution is happening.
@@ -110,6 +113,21 @@ contract OriginsStorage {
 
 	/// @notice The address to uint to bool mapping to see if the particular address is eligible or not for a tier.
 	mapping(address => mapping(uint256 => bool)) internal addressApproved;
+	/// @notice The uint to Stake mapping to see the particular stake conditions.
+	mapping(uint256 => Stake) internal stakeCondition;
+
+	/**
+	 * @notice The Stake Structure
+	 * TODO
+	 * @dev If the maxStake is set as zero, then there is no upper limit.
+	 */
+	struct Stake {
+		uint256 minStake;
+		uint256 maxStake;
+		uint256[] blockNumber;
+		uint256[] date;
+		IStaking staking;
+	}
 
 	/**
 	 * @notice The Tier Structure.

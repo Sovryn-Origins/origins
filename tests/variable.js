@@ -7,8 +7,11 @@ const {
 	depositTypeRBTC,
 	verificationTypeEveryone,
 	verificationTypeByAddress,
+	verificationTypeByStake,
 	saleEndDurationOrTSDuration,
 	transferTypeVested,
+	transferTypeWaitedUnlock,
+	depositTypeToken,
 } = require("./constants");
 
 // Variables
@@ -82,10 +85,55 @@ let [
 	transferTypeVested,
 ];
 
+let [
+	thirdMinAmount,
+	thirdMaxAmount,
+	thirdRemainingTokens,
+	thirdSaleStartTS,
+	thirdSaleEnd,
+	thirdUnlockedBP,
+	thirdVestOrLockCliff,
+	thirdVestOfLockDuration,
+	thirdDepositRate,
+	thirdDepositToken,
+	thirdDepositType,
+	thirdVerificationType,
+	thirdSaleEndDurationOrTS,
+	thirdTransferType,
+] = [
+	1,
+	new BN(100000),
+	new BN(4000000),
+	0,
+	86400,
+	5000,
+	1,
+	11,
+	10,
+	zeroAddress,
+	depositTypeToken,
+	verificationTypeByStake,
+	saleEndDurationOrTSDuration,
+	transferTypeWaitedUnlock,
+];
+
+let [
+	thirdMinStake,
+	thirdMaxStake,
+	thirdBlockNumber,
+	thirdDate,
+] = [
+	new BN(1),
+	0,
+	[],
+	[],
+];
+
 module.exports = {
 	cliff,
 	duration,
 	waitedTS,
+
 	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
@@ -100,6 +148,7 @@ module.exports = {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+
 	secondMinAmount,
 	secondMaxAmount,
 	secondRemainingTokens,
@@ -114,4 +163,24 @@ module.exports = {
 	secondVerificationType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
+
+	thirdMinAmount,
+	thirdMaxAmount,
+	thirdRemainingTokens,
+	thirdSaleStartTS,
+	thirdSaleEnd,
+	thirdUnlockedBP,
+	thirdVestOrLockCliff,
+	thirdVestOfLockDuration,
+	thirdDepositRate,
+	thirdDepositToken,
+	thirdDepositType,
+	thirdVerificationType,
+	thirdSaleEndDurationOrTS,
+	thirdTransferType,
+
+	thirdMinStake,
+	thirdMaxStake,
+	thirdBlockNumber,
+	thirdDate,
 };

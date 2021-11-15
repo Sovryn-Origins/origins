@@ -193,6 +193,21 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
+	 * @notice Function to set the Tier Stake Parameters.
+	 * TODO
+	 */
+	function setTierStakeCondition(
+		uint256 _tierID,
+		uint256 _minStake,
+		uint256 _maxStake,
+		uint256[] calldata _blockNumber,
+		uint256[] calldata _date,
+		IStaking _stakeAddr
+	) external onlyOwner {
+		_setTierStakeCondition(_tierID, _minStake, _maxStake, _blockNumber, _date, _stakeAddr);
+	}
+
+	/**
 	 * @notice Function to verify a single address with a single tier.
 	 * @param _addressToBeVerified The address which has to be veriried for the sale.
 	 * @param _tierID The tier for which the address has to be verified.
@@ -421,11 +436,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 saleEndTS = _saleEnd;
 		if (_saleStartTS != 0 && _saleEnd != 0 && _saleEndDurationOrTS == SaleEndDurationOrTS.Duration) {
 			saleEndTS = _saleStartTS.add(_saleEnd);
-		} else if ((_saleStartTS != 0 || _saleEnd != 0) && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
+		} else if (_saleStartTS != 0 && _saleEndDurationOrTS == SaleEndDurationOrTS.Timestamp) {
 			require(_saleStartTS < _saleEnd, "OriginsBase: The sale start TS cannot be after sale end TS.");
-		}
-
-		if (saleEndTS != 0 && _saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
 			require(saleEndTS > block.timestamp, "OriginsBase: The sale end duration cannot be past already.");
 		}
 
@@ -434,6 +446,42 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		tiers[_tierID].saleEndDurationOrTS = _saleEndDurationOrTS;
 
 		emit TierTimeUpdated(msg.sender, _tierID, _saleStartTS, saleEndTS, _saleEndDurationOrTS);
+	}
+
+	/**
+	 * @notice Internal function to set the Tier Stake Parameters.
+	 * TODO
+	 */
+	function _setTierStakeCondition(
+		uint256 _tierID,
+		uint256 _minStake,
+		uint256 _maxStake,
+		uint256[] memory _blockNumber,
+		uint256[] memory _date,
+		IStaking _stakeAddr
+	) internal {
+		/// @notice If _minStake is zero, then better to have a round with no verification at all.
+		require(_minStake > 0, "OriginsBase: Minimum Stake should not be zero");
+		require(_blockNumber.length == _date.length, "OriginsBase: Blocknumber and Date array length mismatch.");
+		/// If _maxStake is zero, that means no upper limit on vote weight.
+		if(_maxStake > 0){
+			require(_minStake <= _maxStake, "OriginsBase: Maximum stake should be bigger than minimum, or not set.");
+		}
+		/// @notice Getting the required information of the Tier.
+		Tier memory tierDetails = tiers[_tierID];
+		if(tierDetails.saleStartTS != 0) {
+			for(uint256 i = 0; i < _date.length; i++){
+				require(tierDetails.saleStartTS > _date[i], "OriginsBase: The sale timestamp should be after the stake check.");
+			}
+		}
+
+		stakeCondition[_tierID].minStake = _minStake;
+		stakeCondition[_tierID].maxStake = _maxStake;
+		stakeCondition[_tierID].blockNumber = _blockNumber;
+		stakeCondition[_tierID].date = _date;
+		stakeCondition[_tierID].staking = _stakeAddr;
+
+		emit TierStakeConditionUpdated(msg.sender, _tierID, _minStake, _maxStake, _blockNumber, _date, _stakeAddr);
 	}
 
 	/**
@@ -468,6 +516,48 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Here another case of else if could have come based on remaining token.
 		/// It didn't because on buy, it will check if the remaining amount is higher than but not equal to the deposit.
 		/// In case it is equal or lesser than deposit amount, then tierSaleEnded should be set there.
+		return true;
+	}
+
+	/**
+	 * @notice TODO
+	 */
+	function _checkStakesByTier(uint256 _tierID, address _userAddress) internal view returns(bool) {
+		/// @notice Checking if user has enough stake.
+		Stake memory stakes = stakeCondition[_tierID];
+
+		uint256 userStake;
+		for(uint256 i = 0; i < stakes.date.length; i++) {
+			userStake = userStake.add(stakes.staking.getPriorWeightedStake(_userAddress, stakes.blockNumber[i], stakes.date[i]));
+		}
+		/// @notice Averaging out the stakes
+		userStake = userStake.div(stakes.date.length);
+
+		/// @notice Checking is user have have enough stake.
+		if(userStake < stakes.minStake) {
+			return false;
+		}
+		/// @notice Checking the user stake does not exceed any limit if maxStake is set.
+		if(stakes.maxStake > 0 && userStake > stakes.maxStake){
+			return false;
+		}
+		return true;
+	}
+
+	/**
+	 * @notice TODO
+	 */
+	function _checkVerification(Tier memory _tierDetails, uint256 _tierID) internal view returns (bool) {
+		/// @notice Checking if verification is set and if user has permission.
+		if (_tierDetails.verificationType == VerificationType.None) {
+			revert("OriginsBase: No one is allowed for sale.");
+		} else if (_tierDetails.verificationType == VerificationType.ByAddress) {
+			/// @notice Checking if user is verified based on address.
+			require(addressApproved[msg.sender][_tierID], "OriginsBase: User not approved for sale.");
+
+		} else if (_tierDetails.verificationType == VerificationType.ByStake) {
+			require(_checkStakesByTier(_tierID, msg.sender), "OriginsBase: Stake weight is not right.");
+		}
 		return true;
 	}
 
@@ -562,13 +652,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Getting the required information of the Tier to participate.
 		Tier memory tierDetails = tiers[_tierID];
 
-		/// @notice Checking if verification is set and if user has permission.
-		if (tierDetails.verificationType == VerificationType.None) {
-			revert("OriginsBase: No one is allowed for sale.");
-		} else if (tierDetails.verificationType == VerificationType.ByAddress) {
-			/// @notice Checking if user is verified based on address.
-			require(addressApproved[msg.sender][_tierID], "OriginsBase: User not approved for sale.");
-		}
+		/// @notice Checking user verification.
+		_checkVerification(tierDetails, _tierID);
 
 		/// @notice If user is verified on address or does not need verification, the following steps will be taken.
 		uint256 tokensBoughtByAddress = tokensBoughtByAddressOnTier[msg.sender][_tierID];
@@ -849,4 +934,17 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	function isAddressApproved(address _addr, uint256 _tierID) external view returns (bool) {
 		return addressApproved[_addr][_tierID];
 	}
+
+	/**
+	 * @notice TODO
+	 */
+	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns(bool) {
+		if(_userAddress == address(0)){
+			_checkStakesByTier(_tierID, msg.sender);
+		}
+		else{
+			_checkStakesByTier(_tierID, _userAddress);
+		}
+	}
+	
 }

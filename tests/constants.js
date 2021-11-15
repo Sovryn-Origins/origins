@@ -31,6 +31,7 @@ const saleEndDurationOrTSTimestamp = 3;
 const verificationTypeNone = 0;
 const verificationTypeEveryone = 1;
 const verificationTypeByAddress = 2;
+const verificationTypeByStake = 3;
 
 const transferTypeNone = 0;
 const transferTypeUnlocked = 1;
@@ -59,6 +60,7 @@ module.exports = {
 	verificationTypeNone,
 	verificationTypeEveryone,
 	verificationTypeByAddress,
+	verificationTypeByStake,
 	transferTypeNone,
 	transferTypeUnlocked,
 	transferTypeWaitedUnlock,
