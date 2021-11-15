@@ -117,17 +117,7 @@ let [
 	transferTypeWaitedUnlock,
 ];
 
-let [
-	thirdMinStake,
-	thirdMaxStake,
-	thirdBlockNumber,
-	thirdDate,
-] = [
-	new BN(1),
-	0,
-	[],
-	[],
-];
+let [thirdMinStake, thirdMaxStake, thirdBlockNumber, thirdDate] = [new BN(1), 0, [], []];
 
 module.exports = {
 	cliff,

@@ -464,13 +464,13 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		require(_minStake > 0, "OriginsBase: Minimum Stake should not be zero");
 		require(_blockNumber.length == _date.length, "OriginsBase: Blocknumber and Date array length mismatch.");
 		/// If _maxStake is zero, that means no upper limit on vote weight.
-		if(_maxStake > 0){
+		if (_maxStake > 0) {
 			require(_minStake <= _maxStake, "OriginsBase: Maximum stake should be bigger than minimum, or not set.");
 		}
 		/// @notice Getting the required information of the Tier.
 		Tier memory tierDetails = tiers[_tierID];
-		if(tierDetails.saleStartTS != 0) {
-			for(uint256 i = 0; i < _date.length; i++){
+		if (tierDetails.saleStartTS != 0) {
+			for (uint256 i = 0; i < _date.length; i++) {
 				require(tierDetails.saleStartTS > _date[i], "OriginsBase: The sale timestamp should be after the stake check.");
 			}
 		}
@@ -522,23 +522,23 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice TODO
 	 */
-	function _checkStakesByTier(uint256 _tierID, address _userAddress) internal view returns(bool) {
+	function _checkStakesByTier(uint256 _tierID, address _userAddress) internal view returns (bool) {
 		/// @notice Checking if user has enough stake.
 		Stake memory stakes = stakeCondition[_tierID];
 
 		uint256 userStake;
-		for(uint256 i = 0; i < stakes.date.length; i++) {
+		for (uint256 i = 0; i < stakes.date.length; i++) {
 			userStake = userStake.add(stakes.staking.getPriorWeightedStake(_userAddress, stakes.blockNumber[i], stakes.date[i]));
 		}
 		/// @notice Averaging out the stakes
 		userStake = userStake.div(stakes.date.length);
 
 		/// @notice Checking is user have have enough stake.
-		if(userStake < stakes.minStake) {
+		if (userStake < stakes.minStake) {
 			return false;
 		}
 		/// @notice Checking the user stake does not exceed any limit if maxStake is set.
-		if(stakes.maxStake > 0 && userStake > stakes.maxStake){
+		if (stakes.maxStake > 0 && userStake > stakes.maxStake) {
 			return false;
 		}
 		return true;
@@ -554,7 +554,6 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		} else if (_tierDetails.verificationType == VerificationType.ByAddress) {
 			/// @notice Checking if user is verified based on address.
 			require(addressApproved[msg.sender][_tierID], "OriginsBase: User not approved for sale.");
-
 		} else if (_tierDetails.verificationType == VerificationType.ByStake) {
 			require(_checkStakesByTier(_tierID, msg.sender), "OriginsBase: Stake weight is not right.");
 		}
@@ -938,13 +937,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice TODO
 	 */
-	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns(bool) {
-		if(_userAddress == address(0)){
+	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns (bool) {
+		if (_userAddress == address(0)) {
 			_checkStakesByTier(_tierID, msg.sender);
-		}
-		else{
+		} else {
 			_checkStakesByTier(_tierID, _userAddress);
 		}
 	}
-	
 }

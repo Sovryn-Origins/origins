@@ -229,7 +229,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 	});
 
 	it("Owner should not be able to set Tier Token Amount Parameters with max allowed is higher than remaining token.", async () => {
-		let lessThanMaxAmount = secondMaxAmount*secondDepositRate - 1;
+		let lessThanMaxAmount = secondMaxAmount * secondDepositRate - 1;
 		await token.mint(owner, lessThanMaxAmount);
 		await token.approve(originsBase.address, lessThanMaxAmount, { from: owner });
 		await expectRevert(
@@ -241,18 +241,32 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 	it("Owner should be able to set Tier Vest or Lock Parameters.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
-		await originsBase.setTierVestOrLock(tierCount, secondVestOrLockCliff, secondVestOfLockDuration, secondUnlockedBP, secondTransferType, {
-			from: owner,
-		});
+		await originsBase.setTierVestOrLock(
+			tierCount,
+			secondVestOrLockCliff,
+			secondVestOfLockDuration,
+			secondUnlockedBP,
+			secondTransferType,
+			{
+				from: owner,
+			}
+		);
 	});
 
 	it("Owner should not be able to set Tier Vest or Lock Parameters with cliff higher than duration.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
-			originsBase.setTierVestOrLock(tierCount, secondVestOfLockDuration, secondVestOrLockCliff, secondUnlockedBP, secondTransferType, {
-				from: owner,
-			}),
+			originsBase.setTierVestOrLock(
+				tierCount,
+				secondVestOfLockDuration,
+				secondVestOrLockCliff,
+				secondUnlockedBP,
+				secondTransferType,
+				{
+					from: owner,
+				}
+			),
 			"OriginsBase: Cliff has to be <= duration."
 		);
 	});
@@ -261,9 +275,16 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
-			originsBase.setTierVestOrLock(tierCount, secondVestOrLockCliff, secondVestOfLockDuration, invalidBasisPoint, secondTransferType, {
-				from: owner,
-			}),
+			originsBase.setTierVestOrLock(
+				tierCount,
+				secondVestOrLockCliff,
+				secondVestOfLockDuration,
+				invalidBasisPoint,
+				secondTransferType,
+				{
+					from: owner,
+				}
+			),
 			"OriginsBase: The basis point cannot be higher than 10K."
 		);
 	});
@@ -279,22 +300,36 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 
-		let currentBlockNumber = await time.latestBlock() - 1;
+		let currentBlockNumber = (await time.latestBlock()) - 1;
 		thirdBlockNumber = [currentBlockNumber];
 
 		thirdDate = [timestamp - 1];
 
 		await originsBase.setTierDeposit(tierCount, thirdDepositRate, thirdDepositToken, thirdDepositType, { from: owner });
-		await originsBase.setTierStakeCondition(tierCount, thirdMinStake, thirdMaxStake, thirdBlockNumber, thirdDate, depositStaking.address, { from: owner });
+		await originsBase.setTierStakeCondition(
+			tierCount,
+			thirdMinStake,
+			thirdMaxStake,
+			thirdBlockNumber,
+			thirdDate,
+			depositStaking.address,
+			{ from: owner }
+		);
 	});
 
 	it("Owner should not be able to set Tier Time Parameters with sale end timestamp in the past.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
-			originsBase.setTierTime(tierCount, (await currentTimestamp()) - 1000, (await currentTimestamp()) - 100, saleEndDurationOrTSTimestamp, {
-				from: owner,
-			}),
+			originsBase.setTierTime(
+				tierCount,
+				(await currentTimestamp()) - 1000,
+				(await currentTimestamp()) - 100,
+				saleEndDurationOrTSTimestamp,
+				{
+					from: owner,
+				}
+			),
 			"OriginsBase: The sale end duration cannot be past already."
 		);
 	});
@@ -303,9 +338,15 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
-			originsBase.setTierTime(tierCount, (await currentTimestamp()) - 100, (await currentTimestamp()) - 100, saleEndDurationOrTSTimestamp, {
-				from: owner,
-			}),
+			originsBase.setTierTime(
+				tierCount,
+				(await currentTimestamp()) - 100,
+				(await currentTimestamp()) - 100,
+				saleEndDurationOrTSTimestamp,
+				{
+					from: owner,
+				}
+			),
 			"OriginsBase: The sale start TS cannot be after sale end TS."
 		);
 	});
@@ -314,9 +355,15 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
-			originsBase.setTierTime(tierCount, (await currentTimestamp()) - 100, (await currentTimestamp()) - 1000, saleEndDurationOrTSTimestamp, {
-				from: owner,
-			}),
+			originsBase.setTierTime(
+				tierCount,
+				(await currentTimestamp()) - 100,
+				(await currentTimestamp()) - 1000,
+				saleEndDurationOrTSTimestamp,
+				{
+					from: owner,
+				}
+			),
 			"OriginsBase: The sale start TS cannot be after sale end TS."
 		);
 	});

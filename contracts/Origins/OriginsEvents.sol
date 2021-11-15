@@ -121,8 +121,16 @@ contract OriginsEvents is OriginsAdmin {
 	 * @param _initiator The one who initiates this event.
 	 * @param _tierID The Tier ID which is being updated.
 	 * TODO
-	 */	
-	event TierStakeConditionUpdated(address indexed _initiator, uint256 _tierID, uint256 _minStake, uint256 _maxStake, uint256[] _blockNumber, uint256[] _date, IStaking indexed _stakeAddr);
+	 */
+	event TierStakeConditionUpdated(
+		address indexed _initiator,
+		uint256 _tierID,
+		uint256 _minStake,
+		uint256 _maxStake,
+		uint256[] _blockNumber,
+		uint256[] _date,
+		IStaking indexed _stakeAddr
+	);
 
 	/**
 	 * @notice Emitted when the Tier Sale Ends.
