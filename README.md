@@ -7,17 +7,17 @@ The Origins Platform Smart Contracts
 Version & Tag:
 
 [![NPM Package](https://img.shields.io/npm/v/origins-launchpad.svg?style=flat)](https://www.npmjs.org/package/origins-launchpad)
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/DistributedCollective/origins)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Sovryn-Origins/origins)
 
 Issue & PR:
 
-![GitHub issues](https://img.shields.io/github/issues/DistributedCollective/origins)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/DistributedCollective/origins)
+![GitHub issues](https://img.shields.io/github/issues/Sovryn-Origins/origins)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/Sovryn-Origins/origins)
 
 CI & Code Coverage:
 
-[![Node.js CI](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/DistributedCollective/origins/actions/workflows/node.js.yml)
-[![Coverage Status](https://coveralls.io/repos/github/DistributedCollective/origins/badge.svg?branch=main)](https://coveralls.io/github/DistributedCollective/origins?branch=main)
+[![Node.js CI](https://github.com/Sovryn-Origins/origins/actions/workflows/node.js.yml/badge.svg)](https://github.com/Sovryn-Origins/origins/actions/workflows/node.js.yml)
+[![Coverage Status](https://coveralls.io/repos/github/Sovryn-Origins/origins/badge.svg?branch=main)](https://coveralls.io/github/Sovryn-Origins/origins?branch=main)
 
 Code Style:
 
@@ -25,9 +25,9 @@ Code Style:
 
 Metrics & Activity:
 
-![GitHub language count](https://img.shields.io/github/languages/count/DistributedCollective/origins)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/y/DistributedCollective/origins)
-![GitHub last commit](https://img.shields.io/github/last-commit/DistributedCollective/origins)
+![GitHub language count](https://img.shields.io/github/languages/count/Sovryn-Origins/origins)
+![GitHub commit activity](https://img.shields.io/github/commit-activity/y/Sovryn-Origins/origins)
+![GitHub last commit](https://img.shields.io/github/last-commit/Sovryn-Origins/origins)
 
 ## **User Manual**
 
