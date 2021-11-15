@@ -83,8 +83,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _verificationType,
 		uint256 _saleEndDurationOrTS,
 		uint256 _transferType
+	)
+		external
 		// uint256 _saleType
-	) external onlyOwner returns (uint256 _tierID) {
+		onlyOwner
+		returns (uint256 _tierID)
+	{
 		/// @notice `tierCount` should always start at 1, because else default value zero will result in verification process.
 		tierCount++;
 
@@ -219,10 +223,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _saleType TODO.
 	 */
-	function setTierSaleType(
-		uint256 _tierID,
-		uint256 _saleType
-	) external onlyOwner {
+	function setTierSaleType(uint256 _tierID, uint256 _saleType) external onlyOwner {
 		_setTierSaleType(_tierID, SaleType(_saleType));
 	}
 
@@ -515,10 +516,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _saleType TODO.
 	 */
-	function _setTierSaleType(
-		uint256 _tierID,
-		SaleType _saleType
-	) internal {
+	function _setTierSaleType(uint256 _tierID, SaleType _saleType) internal {
 		tiers[_tierID].saleType = _saleType;
 
 		emit TierSaleTypeUpdated(msg.sender, _tierID, _saleType);
@@ -546,10 +544,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function _saleAllowed(uint256 _id) internal returns (bool) {
 		/// @notice Sale has not started yet.
-		if(tiers[_id].saleStartTS == 0) {
+		if (tiers[_id].saleStartTS == 0) {
 			return false;
 		}
-		if(tierSaleEnded[_id]){
+		if (tierSaleEnded[_id]) {
 			/// @notice Sale Ended.
 			return false;
 		}
@@ -732,7 +730,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice actual buying happens here.
 		uint256 tokensBought = deposit.mul(tierDetails.depositRate);
 
-		if(tierDetails.saleType != SaleType.Pooled){
+		if (tierDetails.saleType != SaleType.Pooled) {
 			tiers[_tierID].remainingTokens = tierDetails.remainingTokens.sub(tokensBought);
 
 			/// @notice Checking what type of Transfer to do.
@@ -769,10 +767,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		require(!userPoolClaimed[msg.sender], "OriginsBase: User already claimed.");
 
 		userPoolClaimed[msg.sender] = true;
-		uint256 _tokensBought = tokensBoughtByAddressOnTier[msg.sender][_tierID].min256(totalTokenAllocationPerTier[_tierID].mul(tokensBoughtByAddressOnTier[msg.sender][_tierID]).div(tokensSoldPerTier[_tierID]));
+		uint256 _tokensBought = tokensBoughtByAddressOnTier[msg.sender][_tierID].min256(
+			totalTokenAllocationPerTier[_tierID].mul(tokensBoughtByAddressOnTier[msg.sender][_tierID]).div(tokensSoldPerTier[_tierID])
+		);
 		_tokenTransferOnBuy(_tierDetails, _tokensBought);
 		/// @notice Refund the extra (if any). TODO: This can be avoided if the price can vary based on demand.
-		if(_tokensBought < tokensBoughtByAddressOnTier[msg.sender][_tierID]) {
+		if (_tokensBought < tokensBoughtByAddressOnTier[msg.sender][_tierID]) {
 			uint256 refund = (tokensBoughtByAddressOnTier[msg.sender][_tierID].sub(_tokensBought)).div(_tierDetails.depositRate);
 			if (_tierDetails.depositType == DepositType.RBTC) {
 				msg.sender.transfer(refund);
@@ -805,8 +805,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 				tierSaleWithdrawn[index] = true;
 
 				uint256 amount = tokensSoldPerTier[index].div(tiers[index].depositRate);
-				/// @notice If Pool Based system, total token bought might be higher than 
-				if(tiers[index].saleType == SaleType.Pooled && tokensSoldPerTier[index] > totalTokenAllocationPerTier[index]) {
+				/// @notice If Pool Based system, total token bought might be higher than
+				if (tiers[index].saleType == SaleType.Pooled && tokensSoldPerTier[index] > totalTokenAllocationPerTier[index]) {
 					amount = totalTokenAllocationPerTier[index].div(tiers[index].depositRate);
 				}
 
