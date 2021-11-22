@@ -20,7 +20,7 @@ const {
 	depositTypeToken,
 	saleEndDurationOrTSTimestamp,
 	verificationTypeEveryone,
-	saleTypeFCFS
+	saleTypeFCFS,
 } = require("../constants");
 
 let {
@@ -97,7 +97,12 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		thirdDepositToken = depositToken.address;
 
 		// Creating the Staking and Vesting for stakeToken
-		[depositStaking, depositVestingLogic, depositVestingRegistry, depositLockedFund] = await createStakeVestAndLockedFund(creator, depositToken, waitedTS, [owner]);
+		[depositStaking, depositVestingLogic, depositVestingRegistry, depositLockedFund] = await createStakeVestAndLockedFund(
+			creator,
+			depositToken,
+			waitedTS,
+			[owner]
+		);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });

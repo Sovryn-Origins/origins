@@ -4,12 +4,12 @@ pragma experimental ABIEncoderV2;
 import "../Sovryn/Governance/Vesting/VestingRegistryStorage.sol";
 
 contract IVestingRegistryLogic is VestingRegistryStorage {
-
 	/**
 	 * @notice sets vesting factory address
 	 * @param _vestingFactory the address of vesting factory contract
 	 */
 	function setVestingFactory(address _vestingFactory) external;
+
 	/**
 	 * @notice transfers tokens to given address
 	 * @param _receiver the address of the token receiver

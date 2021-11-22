@@ -12,7 +12,15 @@ const {
 	VestingRegistryProxy,
 } = require("../utils");
 
-const { zero, zeroAddress, zeroBasisPoint, invalidBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
+const {
+	zero,
+	zeroAddress,
+	zeroBasisPoint,
+	invalidBasisPoint,
+	unlockTypeWaited,
+	receiveTokens,
+	dontReceiveTokens,
+} = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -62,7 +70,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		let newVestingRegistry = await VestingRegistryProxy.new();
 		await newVestingRegistry.setImplementation(vestingRegistryLogic.address);
 		newVestingRegistry = await VestingRegistryLogic.at(newVestingRegistry.address);
-	
+
 		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
 	});
 

@@ -268,7 +268,7 @@ async function checkTier(
  *
  * @return lockedFund contract object.
  */
- async function createLockedFund(waitedTS, token, vestingRegistry, adminList, creator) {
+async function createLockedFund(waitedTS, token, vestingRegistry, adminList, creator) {
 	lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, adminList, { from: creator });
 
 	return lockedFund;

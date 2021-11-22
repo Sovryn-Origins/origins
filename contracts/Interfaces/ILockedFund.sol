@@ -156,5 +156,12 @@ contract ILockedFund {
 	 * @return The cliff of the user vesting/lock.
 	 * @return The duration of the user vesting/lock.
 	 */
-	function getCliffDurationAndType(bytes32 _vestingData) external view returns (uint256, uint256, uint256);
+	function getCliffDurationAndType(bytes32 _vestingData)
+		external
+		view
+		returns (
+			uint256,
+			uint256,
+			uint256
+		);
 }

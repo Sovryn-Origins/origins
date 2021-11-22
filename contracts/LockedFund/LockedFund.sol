@@ -481,11 +481,10 @@ contract LockedFund is ILockedFund {
 
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
-		if(_receiveTokens){
+		if (_receiveTokens) {
 			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
 			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
-		}
-		else {
+		} else {
 			missingBalance = missingBalance.add(_amount);
 		}
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
@@ -505,19 +504,19 @@ contract LockedFund is ILockedFund {
 
 		/// @notice Checking if it already is in the list.
 		bool _vestingExist;
-		for(uint256 i = 0; i < userVestings[_userAddress].length; i++){
-			if(userVestings[_userAddress][i] == _vestingData){
+		for (uint256 i = 0; i < userVestings[_userAddress].length; i++) {
+			if (userVestings[_userAddress][i] == _vestingData) {
 				_vestingExist = true;
 			}
 		}
 
 		/// @notice If vesting does not exist in the user list, we add it.
-		if(!_vestingExist) {
+		if (!_vestingExist) {
 			userVestings[_userAddress].push(_vestingData);
 
 			/// @notice We only have to do this check if the vesting was not found in user list.
 			/// @dev If it exists with user, then this check is not required at all.
-			if(vestingDatas[_vestingData].vestingType == 0) {
+			if (vestingDatas[_vestingData].vestingType == 0) {
 				vestingDatas[_vestingData].vestingType = vestingCreationType;
 				vestingDatas[_vestingData].cliff = _cliff * INTERVAL;
 				vestingDatas[_vestingData].duration = _duration * INTERVAL;
@@ -546,11 +545,10 @@ contract LockedFund is ILockedFund {
 	) internal {
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
-		if(_receiveTokens){
+		if (_receiveTokens) {
 			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
 			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
-		}
-		else {
+		} else {
 			missingBalance = missingBalance.add(_amount);
 		}
 
@@ -575,7 +573,7 @@ contract LockedFund is ILockedFund {
 		require(_missingBalance > 0, "LockedFund: Missing Balance should be higher than zero.");
 
 		uint256 _transferAmount = _amount;
-		if(_amount >= _missingBalance) {
+		if (_amount >= _missingBalance) {
 			_transferAmount = _missingBalance;
 		}
 
@@ -631,8 +629,8 @@ contract LockedFund is ILockedFund {
 	 */
 	function _createVesting(address _tokenOwner, bytes32 _vestingData) internal returns (address[] memory) {
 		address[] memory _vestingAddresses = new address[](userVestings[_tokenOwner].length);
-		if(_vestingData == bytes32(0)){
-			for(uint256 i = 0; i < userVestings[_tokenOwner].length; i++){
+		if (_vestingData == bytes32(0)) {
+			for (uint256 i = 0; i < userVestings[_tokenOwner].length; i++) {
 				bytes32 vestingData = userVestings[_tokenOwner][i];
 				uint256 _cliff = vestingDatas[vestingData].cliff;
 				uint256 _duration = vestingDatas[vestingData].duration;
@@ -642,8 +640,7 @@ contract LockedFund is ILockedFund {
 				_vestingAddresses[i] = _vestingAddress;
 				emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
 			}
-		}
-		else {
+		} else {
 			/// @notice Will only create if user has some vesting balance.
 			require(vestedBalances[_tokenOwner][_vestingData] > 0, "LockedFund: User has no vesting balance in this vesting schedule.");
 			uint256 _cliff = vestingDatas[_vestingData].cliff;
@@ -661,7 +658,12 @@ contract LockedFund is ILockedFund {
 	 * @param _tokenOwner The owner of the vesting contract.
 	 * @return _vestingAddress The Vesting Contract Address.
 	 */
-	function _getVesting(address _tokenOwner, uint256 _cliff, uint256 _duration, uint256 _vestingCreationType) internal view returns (address _vestingAddress) {
+	function _getVesting(
+		address _tokenOwner,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _vestingCreationType
+	) internal view returns (address _vestingAddress) {
 		return vestingRegistry.getVestingAddr(_tokenOwner, _cliff, _duration, _vestingCreationType);
 	}
 
@@ -671,8 +673,8 @@ contract LockedFund is ILockedFund {
 	 * @param _vestingData The Vesting Contract Address.
 	 */
 	function _stakeTokens(address _sender, bytes32 _vestingData) internal {
-		if(_vestingData == bytes32(0)){
-			for(uint256 i = 0; i < userVestings[_sender].length; i++){
+		if (_vestingData == bytes32(0)) {
+			for (uint256 i = 0; i < userVestings[_sender].length; i++) {
 				bytes32 vestingData = userVestings[_sender][i];
 				uint256 _cliff = vestingDatas[vestingData].cliff;
 				uint256 _duration = vestingDatas[vestingData].duration;
@@ -687,14 +689,18 @@ contract LockedFund is ILockedFund {
 				emit TokenStaked(_sender, _vesting, amount);
 			}
 			delete userVestings[_sender];
-		}
-		else {
+		} else {
 			uint256 userVestingsLength = userVestings[_sender].length;
 			uint256 index = userVestingsLength;
-			for(uint256 i = 0; i < userVestingsLength; i++){
-				if(userVestings[_sender][i] == _vestingData) {
+			for (uint256 i = 0; i < userVestingsLength; i++) {
+				if (userVestings[_sender][i] == _vestingData) {
 					index = i;
-					address _vesting = _getVesting(_sender, vestingDatas[_vestingData].cliff, vestingDatas[_vestingData].duration, vestingDatas[_vestingData].vestingType);
+					address _vesting = _getVesting(
+						_sender,
+						vestingDatas[_vestingData].cliff,
+						vestingDatas[_vestingData].duration,
+						vestingDatas[_vestingData].vestingType
+					);
 					require(_vesting != address(0), "LockedFund: Vesting address invalid.");
 					uint256 amount = vestedBalances[_sender][_vestingData];
 					require(amount > 0, "LockedFund: Amount should be greater than zero.");
@@ -707,7 +713,7 @@ contract LockedFund is ILockedFund {
 					emit TokenStaked(_sender, _vesting, amount);
 				}
 			}
-			if(index != userVestingsLength){
+			if (index != userVestingsLength) {
 				userVestings[_sender][index] = userVestings[_sender][userVestingsLength - 1];
 				userVestings[_sender].pop();
 			}
@@ -823,7 +829,15 @@ contract LockedFund is ILockedFund {
 	 * @return The cliff of the user vesting/lock.
 	 * @return The duration of the user vesting/lock.
 	 */
-	function getCliffDurationAndType(bytes32 _vestingData) external view returns (uint256, uint256, uint256) {
+	function getCliffDurationAndType(bytes32 _vestingData)
+		external
+		view
+		returns (
+			uint256,
+			uint256,
+			uint256
+		)
+	{
 		return (vestingDatas[_vestingData].cliff, vestingDatas[_vestingData].duration, vestingDatas[_vestingData].vestingType);
 	}
 
@@ -832,7 +846,12 @@ contract LockedFund is ILockedFund {
 	 * @param _tokenOwner The owner of the vesting contract.
 	 * @return _vestingAddress The Vesting Contract Address.
 	 */
-	function getVesting(address _tokenOwner, uint256 _cliff, uint256 _duration, uint256 _vestingCreationType) external view returns (address _vestingAddress) {
+	function getVesting(
+		address _tokenOwner,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _vestingCreationType
+	) external view returns (address _vestingAddress) {
 		return _getVesting(_tokenOwner, _cliff, _duration, _vestingCreationType);
 	}
 
@@ -858,9 +877,9 @@ contract LockedFund is ILockedFund {
 	 */
 	function checkUserVestingsOf(address _addr, bytes32 _vestingData) external view returns (bool) {
 		for (uint256 i = 0; i < userVestings[_addr].length; i++) {
-			if(userVestings[_addr][i] == _vestingData){
+			if (userVestings[_addr][i] == _vestingData) {
 				return true;
-			}			
+			}
 		}
 		return false;
 	}
@@ -872,5 +891,4 @@ contract LockedFund is ILockedFund {
 	function getVestingData(uint256 _cliff, uint256 _duration) external pure returns (bytes32) {
 		return _getVestingData(_cliff, _duration);
 	}
-
 }

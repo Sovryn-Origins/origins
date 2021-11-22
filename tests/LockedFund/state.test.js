@@ -174,11 +174,19 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("Admin should be able to deposit using depositVested() and unlock as immediate.", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeImmediate, receiveTokens, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeImmediate, receiveTokens, {
+			from: admin,
+		});
 		await checkStatus(
 			lockedFund,
 			[1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
@@ -197,7 +205,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("Admin should be able to deposit using depositVested() and unlock as none.", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -220,7 +234,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("Admin should be able to deposit using depositLocked().", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -229,7 +249,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("Admin should be able to deposit using depositWaitedUnlocked() with non zero basis point.", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -252,7 +278,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("Admin should be able to deposit using depositWaitedUnlocked() with zero basis point.", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -275,7 +307,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("User should be able to withdraw waited unlocked balance using withdrawWaitedUnlockedBalance().", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -295,7 +333,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
 		await checkStatus(
 			lockedFund,
@@ -317,7 +361,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("User should be able to withdraw waited unlocked balance to any wallet using withdrawWaitedUnlockedBalance().", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -361,7 +411,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	it("User should be able to create vesting and stake vested balance using createVestingAndStake().", async () => {
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -381,7 +437,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		await lockedFund.createVestingAndStake({ from: userOne });
 		await checkStatus(
 			lockedFund,
@@ -401,7 +463,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("User should be able to create vesting using createVesting().", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -421,7 +489,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let _vestingData = await lockedFund.getVestingData(cliff, duration);
 		await lockedFund.createVesting(_vestingData, { from: userOne });
 		await checkStatus(
@@ -442,7 +516,13 @@ contract("LockedFund (State Change)", (accounts) => {
 	});
 
 	it("User should be able to stake vested balance using stakeTokens().", async () => {
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -462,7 +542,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let _vestingData = await lockedFund.getVestingData(cliff, duration);
 		await lockedFund.stakeTokens(_vestingData, { from: userOne });
 		await checkStatus(
@@ -487,7 +573,13 @@ contract("LockedFund (State Change)", (accounts) => {
 		[staking, vestingLogic, newVestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await newVestingRegistry.addAdmin(lockedFund.address, { from: creator });
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
@@ -507,7 +599,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[oldTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
 		await checkStatus(
 			lockedFund,
@@ -524,7 +622,13 @@ contract("LockedFund (State Change)", (accounts) => {
 			zero + unlockedBal,
 			false
 		);
-		[newTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		[newTokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		assert.strictEqual(newTokenBal, oldTokenBal + Math.floor(value / 2), "Token Balance not matching.");
 	});
 
@@ -533,7 +637,13 @@ contract("LockedFund (State Change)", (accounts) => {
 		[staking, vestingLogic, newVestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await newVestingRegistry.addAdmin(lockedFund.address, { from: creator });
-		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(userOne, token, lockedFund, cliff, duration);
+		let [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal] = await getTokenBalances(
+			userOne,
+			token,
+			lockedFund,
+			cliff,
+			duration
+		);
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });

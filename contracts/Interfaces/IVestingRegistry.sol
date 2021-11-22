@@ -45,5 +45,4 @@ contract IVestingRegistry is VestingRegistryStorage {
 	 * @param _tokenOwner the owner of the tokens
 	 */
 	function getVestingsOf(address _tokenOwner) public view returns (VestingDetail[] memory);
-
 }

@@ -23,7 +23,7 @@ const {
 	transferTypeUnlocked,
 	transferTypeWaitedUnlock,
 	transferTypeLocked,
-	saleTypeFCFS
+	saleTypeFCFS,
 } = require("../constants");
 
 let {

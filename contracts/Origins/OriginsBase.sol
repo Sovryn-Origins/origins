@@ -552,7 +552,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			return false;
 		}
 		/// @notice Sale Type Parameter is not set.
-		if(tiers[_id].saleType == SaleType.None){
+		if (tiers[_id].saleType == SaleType.None) {
 			return false;
 		}
 		/// @notice Sale Time Parameters are not set or time is over.
@@ -622,7 +622,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
 		} else {
 			bool _sendTokens;
-			if(
+			if (
 				_tierDetails.transferType == TransferType.WaitedUnlock ||
 				_tierDetails.transferType == TransferType.Vested ||
 				_tierDetails.transferType == TransferType.Locked
@@ -630,15 +630,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 				token.approve(address(lockedFund), _tokensBought);
 				_sendTokens = true;
 			}
-			if (
-				_tierDetails.transferType == TransferType.WaitedUnlock ||
-				_tierDetails.transferType == TransferType.NWaitedUnlock
-			) {
+			if (_tierDetails.transferType == TransferType.WaitedUnlock || _tierDetails.transferType == TransferType.NWaitedUnlock) {
 				lockedFund.depositWaitedUnlocked(msg.sender, _tokensBought, _tierDetails.unlockedBP, _sendTokens);
-			} else if (
-				_tierDetails.transferType == TransferType.Vested ||
-				_tierDetails.transferType == TransferType.NVested
-			) {
+			} else if (_tierDetails.transferType == TransferType.Vested || _tierDetails.transferType == TransferType.NVested) {
 				lockedFund.depositVested(
 					msg.sender,
 					_tokensBought,
@@ -648,10 +642,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 					uint256(UnlockType.Waited),
 					_sendTokens
 				);
-			} else if (
-				_tierDetails.transferType == TransferType.Locked ||
-				_tierDetails.transferType == TransferType.NLocked
-			) {
+			} else if (_tierDetails.transferType == TransferType.Locked || _tierDetails.transferType == TransferType.NLocked) {
 				lockedFund.depositLocked(
 					msg.sender,
 					_tokensBought,

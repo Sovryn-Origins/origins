@@ -83,15 +83,14 @@ contract VestingCreator is AdminRole {
 			require(_tokenOwners[i] != address(0), "token owner cannot be 0 address");
 			require(_cliffs[i].mod(TWO_WEEKS) == 0, "cliffs should have intervals of two weeks");
 			require(_durations[i].mod(TWO_WEEKS) == 0, "durations should have intervals of two weeks");
-			VestingData memory vestingData =
-				VestingData({
-					amount: _amounts[i],
-					cliff: _cliffs[i],
-					duration: _durations[i],
-					governanceControl: _governanceControls[i],
-					tokenOwner: _tokenOwners[i],
-					vestingCreationType: _vestingCreationTypes[i]
-				});
+			VestingData memory vestingData = VestingData({
+				amount: _amounts[i],
+				cliff: _cliffs[i],
+				duration: _durations[i],
+				governanceControl: _governanceControls[i],
+				tokenOwner: _tokenOwners[i],
+				vestingCreationType: _vestingCreationTypes[i]
+			});
 			vestingDataList.push(vestingData);
 		}
 	}
@@ -126,14 +125,13 @@ contract VestingCreator is AdminRole {
 		require(vestingCreated, "cannot stake without vesting creation");
 		if (vestingDataList.length > 0) {
 			VestingData storage vestingData = vestingDataList[vestingDataList.length - 1];
-			address vestingAddress =
-				_getVesting(
-					vestingData.tokenOwner,
-					vestingData.cliff,
-					vestingData.duration,
-					vestingData.governanceControl,
-					vestingData.vestingCreationType
-				);
+			address vestingAddress = _getVesting(
+				vestingData.tokenOwner,
+				vestingData.cliff,
+				vestingData.duration,
+				vestingData.governanceControl,
+				vestingData.vestingCreationType
+			);
 			if (vestingAddress != address(0)) {
 				IVestingLogic vesting = IVestingLogic(vestingAddress);
 				require(token.approve(address(vesting), vestingData.amount), "Approve failed");

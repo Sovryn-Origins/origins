@@ -7,7 +7,7 @@ const {
 
 let zero = new BN(0);
 let zeroAddress = constants.ZERO_ADDRESS;
-let dummyAddress = "0x0000000000000000000000000000000000000001"
+let dummyAddress = "0x0000000000000000000000000000000000000001";
 
 const fourWeeks = 4 * 7 * 24 * 60 * 60;
 
@@ -85,5 +85,5 @@ module.exports = {
 	saleTypeFCFS,
 	saleTypePooled,
 	receiveTokens,
-	dontReceiveTokens
+	dontReceiveTokens,
 };

@@ -13,7 +13,16 @@ const {
 	VestingRegistry,
 } = require("../utils");
 
-const { zero, zeroAddress, dummyAddress, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
+const {
+	zero,
+	zeroAddress,
+	dummyAddress,
+	zeroBasisPoint,
+	fiftyBasisPoint,
+	unlockTypeWaited,
+	receiveTokens,
+	dontReceiveTokens,
+} = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -47,10 +56,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 	});
 
 	it("User should not be able to change the vestingRegistry.", async () => {
-		await expectRevert(
-			lockedFund.changeVestingRegistry(dummyAddress, { from: userOne }),
-			"LockedFund: Only admin can call this."
-		);
+		await expectRevert(lockedFund.changeVestingRegistry(dummyAddress, { from: userOne }), "LockedFund: Only admin can call this.");
 	});
 
 	it("User should not be able to change the waited timestamp.", async () => {

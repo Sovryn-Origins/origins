@@ -15,7 +15,16 @@ const {
 	VestingRegistryProxy,
 } = require("../utils");
 
-const { zero, zeroAddress, fourWeeks, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
+const {
+	zero,
+	zeroAddress,
+	fourWeeks,
+	zeroBasisPoint,
+	fiftyBasisPoint,
+	unlockTypeWaited,
+	receiveTokens,
+	dontReceiveTokens,
+} = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -89,7 +98,9 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, {
+			from: admin,
+		});
 		expectEvent(txReceipt, "VestedDeposited", {
 			_initiator: admin,
 			_userAddress: userOne,
