@@ -7,6 +7,7 @@ const {
 
 let zero = new BN(0);
 let zeroAddress = constants.ZERO_ADDRESS;
+let dummyAddress = "0x0000000000000000000000000000000000000001"
 
 const fourWeeks = 4 * 7 * 24 * 60 * 60;
 
@@ -38,10 +39,21 @@ const transferTypeUnlocked = 1;
 const transferTypeWaitedUnlock = 2;
 const transferTypeVested = 3;
 const transferTypeLocked = 4;
+const transferTypeNWaitedUnlock = 5;
+const transferTypeNVested = 6;
+const transferTypeNLocked = 7;
+
+const saleTypeNone = 0;
+const saleTypeFCFS = 1;
+const saleTypePooled = 2;
+
+const receiveTokens = true;
+const dontReceiveTokens = false;
 
 module.exports = {
 	zero,
 	zeroAddress,
+	dummyAddress,
 	fourWeeks,
 	zeroBasisPoint,
 	twentyBasisPoint,
@@ -66,4 +78,12 @@ module.exports = {
 	transferTypeWaitedUnlock,
 	transferTypeVested,
 	transferTypeLocked,
+	transferTypeNWaitedUnlock,
+	transferTypeNVested,
+	transferTypeNLocked,
+	saleTypeNone,
+	saleTypeFCFS,
+	saleTypePooled,
+	receiveTokens,
+	dontReceiveTokens
 };

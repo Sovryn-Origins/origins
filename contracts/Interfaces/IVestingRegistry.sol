@@ -1,21 +1,26 @@
 pragma solidity ^0.5.17;
+pragma experimental ABIEncoderV2;
+
+import "../Sovryn/Governance/Vesting/VestingRegistryStorage.sol";
 
 /**
  * @title Vesting Registry Interface
  */
-contract IVestingRegistry {
+contract IVestingRegistry is VestingRegistryStorage {
 	/**
 	 * @notice creates Vesting contract
 	 * @param _tokenOwner the owner of the tokens
 	 * @param _amount the amount to be staked
 	 * @param _cliff the cliff in seconds
 	 * @param _duration the total duration in seconds
+	 * @param _vestingCreationType the type of vesting created(e.g. Origin, Bug Bounty etc.)
 	 */
-	function createVesting(
+	function createVestingAddr(
 		address _tokenOwner,
 		uint256 _amount,
 		uint256 _cliff,
-		uint256 _duration
+		uint256 _duration,
+		uint256 _vestingCreationType
 	) public;
 
 	/**
@@ -26,8 +31,19 @@ contract IVestingRegistry {
 	function stakeTokens(address _vesting, uint256 _amount) public;
 
 	/**
-	 * @notice returns vesting contract address for the given token owner
+	 * @notice public function that returns vesting contract address for the given token owner, cliff, duration
+	 */
+	function getVestingAddr(
+		address _tokenOwner,
+		uint256 _cliff,
+		uint256 _duration,
+		uint256 _vestingCreationType
+	) public view returns (address);
+
+	/**
+	 * @notice returns all vesting details for the given token owner
 	 * @param _tokenOwner the owner of the tokens
 	 */
-	function getVesting(address _tokenOwner) public view returns (address);
+	function getVestingsOf(address _tokenOwner) public view returns (VestingDetail[] memory);
+
 }

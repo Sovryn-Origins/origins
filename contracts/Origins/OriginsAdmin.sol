@@ -4,7 +4,7 @@ import "./OriginsStorage.sol";
 
 /**
  *  @title An owner contract with granular access for multiple parties.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  *  @notice You can use this contract for creating multiple owners with different access.
  *  @dev To add a new role, add the corresponding array and mapping, along with add, remove and get functions.
  */

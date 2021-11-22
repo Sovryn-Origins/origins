@@ -6,15 +6,16 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
 	VestingFactory,
-	VestingRegistry,
+	VestingRegistryLogic,
+	VestingRegistryProxy,
 } = require("../utils");
 
-const { zero, zeroAddress, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited } = require("../constants");
+const { zero, zeroAddress, fourWeeks, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -32,8 +33,8 @@ contract("LockedFund (Events)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 	});
 
 	beforeEach("Creating New Locked Fund Contract Instance.", async () => {
@@ -62,13 +63,11 @@ contract("LockedFund (Events)", (accounts) => {
 	});
 
 	it("Changing the vestingRegistry should emit VestingRegistryUpdated.", async () => {
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
+		let vestingRegistryLogic = await VestingRegistryLogic.new();
+		let newVestingRegistry = await VestingRegistryProxy.new();
+		await newVestingRegistry.setImplementation(vestingRegistryLogic.address);
+		newVestingRegistry = await VestingRegistryLogic.at(newVestingRegistry.address);
+
 		let txReceipt = await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
 		expectEvent(txReceipt, "VestingRegistryUpdated", {
 			_initiator: admin,
@@ -90,7 +89,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
+		let txReceipt = await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		expectEvent(txReceipt, "VestedDeposited", {
 			_initiator: admin,
 			_userAddress: userOne,
@@ -105,7 +104,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
 		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
@@ -118,7 +117,7 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let txReceipt = await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
 		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
@@ -131,9 +130,11 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let txReceipt = await lockedFund.createVestingAndStake({ from: userOne });
-		let vestingAddress = await vestingRegistry.getVesting(userOne);
+		let vestingCreationType = await lockedFund.vestingCreationType({ from: userOne });
+		vestingCreationType = vestingCreationType.sub(new BN(1));
+		let vestingAddress = await lockedFund.getVesting(userOne, cliff * fourWeeks, duration * fourWeeks, vestingCreationType);
 		expectEvent(txReceipt, "VestingCreated", {
 			_initiator: userOne,
 			_userAddress: userOne,
@@ -150,9 +151,12 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
-		let txReceipt = await lockedFund.createVesting({ from: userOne });
-		let vestingAddress = await vestingRegistry.getVesting(userOne);
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let _vestingData = await lockedFund.getVestingData(cliff, duration, { from: userOne });
+		let txReceipt = await lockedFund.createVesting(_vestingData, { from: userOne });
+		let vestingCreationType = await lockedFund.vestingCreationType({ from: userOne });
+		vestingCreationType = vestingCreationType.sub(new BN(1));
+		let vestingAddress = await lockedFund.getVesting(userOne, cliff * fourWeeks, duration * fourWeeks, vestingCreationType);
 		expectEvent(txReceipt, "VestingCreated", {
 			_initiator: userOne,
 			_userAddress: userOne,
@@ -164,9 +168,12 @@ contract("LockedFund (Events)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
-		let vestingAddress = await vestingRegistry.getVesting(userOne);
-		let txReceipt = await lockedFund.stakeTokens({ from: userOne });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let vestingCreationType = await lockedFund.vestingCreationType({ from: userOne });
+		vestingCreationType = vestingCreationType.sub(new BN(1));
+		let vestingAddress = await lockedFund.getVesting(userOne, cliff * fourWeeks, duration * fourWeeks, vestingCreationType);
+		let _vestingData = await lockedFund.getVestingData(cliff, duration, { from: userOne });
+		let txReceipt = await lockedFund.stakeTokens(_vestingData, { from: userOne });
 		expectEvent(txReceipt, "TokenStaked", {
 			_initiator: userOne,
 			_vesting: vestingAddress,
@@ -175,28 +182,23 @@ contract("LockedFund (Events)", (accounts) => {
 	});
 
 	it("Wthdrawing waited unlocked balance, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit WithdrawnWaitedUnlockedBalance, VestingCreated and TokenStaked.", async () => {
-		vestingFactory = await VestingFactory.new(vestingLogic.address);
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
-		vestingFactory.transferOwnership(newVestingRegistry.address);
-		await newVestingRegistry.addAdmin(lockedFund.address);
-		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, newVestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
+		// Adding lockedFund as an admin in the Vesting Registry.
+		await newVestingRegistry.addAdmin(lockedFund.address, { from: creator });
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
 		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userOne,
 			_amount: new BN(Math.floor(value / 2)),
 		});
-		let vestingAddress = await newVestingRegistry.getVesting(userOne);
+		let vestingCreationType = await lockedFund.vestingCreationType({ from: userOne });
+		vestingCreationType = vestingCreationType.sub(new BN(1));
+		let vestingAddress = await lockedFund.getVesting(userOne, cliff * fourWeeks, duration * fourWeeks, vestingCreationType);
 		expectEvent(txReceipt, "VestingCreated", {
 			_initiator: userOne,
 			_userAddress: userOne,
@@ -210,28 +212,23 @@ contract("LockedFund (Events)", (accounts) => {
 	});
 
 	it("Withdrawing waited unlocked balance to any wallet, creating vesting and staking vested balance using withdrawAndStakeTokens() should emit WithdrawnWaitedUnlockedBalance, VestingCreated and TokenStaked.", async () => {
-		vestingFactory = await VestingFactory.new(vestingLogic.address);
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
-		vestingFactory.transferOwnership(newVestingRegistry.address);
-		await newVestingRegistry.addAdmin(lockedFund.address);
-		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, newVestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
+		// Adding lockedFund as an admin in the Vesting Registry.
+		await newVestingRegistry.addAdmin(lockedFund.address, { from: creator });
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let txReceipt = await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
 		expectEvent(txReceipt, "WithdrawnWaitedUnlockedBalance", {
 			_initiator: userOne,
 			_userAddress: userTwo,
 			_amount: new BN(Math.floor(value / 2)),
 		});
-		let vestingAddress = await newVestingRegistry.getVesting(userOne);
+		let vestingCreationType = await lockedFund.vestingCreationType({ from: userOne });
+		vestingCreationType = vestingCreationType.sub(new BN(1));
+		let vestingAddress = await lockedFund.getVesting(userOne, cliff * fourWeeks, duration * fourWeeks, vestingCreationType);
 		expectEvent(txReceipt, "VestingCreated", {
 			_initiator: userOne,
 			_userAddress: userOne,

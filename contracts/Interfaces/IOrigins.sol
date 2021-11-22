@@ -2,7 +2,7 @@ pragma solidity ^0.5.17;
 
 /**
  *  @title Interface of the Origins Platform.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  */
 contract IOrigins {
 	/* Functions */

@@ -1,20 +1,20 @@
 {
 	"name": "origins-launchpad",
-	"version": "1.3.9",
+	"version": "2.0.0",
 	"description": "The smart contracts for the Origins Platform",
 	"keywords": [
 		"Origins",
 		"Launchpad",
 		"Token Sale"
 	],
-	"author": "Franklin Richards <powerhousefrank@protonmail.com>",
-	"homepage": "https://live.sovryn.app/origins",
+	"author": "Origins <contact@origins.xyz>",
+	"homepage": "https://live.origins.xyz",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/DistributedCollective/origins"
+		"url": "https://github.com/Sovryn-Origins/origins"
 	},
 	"bugs": {
-		"url": "https://github.com/DistributedCollective/origins/issues"
+		"url": "https://github.com/Sovryn-Origins/origins/issues"
 	},
 	"license": "UNLICENSED",
 	"devDependencies": {

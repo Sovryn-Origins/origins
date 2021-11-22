@@ -5,7 +5,7 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	createLockedFund,
 	// Contract Artifacts
 	Token,
@@ -13,7 +13,7 @@ const {
 	VestingRegistry,
 } = require("../utils");
 
-const { zero, zeroAddress, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited } = require("../constants");
+const { zero, zeroAddress, dummyAddress, zeroBasisPoint, fiftyBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -31,11 +31,8 @@ contract("LockedFund (User Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await createLockedFund(waitedTS, token, vestingRegistry, [admin], creator);
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
@@ -50,15 +47,8 @@ contract("LockedFund (User Functions)", (accounts) => {
 	});
 
 	it("User should not be able to change the vestingRegistry.", async () => {
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
 		await expectRevert(
-			lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: userOne }),
+			lockedFund.changeVestingRegistry(dummyAddress, { from: userOne }),
 			"LockedFund: Only admin can call this."
 		);
 	});
@@ -83,7 +73,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		await lockedFund.withdrawWaitedUnlockedBalance(zeroAddress, { from: userOne });
 	});
 
@@ -91,7 +81,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		await lockedFund.withdrawWaitedUnlockedBalance(userTwo, { from: userOne });
 	});
 
@@ -99,7 +89,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		let timestamp = await currentTimestamp();
 		await lockedFund.changeWaitedTS(timestamp + 10000, { from: admin });
 		await expectRevert(
@@ -112,7 +102,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		await lockedFund.createVestingAndStake({ from: userOne });
 	});
 
@@ -120,32 +110,32 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
-		await lockedFund.createVesting({ from: userOne });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let _vestingData = await lockedFund.getVestingData(cliff, duration);
+		await lockedFund.createVesting(_vestingData, { from: userOne });
 	});
 
 	it("User should be able to stake vested balance using stakeTokens().", async () => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
-		await lockedFund.stakeTokens({ from: userOne });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let _vestingData = await lockedFund.getVestingData(cliff, duration);
+		await lockedFund.stakeTokens(_vestingData, { from: userOne });
 	});
 
 	it("User should not be able to stake vested balance using stakeTokens() if vesting is not created previously.", async () => {
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, newVestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
+		// Adding lockedFund as an admin in the Vesting Registry.
+		await newVestingRegistry.addAdmin(lockedFund.address, { from: creator });
 		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
-		await expectRevert(lockedFund.stakeTokens({ from: userOne }), "function call to a non-contract account");
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
+		let _vestingData = await lockedFund.getVestingData(cliff, duration);
+		await expectRevert(lockedFund.stakeTokens(_vestingData, { from: userOne }), "LockedFund: Vesting address invalid.");
 	});
 
 	it("User should be able to withdraw waited unlocked balance, create vesting and stake vested balance using withdrawAndStakeTokens().", async () => {
@@ -156,7 +146,7 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		await lockedFund.withdrawAndStakeTokens(zeroAddress, { from: userOne });
 	});
 
@@ -164,11 +154,11 @@ contract("LockedFund (User Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, fiftyBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 		await lockedFund.withdrawAndStakeTokens(userTwo, { from: userOne });
 	});
 
 	it("User should not be able to create vesting and stake vested balance using createVestingAndStake() if cliff and duration is not set.", async () => {
-		await expectRevert(lockedFund.createVestingAndStake({ from: userTwo }), "LockedFund: Cliff and/or Duration not set.");
+		await expectRevert(lockedFund.createVestingAndStake({ from: userTwo }), "LockedFund: No Vesting for user available.");
 	});
 });

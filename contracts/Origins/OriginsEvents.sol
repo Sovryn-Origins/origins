@@ -4,7 +4,7 @@ import "./OriginsAdmin.sol";
 
 /**
  *  @title A contract containing all the events of Origins Base.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  *  @notice You can use this contract for adding events into Origins Base.
  */
 contract OriginsEvents is OriginsAdmin {

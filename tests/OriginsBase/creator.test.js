@@ -4,7 +4,7 @@ const {
 	assert,
 	// Custom Functions
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
@@ -59,11 +59,8 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });

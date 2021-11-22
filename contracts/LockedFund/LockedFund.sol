@@ -8,7 +8,7 @@ import "../Interfaces/IVestingRegistry.sol";
 
 /**
  * @title A holding contract for Locked Fund.
- * @author Franklin Richards - powerhousefrank@protonmail.com
+ * @author Shebin John - admin@remedcu.com
  * @notice You can use this contract for timed token release from Locked Fund.
  * @dev This is not the final form of this contract.
  */
@@ -26,6 +26,10 @@ contract LockedFund is ILockedFund {
 	uint256 internal constant MAX_DURATION = 36;
 	/// @notice The interval duration.
 	uint256 public constant INTERVAL = 4 weeks;
+	/// @notice The Missing Tokens for transfers/vesting/locking.
+	uint256 internal missingBalance;
+	/// @notice Used for vestingCreationType parameter in vesting creation.
+	uint256 public vestingCreationType;
 
 	/// @notice The token contract.
 	IERC20 public token;
@@ -45,9 +49,9 @@ contract LockedFund is ILockedFund {
 	}
 
 	/// @notice The vested balances.
-	mapping(address => uint256) public vestedBalances;
+	mapping(address => mapping(bytes32 => uint256)) public vestedBalances;
 	/// @notice The locked user balances. Not used right now.
-	mapping(address => uint256) public lockedBalances;
+	mapping(address => mapping(bytes32 => uint256)) public lockedBalances;
 	/// @notice The waited unlocked user balances.
 	mapping(address => uint256) public waitedUnlockedBalances;
 	/// @notice The unlocked user balances. Not used right now.
@@ -55,10 +59,16 @@ contract LockedFund is ILockedFund {
 	/// @notice The contracts/wallets with admin power.
 	mapping(address => bool) public isAdmin;
 
-	/// @notice The Cliff specified for an address.
-	mapping(address => uint256) public cliff;
-	/// @notice The Duration specified for an address.
-	mapping(address => uint256) public duration;
+	/// @notice The vestings of a particular user.
+	mapping(address => bytes32[]) public userVestings;
+	/// @notice The vesting details of a particular vesting schedule.
+	mapping(bytes32 => VestingData) public vestingDatas;
+
+	struct VestingData {
+		uint256 vestingType;
+		uint256 cliff;
+		uint256 duration;
+	}
 
 	/* Events */
 
@@ -181,6 +191,7 @@ contract LockedFund is ILockedFund {
 		waitedTS = _waitedTS;
 		token = IERC20(_token);
 		vestingRegistry = IVestingRegistry(_vestingRegistry);
+		vestingCreationType = 1;
 
 		for (uint256 index = 0; index < _admins.length; index++) {
 			require(_admins[index] != address(0), "LockedFund: Invalid Address.");
@@ -226,6 +237,15 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
+	 * @notice The function used to update the Token.
+	 * @param _token The address of the ERC20 Token.
+	 * @dev This is in some cases when the token is not created before/during Origins Sale.
+	 */
+	function changeToken(address _token) public onlyAdmin {
+		_changeToken(_token);
+	}
+
+	/**
 	 * @notice Adds Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
@@ -233,6 +253,7 @@ contract LockedFund is ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
+	 * @param _receiveTokens - TODO
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -241,9 +262,10 @@ contract LockedFund is ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		uint256 _unlockedOrWaited
+		uint256 _unlockedOrWaited,
+		bool _receiveTokens
 	) public onlyAdmin {
-		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited));
+		_depositVested(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited), _receiveTokens);
 	}
 
 	/**
@@ -254,6 +276,7 @@ contract LockedFund is ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
+	 * @param _receiveTokens - TODO
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositLocked(
@@ -262,10 +285,11 @@ contract LockedFund is ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		uint256 _unlockedOrWaited
+		uint256 _unlockedOrWaited,
+		bool _receiveTokens
 	) public onlyAdmin {
 		// TODO
-		// _depositLocked(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited));
+		// _depositLocked(_userAddress, _amount, _cliff, _duration, _basisPoint, UnlockType(_unlockedOrWaited), _receiveTokens);
 		// An array with timestamp and a mapping from timestamp to the amount.
 		// Array will be unsorted, so there should be two ways to withdraw this to avoid out of gas problem.
 		// One should be normal one which will loop through all the timestamp in array.
@@ -280,14 +304,24 @@ contract LockedFund is ILockedFund {
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @param _receiveTokens - TODO
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositWaitedUnlocked(
 		address _userAddress,
 		uint256 _amount,
-		uint256 _basisPoint
+		uint256 _basisPoint,
+		bool _receiveTokens
 	) public onlyAdmin {
-		_depositWaitedUnlocked(_userAddress, _amount, _basisPoint);
+		_depositWaitedUnlocked(_userAddress, _amount, _basisPoint, _receiveTokens);
+	}
+
+	/**
+	 * @notice TODO.
+	 * @param _amount TODO.
+	 */
+	function depositMissingBalance(uint256 _amount) external {
+		_depositMissingBalance(_amount);
 	}
 
 	/**
@@ -308,27 +342,45 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
+	 * @return _vestingAddresses The New Vesting Contracts Created.
+	 * @dev Zero (0) is passed to denote all vesting for that user will be created.
+	 */
+	function createAllVesting() external returns (address[] memory _vestingAddresses) {
+		_vestingAddresses = _createVesting(msg.sender, bytes32(0));
+	}
+
+	/**
+	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
+	 * @param _vestingData TODO
 	 * @return _vestingAddress The New Vesting Contract Created.
 	 */
-	function createVesting() external returns (address _vestingAddress) {
-		_vestingAddress = _createVesting(msg.sender);
+	function createVesting(bytes32 _vestingData) external returns (address[] memory _vestingAddresses) {
+		_vestingAddresses = _createVesting(msg.sender, _vestingData);
 	}
 
 	/**
 	 * @notice Stakes tokens for a user who already have a vesting created.
 	 * @dev The user should already have a vesting created, else this function will throw error.
+	 * @dev Zero (0) is passed to denote all vesting for that user will be created.
+	 * @dev This is not recommended function if there are many stakes to be created due to gas limit.
 	 */
-	function stakeTokens() external {
-		IVestingLogic vesting = IVestingLogic(_getVesting(msg.sender));
+	function stakeAllTokens() external {
+		_stakeTokens(msg.sender, bytes32(0));
+	}
 
-		require(cliff[msg.sender] == vesting.cliff() && duration[msg.sender] == vesting.duration(), "LockedFund: Wrong Vesting Schedule.");
-
-		_stakeTokens(msg.sender, address(vesting));
+	/**
+	 * @notice Stakes tokens for a user who already have a vesting created.
+	 * @param _vestingData TODO
+	 * @dev The user should already have a vesting created, else this function will throw error.
+	 */
+	function stakeTokens(bytes32 _vestingData) external {
+		_stakeTokens(msg.sender, _vestingData);
 	}
 
 	/**
 	 * @notice Withdraws unlocked tokens and Stakes Vested token balance for a user who already have a vesting created.
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
+	 * @dev This will only create the last vesting schedule of a user.
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external {
 		_withdrawWaitedUnlockedBalance(msg.sender, _receiverAddress);
@@ -387,6 +439,24 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
+	 * @notice The internal function used to update the Token.
+	 * @param _token The address of the ERC20 Token.
+	 */
+	function _changeToken(address _token) internal {
+		require(_token != address(0), "LockedFund: Invalid Token Address.");
+		token = IERC20(_token);
+		/// TODO emit Token Changed Event
+	}
+
+	/**
+	 * @notice TODO.
+	 * @return The vesting data of a certain vesting schedule.
+	 */
+	function _getVestingData(uint256 _cliff, uint256 _duration) internal pure returns (bytes32) {
+		return keccak256(abi.encodePacked(_cliff, _duration));
+	}
+
+	/**
 	 * @notice Internal function to add Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
@@ -394,6 +464,7 @@ contract LockedFund is ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
+	 * @param _receiveTokens - TODO
 	 */
 	function _depositVested(
 		address _userAddress,
@@ -401,7 +472,8 @@ contract LockedFund is ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		UnlockType _unlockedOrWaited
+		UnlockType _unlockedOrWaited,
+		bool _receiveTokens
 	) internal {
 		/// If duration is also zero, then it is similar to Unlocked Token.
 		require(_duration != 0, "LockedFund: Duration cannot be zero.");
@@ -409,9 +481,13 @@ contract LockedFund is ILockedFund {
 
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
-		bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
-		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
-
+		if(_receiveTokens){
+			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
+			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		}
+		else {
+			missingBalance = missingBalance.add(_amount);
+		}
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
 		if (_unlockedOrWaited == UnlockType.Immediate) {
@@ -424,10 +500,32 @@ contract LockedFund is ILockedFund {
 			unlockedBal = 0;
 		}
 
-		vestedBalances[_userAddress] = vestedBalances[_userAddress].add(_amount).sub(unlockedBal);
+		/// @notice Creating unique vesting data identifier.
+		bytes32 _vestingData = _getVestingData(_cliff, _duration);
 
-		cliff[_userAddress] = _cliff * INTERVAL;
-		duration[_userAddress] = _duration * INTERVAL;
+		/// @notice Checking if it already is in the list.
+		bool _vestingExist;
+		for(uint256 i = 0; i < userVestings[_userAddress].length; i++){
+			if(userVestings[_userAddress][i] == _vestingData){
+				_vestingExist = true;
+			}
+		}
+
+		/// @notice If vesting does not exist in the user list, we add it.
+		if(!_vestingExist) {
+			userVestings[_userAddress].push(_vestingData);
+
+			/// @notice We only have to do this check if the vesting was not found in user list.
+			/// @dev If it exists with user, then this check is not required at all.
+			if(vestingDatas[_vestingData].vestingType == 0) {
+				vestingDatas[_vestingData].vestingType = vestingCreationType;
+				vestingDatas[_vestingData].cliff = _cliff * INTERVAL;
+				vestingDatas[_vestingData].duration = _duration * INTERVAL;
+				vestingCreationType++;
+			}
+		}
+
+		vestedBalances[_userAddress][_vestingData] = vestedBalances[_userAddress][_vestingData].add(_amount).sub(unlockedBal);
 
 		emit VestedDeposited(msg.sender, _userAddress, _amount, _cliff, _duration, _basisPoint);
 		// TODO Edit the amount subtracted from the amount of waited/unlocked balance, if basis point was higher than zero.
@@ -438,16 +536,23 @@ contract LockedFund is ILockedFund {
 	 * @param _userAddress The user whose waited unlocked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _basisPoint The % (in Basis Point)which determines how much will be unlocked immediately.
+	 * @param _receiveTokens - TODO
 	 */
 	function _depositWaitedUnlocked(
 		address _userAddress,
 		uint256 _amount,
-		uint256 _basisPoint
+		uint256 _basisPoint,
+		bool _receiveTokens
 	) internal {
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
-		bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
-		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		if(_receiveTokens){
+			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
+			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		}
+		else {
+			missingBalance = missingBalance.add(_amount);
+		}
 
 		uint256 unlockedBal = _amount.mul(_basisPoint).div(MAX_BASIS_POINT);
 
@@ -461,6 +566,27 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
+	 * @notice TODO.
+	 * @param _amount TODO.
+	 */
+	function _depositMissingBalance(uint256 _amount) internal {
+		uint256 _missingBalance = missingBalance;
+		require(_amount > 0, "LockedFund: Amount to transfer should be higher than zero.");
+		require(_missingBalance > 0, "LockedFund: Missing Balance should be higher than zero.");
+
+		uint256 _transferAmount = _amount;
+		if(_amount >= _missingBalance) {
+			_transferAmount = _missingBalance;
+		}
+
+		bool txStatus = token.transferFrom(msg.sender, address(this), _transferAmount);
+		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		missingBalance = missingBalance.sub(_transferAmount);
+
+		/// TODO: emit Event.
+	}
+
+	/**
 	 * @notice A function to withdraw the waited unlocked balance.
 	 * @param _sender The one who initiates the call, from this user the balance will be taken.
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
@@ -468,10 +594,7 @@ contract LockedFund is ILockedFund {
 	function _withdrawWaitedUnlockedBalance(address _sender, address _receiverAddress) internal {
 		require(waitedTS < block.timestamp, "LockedFund: Wait Timestamp not yet passed.");
 
-		address userAddr = _receiverAddress;
-		if (_receiverAddress == address(0)) {
-			userAddr = _sender;
-		}
+		address userAddr = _receiverAddress == address(0) ? _sender : _receiverAddress;
 
 		uint256 amount = waitedUnlockedBalances[_sender];
 		waitedUnlockedBalances[_sender] = 0;
@@ -502,15 +625,35 @@ contract LockedFund is ILockedFund {
 	/**
 	 * @notice Creates a Vesting Contract for a user.
 	 * @param _tokenOwner The owner of the vesting contract.
+	 * @param _vestingData TODO
 	 * @return _vestingAddress The Vesting Contract Address.
 	 * @dev Does not do anything if Vesting Contract was already created.
 	 */
-	function _createVesting(address _tokenOwner) internal returns (address _vestingAddress) {
-		require(cliff[msg.sender] != 0 && duration[msg.sender] != 0, "LockedFund: Cliff and/or Duration not set.");
-		/// Here zero is given in place of amount, as amount is not really used in `vestingRegistry.createVesting()`.
-		vestingRegistry.createVesting(_tokenOwner, 0, cliff[_tokenOwner], duration[_tokenOwner]);
-		_vestingAddress = _getVesting(_tokenOwner);
-		emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
+	function _createVesting(address _tokenOwner, bytes32 _vestingData) internal returns (address[] memory) {
+		address[] memory _vestingAddresses = new address[](userVestings[_tokenOwner].length);
+		if(_vestingData == bytes32(0)){
+			for(uint256 i = 0; i < userVestings[_tokenOwner].length; i++){
+				bytes32 vestingData = userVestings[_tokenOwner][i];
+				uint256 _cliff = vestingDatas[vestingData].cliff;
+				uint256 _duration = vestingDatas[vestingData].duration;
+				uint256 _vestingType = vestingDatas[vestingData].vestingType;
+				vestingRegistry.createVestingAddr(_tokenOwner, 0, _cliff, _duration, _vestingType);
+				address _vestingAddress = _getVesting(_tokenOwner, _cliff, _duration, _vestingType);
+				_vestingAddresses[i] = _vestingAddress;
+				emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
+			}
+		}
+		else {
+			/// @notice Will only create if user has some vesting balance.
+			require(vestedBalances[_tokenOwner][_vestingData] > 0, "LockedFund: User has no vesting balance in this vesting schedule.");
+			uint256 _cliff = vestingDatas[_vestingData].cliff;
+			uint256 _duration = vestingDatas[_vestingData].duration;
+			uint256 _vestingType = vestingDatas[_vestingData].vestingType;
+			vestingRegistry.createVestingAddr(_tokenOwner, 0, _cliff, _duration, _vestingType);
+			address _vestingAddress = _getVesting(_tokenOwner, _cliff, _duration, _vestingType);
+			_vestingAddresses[0] = _vestingAddress;
+			emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
+		}
 	}
 
 	/**
@@ -518,23 +661,57 @@ contract LockedFund is ILockedFund {
 	 * @param _tokenOwner The owner of the vesting contract.
 	 * @return _vestingAddress The Vesting Contract Address.
 	 */
-	function _getVesting(address _tokenOwner) internal view returns (address _vestingAddress) {
-		return vestingRegistry.getVesting(_tokenOwner);
+	function _getVesting(address _tokenOwner, uint256 _cliff, uint256 _duration, uint256 _vestingCreationType) internal view returns (address _vestingAddress) {
+		return vestingRegistry.getVestingAddr(_tokenOwner, _cliff, _duration, _vestingCreationType);
 	}
 
 	/**
 	 * @notice Stakes the tokens in a particular vesting contract.
 	 * @param _sender The user wallet address.
-	 * @param _vesting The Vesting Contract Address.
+	 * @param _vestingData The Vesting Contract Address.
 	 */
-	function _stakeTokens(address _sender, address _vesting) internal {
-		uint256 amount = vestedBalances[_sender];
-		vestedBalances[_sender] = 0;
+	function _stakeTokens(address _sender, bytes32 _vestingData) internal {
+		if(_vestingData == bytes32(0)){
+			for(uint256 i = 0; i < userVestings[_sender].length; i++){
+				bytes32 vestingData = userVestings[_sender][i];
+				uint256 _cliff = vestingDatas[vestingData].cliff;
+				uint256 _duration = vestingDatas[vestingData].duration;
+				uint256 _vestingType = vestingDatas[vestingData].vestingType;
+				address _vesting = _getVesting(_sender, _cliff, _duration, _vestingType);
+				uint256 amount = vestedBalances[_sender][vestingData];
+				vestedBalances[_sender][vestingData] = 0;
+				bool txStatus = token.transfer(address(vestingRegistry), amount);
+				require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+				vestingRegistry.stakeTokens(_vesting, amount);
 
-		require(token.approve(_vesting, amount), "LockedFund: Approve failed.");
-		IVestingLogic(_vesting).stakeTokens(amount);
+				emit TokenStaked(_sender, _vesting, amount);
+			}
+			delete userVestings[_sender];
+		}
+		else {
+			uint256 userVestingsLength = userVestings[_sender].length;
+			uint256 index = userVestingsLength;
+			for(uint256 i = 0; i < userVestingsLength; i++){
+				if(userVestings[_sender][i] == _vestingData) {
+					index = i;
+					address _vesting = _getVesting(_sender, vestingDatas[_vestingData].cliff, vestingDatas[_vestingData].duration, vestingDatas[_vestingData].vestingType);
+					require(_vesting != address(0), "LockedFund: Vesting address invalid.");
+					uint256 amount = vestedBalances[_sender][_vestingData];
+					require(amount > 0, "LockedFund: Amount should be greater than zero.");
+					vestedBalances[_sender][_vestingData] = 0;
 
-		emit TokenStaked(_sender, _vesting, amount);
+					bool txStatus = token.transfer(address(vestingRegistry), amount);
+					require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+					vestingRegistry.stakeTokens(_vesting, amount);
+
+					emit TokenStaked(_sender, _vesting, amount);
+				}
+			}
+			if(index != userVestingsLength){
+				userVestings[_sender][index] = userVestings[_sender][userVestingsLength - 1];
+				userVestings[_sender].pop();
+			}
+		}
 	}
 
 	/**
@@ -542,13 +719,21 @@ contract LockedFund is ILockedFund {
 	 * @param _sender The user wallet address.
 	 */
 	function _createVestingAndStake(address _sender) internal {
-		address vestingAddr = _getVesting(_sender);
+		uint256 userVestingsLength = userVestings[_sender].length;
+		require(userVestingsLength != 0, "LockedFund: No Vesting for user available.");
+		bytes32 _vestingData = userVestings[_sender][userVestingsLength - 1];
+
+		uint256 _cliff = vestingDatas[_vestingData].cliff;
+		uint256 _duration = vestingDatas[_vestingData].duration;
+		uint256 _vestingType = vestingDatas[_vestingData].vestingType;
+		address vestingAddr = _getVesting(_sender, _cliff, _duration, _vestingType);
 
 		if (vestingAddr == address(0)) {
-			vestingAddr = _createVesting(_sender);
+			_createVesting(_sender, _vestingData);
+			vestingAddr = _getVesting(_sender, _cliff, _duration, _vestingType);
 		}
 
-		_stakeTokens(_sender, vestingAddr);
+		_stakeTokens(_sender, _vestingData);
 	}
 
 	/* Getter or Read Functions */
@@ -573,26 +758,28 @@ contract LockedFund is ILockedFund {
 	 * @notice Function to read the vesting registry.
 	 * @return Address of Vesting Registry.
 	 */
-	function getVestingDetails() public view returns (address) {
+	function getVestingRegistry() public view returns (address) {
 		return address(vestingRegistry);
 	}
 
 	/**
 	 * @notice The function to get the vested balance of a user.
 	 * @param _addr The address of the user to check the vested balance.
+	 * @param _vestingData TODO
 	 * @return _balance The vested balance of the address `_addr`.
 	 */
-	function getVestedBalance(address _addr) external view returns (uint256 _balance) {
-		return vestedBalances[_addr];
+	function getVestedBalance(address _addr, bytes32 _vestingData) external view returns (uint256 _balance) {
+		return vestedBalances[_addr][_vestingData];
 	}
 
 	/**
 	 * @notice The function to get the locked balance of a user.
 	 * @param _addr The address of the user to check the locked balance.
+	 * @param _lockingData TODO
 	 * @return _balance The locked balance of the address `_addr`.
 	 */
-	function getLockedBalance(address _addr) external view returns (uint256 _balance) {
-		return lockedBalances[_addr];
+	function getLockedBalance(address _addr, bytes32 _lockingData) external view returns (uint256 _balance) {
+		return lockedBalances[_addr][_lockingData];
 	}
 
 	/**
@@ -614,6 +801,14 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
+	 * @notice The function to get the missing balance for the LockedFund contract.
+	 * @return _balance The missing balance of the contract.
+	 */
+	function getMissingBalance() external view returns (uint256 _balance) {
+		return missingBalance;
+	}
+
+	/**
 	 * @notice The function to check is an address is admin or not.
 	 * @param _addr The address of the user to check the admin status.
 	 * @return _status True if admin, False otherwise.
@@ -623,12 +818,59 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
-	 * @notice Function to read the cliff and duration of a user.
-	 * @param _addr The address whose cliff and duration has to be found.
+	 * @notice Function to read the cliff, duration and Type of a Vesting.
+	 * @param _vestingData The address whose cliff and duration has to be found.
 	 * @return The cliff of the user vesting/lock.
 	 * @return The duration of the user vesting/lock.
 	 */
-	function getCliffAndDuration(address _addr) external view returns (uint256, uint256) {
-		return (cliff[_addr], duration[_addr]);
+	function getCliffDurationAndType(bytes32 _vestingData) external view returns (uint256, uint256, uint256) {
+		return (vestingDatas[_vestingData].cliff, vestingDatas[_vestingData].duration, vestingDatas[_vestingData].vestingType);
 	}
+
+	/**
+	 * @notice Returns the Vesting Contract Address.
+	 * @param _tokenOwner The owner of the vesting contract.
+	 * @return _vestingAddress The Vesting Contract Address.
+	 */
+	function getVesting(address _tokenOwner, uint256 _cliff, uint256 _duration, uint256 _vestingCreationType) external view returns (address _vestingAddress) {
+		return _getVesting(_tokenOwner, _cliff, _duration, _vestingCreationType);
+	}
+
+	/**
+	 * @notice TODO.
+	 * @return The vesting schedules of a user.
+	 */
+	function getUserVestings() external view returns (bytes32[] memory) {
+		return userVestings[msg.sender];
+	}
+
+	/**
+	 * @notice TODO.
+	 * @return The vesting schedules of a user.
+	 */
+	function getUserVestingsOf(address _addr) external view returns (bytes32[] memory) {
+		return userVestings[_addr];
+	}
+
+	/**
+	 * @notice TODO.
+	 * @return The vesting schedules of a user.
+	 */
+	function checkUserVestingsOf(address _addr, bytes32 _vestingData) external view returns (bool) {
+		for (uint256 i = 0; i < userVestings[_addr].length; i++) {
+			if(userVestings[_addr][i] == _vestingData){
+				return true;
+			}			
+		}
+		return false;
+	}
+
+	/**
+	 * @notice TODO.
+	 * @return The vesting data of a certain vesting schedule.
+	 */
+	function getVestingData(uint256 _cliff, uint256 _duration) external pure returns (bytes32) {
+		return _getVestingData(_cliff, _duration);
+	}
+
 }

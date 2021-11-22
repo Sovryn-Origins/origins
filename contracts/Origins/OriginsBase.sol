@@ -5,7 +5,7 @@ import "./OriginsEvents.sol";
 
 /**
  *  @title A contract for Origins platform.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  *  @notice You can use this contract for creating a sale in the Origins Platform.
  *  @dev Don't forget to update the Interface: IOrigins, according to the changes in this.
  */
@@ -547,10 +547,15 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		if (tiers[_id].saleStartTS == 0) {
 			return false;
 		}
+		/// @notice Sale Ended.
 		if (tierSaleEnded[_id]) {
-			/// @notice Sale Ended.
 			return false;
 		}
+		/// @notice Sale Type Parameter is not set.
+		if(tiers[_id].saleType == SaleType.None){
+			return false;
+		}
+		/// @notice Sale Time Parameters are not set or time is over.
 		if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None) {
 			return false;
 		} else if (tiers[_id].saleEnd < block.timestamp && tiers[_id].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
@@ -616,26 +621,45 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			bool txStatus = token.transfer(msg.sender, _tokensBought);
 			require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
 		} else {
-			token.approve(address(lockedFund), _tokensBought);
-			if (_tierDetails.transferType == TransferType.WaitedUnlock) {
-				lockedFund.depositWaitedUnlocked(msg.sender, _tokensBought, _tierDetails.unlockedBP);
-			} else if (_tierDetails.transferType == TransferType.Vested) {
+			bool _sendTokens;
+			if(
+				_tierDetails.transferType == TransferType.WaitedUnlock ||
+				_tierDetails.transferType == TransferType.Vested ||
+				_tierDetails.transferType == TransferType.Locked
+			) {
+				token.approve(address(lockedFund), _tokensBought);
+				_sendTokens = true;
+			}
+			if (
+				_tierDetails.transferType == TransferType.WaitedUnlock ||
+				_tierDetails.transferType == TransferType.NWaitedUnlock
+			) {
+				lockedFund.depositWaitedUnlocked(msg.sender, _tokensBought, _tierDetails.unlockedBP, _sendTokens);
+			} else if (
+				_tierDetails.transferType == TransferType.Vested ||
+				_tierDetails.transferType == TransferType.NVested
+			) {
 				lockedFund.depositVested(
 					msg.sender,
 					_tokensBought,
 					_tierDetails.vestOrLockCliff,
 					_tierDetails.vestOrLockDuration,
 					_tierDetails.unlockedBP,
-					uint256(UnlockType.Waited)
+					uint256(UnlockType.Waited),
+					_sendTokens
 				);
-			} else if (_tierDetails.transferType == TransferType.Locked) {
+			} else if (
+				_tierDetails.transferType == TransferType.Locked ||
+				_tierDetails.transferType == TransferType.NLocked
+			) {
 				lockedFund.depositLocked(
 					msg.sender,
 					_tokensBought,
 					_tierDetails.vestOrLockCliff,
 					_tierDetails.vestOrLockDuration,
 					_tierDetails.unlockedBP,
-					uint256(UnlockType.Waited)
+					uint256(UnlockType.Waited),
+					_sendTokens
 				);
 			}
 		}

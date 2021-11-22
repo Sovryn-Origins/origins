@@ -7,7 +7,7 @@ import "../Interfaces/IStaking.sol";
 
 /**
  *  @title A storage contract for Origins Platform.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  *  @notice This plays as the harddisk for the Origins Platform.
  */
 contract OriginsStorage {
@@ -71,13 +71,20 @@ contract OriginsStorage {
 	 * WaitedUnlock - The tokens are withdrawable from this contract after a certain period.
 	 * Vested - The tokens are vested (based on the contracts from Sovryn) for a certain period.
 	 * Locked - The tokens are locked without any benefit based on cliff and duration.
+	 * NWaitedUnlock - Same as WaitedUnlock, but No token transfer is done.
+	 * NVested - Same as Vested, but No token transfer is done.
+	 * NLocked - Same as Locked, but No token transfer is done.
+	 * @dev Values starting with N (except None) is expected that Locked Fund will be receiving the Tokens directly.
 	 */
 	enum TransferType {
 		None,
 		Unlocked,
 		WaitedUnlock,
 		Vested,
-		Locked
+		Locked,
+		NWaitedUnlock,
+		NVested,
+		NLocked
 	}
 
 	/**
@@ -85,6 +92,7 @@ contract OriginsStorage {
 	 * None - TODO.
 	 * FCFS - TODO.
 	 * Pooled - TODO.
+	 * @dev There could a new one called demand pooled or so, where there is no refund, and the token price is calculated based on demand.
 	 */
 	enum SaleType {
 		None,

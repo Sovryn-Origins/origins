@@ -5,14 +5,14 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
-	createLockedFund,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
-	VestingRegistry,
+	VestingRegistryLogic,
+	VestingRegistryProxy,
 } = require("../utils");
 
-const { zero, zeroAddress, zeroBasisPoint, invalidBasisPoint, unlockTypeWaited } = require("../constants");
+const { zero, zeroAddress, zeroBasisPoint, invalidBasisPoint, unlockTypeWaited, receiveTokens, dontReceiveTokens } = require("../constants");
 
 let { cliff, duration, waitedTS } = require("../variable");
 
@@ -30,11 +30,8 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await createLockedFund(waitedTS, token, vestingRegistry, [admin], creator);
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
@@ -61,13 +58,11 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	});
 
 	it("Admin should be able to change the vestingRegistry.", async () => {
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
+		let vestingRegistryLogic = await VestingRegistryLogic.new();
+		let newVestingRegistry = await VestingRegistryProxy.new();
+		await newVestingRegistry.setImplementation(vestingRegistryLogic.address);
+		newVestingRegistry = await VestingRegistryLogic.at(newVestingRegistry.address);
+	
 		await lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: admin });
 	});
 
@@ -92,7 +87,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		let value = randomValue();
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
-		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, { from: admin });
+		await lockedFund.depositVested(userOne, value, cliff, duration, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin });
 	});
 
 	it("Admin should not be able to deposit using depositWaitedUnlocked() with invalid basis point.", async () => {
@@ -100,7 +95,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 		token.mint(admin, value, { from: creator });
 		token.approve(lockedFund.address, value, { from: admin });
 		await expectRevert(
-			lockedFund.depositWaitedUnlocked(userOne, value, invalidBasisPoint, { from: admin }),
+			lockedFund.depositWaitedUnlocked(userOne, value, invalidBasisPoint, receiveTokens, { from: admin }),
 			"LockedFund: Basis Point has to be less than 10000."
 		);
 	});
@@ -108,7 +103,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	it("Admin should not be able to deposit with the duration as zero.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, zero, zeroBasisPoint, unlockTypeWaited, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, zero, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin }),
 			"LockedFund: Duration cannot be zero."
 		);
 	});
@@ -116,7 +111,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	it("Admin should not be able to deposit with the duration higher than max allowed.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, 100, zeroBasisPoint, unlockTypeWaited, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, 100, zeroBasisPoint, unlockTypeWaited, receiveTokens, { from: admin }),
 			"LockedFund: Duration is too long."
 		);
 	});
@@ -124,7 +119,7 @@ contract("LockedFund (Admin Functions)", (accounts) => {
 	it("Admin should not be able to deposit with basis point higher than max allowed.", async () => {
 		let value = randomValue();
 		await expectRevert(
-			lockedFund.depositVested(userOne, value, cliff, duration, invalidBasisPoint, unlockTypeWaited, { from: admin }),
+			lockedFund.depositVested(userOne, value, cliff, duration, invalidBasisPoint, unlockTypeWaited, receiveTokens, { from: admin }),
 			"LockedFund: Basis Point has to be less than 10000."
 		);
 	});

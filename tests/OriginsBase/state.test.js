@@ -5,7 +5,7 @@ const {
 	assert,
 	// Custom Functions
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	checkTier,
 	// Contract Artifacts
 	Token,
@@ -13,7 +13,7 @@ const {
 	OriginsBase,
 } = require("../utils");
 
-const { zero, verificationTypeEveryone } = require("../constants");
+const { zero, verificationTypeEveryone, saleTypeFCFS } = require("../constants");
 
 let {
 	waitedTS,
@@ -63,11 +63,8 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
@@ -101,6 +98,7 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 
 		await originsBase.addressVerification(userOne, tierCount, { from: verifier });
 	});
@@ -545,10 +543,12 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await originsBase.addressVerification(userOne, tierCount, { from: verifier });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-		let userVestedBalance = await lockedFund.getVestedBalance(userOne);
+		let _vestingData = await lockedFund.getVestingData(firstVestOrLockCliff, firstVestOfLockDuration, { from: userOne });
+		let userVestedBalance = await lockedFund.getVestedBalance(userOne, _vestingData);
 		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, { from: userOne });
 		let participatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
 		let tokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, { from: userOne });
@@ -567,7 +567,8 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-		let userVestedBalance = await lockedFund.getVestedBalance(userOne);
+		let _vestingData = await lockedFund.getVestingData(firstVestOrLockCliff, firstVestOfLockDuration, { from: userOne });
+		let userVestedBalance = await lockedFund.getVestedBalance(userOne, _vestingData);
 		let participatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount, { from: userOne });
 		let participatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
 		let newTokensBoughtByAddressOnTier = await originsBase.getTokensBoughtByAddressOnTier(userOne, tierCount, { from: userOne });
@@ -595,7 +596,8 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		let gasPrice = (await web3.eth.getTransaction(tx.tx)).gasPrice;
 		let newBalance = await balance.current(userOne);
 		newBalance = newBalance.add(new BN(gasUsed).mul(new BN(gasPrice)));
-		let userVestedBalance = await lockedFund.getVestedBalance(userOne);
+		let _vestingData = await lockedFund.getVestingData(firstVestOrLockCliff, firstVestOfLockDuration, { from: userOne });
+		let userVestedBalance = await lockedFund.getVestedBalance(userOne, _vestingData);
 		assert(oldBalance.sub(newBalance).eq(new BN(10000)), "User not returned enough.");
 		assert(userVestedBalance.eq(firstMaxAmount.mul(new BN(firstDepositRate))), "User Vested Balance is wrong.");
 	});
@@ -605,6 +607,7 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		let oldTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
 		let oldParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount - 1, { from: userOne });
 		let oldParticipatingWalletCount = await originsBase.getParticipatingWalletCount({ from: userOne });
+		await originsBase.setTierSaleType(tierCount - 1, saleTypeFCFS, { from: owner });
 		await originsBase.buy(tierCount - 1, zero, { from: userOne, value: amount });
 		let newTokensBoughtByAddress = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
 		let newParticipatingWalletCountPerTier = await originsBase.getParticipatingWalletCountPerTier(tierCount - 1, { from: userOne });
@@ -637,6 +640,7 @@ contract("OriginsBase (State Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 20000;
 		await token.mint(userOne, amount);
 		await token.approve(originsBase.address, amount, { from: userOne });

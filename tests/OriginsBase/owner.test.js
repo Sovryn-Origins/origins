@@ -5,7 +5,7 @@ const {
 	assert,
 	// Custom Functions
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
@@ -20,6 +20,7 @@ const {
 	depositTypeToken,
 	saleEndDurationOrTSTimestamp,
 	verificationTypeEveryone,
+	saleTypeFCFS
 } = require("../constants");
 
 let {
@@ -88,18 +89,15 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of Token for Staking.
 		depositToken = await Token.new(zero, "Deposit Token", "DPST", 18, { from: creator });
 		thirdDepositToken = depositToken.address;
 
 		// Creating the Staking and Vesting for stakeToken
-		[depositStaking, depositVestingLogic, depositVestingRegistry] = await createStakeAndVest(creator, depositToken);
+		[depositStaking, depositVestingLogic, depositVestingRegistry, depositLockedFund] = await createStakeVestAndLockedFund(creator, depositToken, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
@@ -389,6 +387,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		);
 
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 20000;
 		await token.mint(userOne, amount);
 		await token.approve(originsBase.address, amount, { from: userOne });
@@ -430,6 +429,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		);
 
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 20000;
 		await token.mint(userOne, amount);
 		await token.approve(originsBase.address, amount, { from: userOne });
@@ -466,6 +466,7 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		);
 
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 20000;
 		await token.mint(userOne, amount);
 		await token.approve(originsBase.address, amount, { from: userOne });

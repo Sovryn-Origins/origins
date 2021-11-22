@@ -5,7 +5,7 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
@@ -23,6 +23,7 @@ const {
 	transferTypeUnlocked,
 	transferTypeWaitedUnlock,
 	transferTypeLocked,
+	saleTypeFCFS
 } = require("../constants");
 
 let {
@@ -58,11 +59,8 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
@@ -95,6 +93,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 	});
 
 	beforeEach("Updating the timestamp.", async () => {
@@ -144,6 +143,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -167,6 +167,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -190,6 +191,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -213,6 +215,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await expectRevert(
 			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
@@ -239,6 +242,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
@@ -262,6 +266,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 10000;
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
@@ -286,6 +291,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale not allowed.");
 	});
@@ -310,6 +316,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
@@ -333,6 +340,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
@@ -358,6 +366,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
@@ -383,6 +392,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: No one is allowed for sale.");
 	});
 
@@ -406,6 +416,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not approved for sale.");
 	});
 
@@ -428,6 +439,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		let amount = 25000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
@@ -460,6 +472,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: zero }), "OriginsBase: Amount cannot be zero.");
 	});
 
@@ -483,6 +496,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
 		await originsBase.setTierTokenLimit(tierCount, 10000, firstMaxAmount, { from: owner });
 		await expectRevert(
 			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
