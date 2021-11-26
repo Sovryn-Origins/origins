@@ -4,7 +4,7 @@ import "../Interfaces/IERC20.sol";
 import "../Interfaces/ILockedFund.sol";
 import "../Openzeppelin/SafeMath.sol";
 import "../Interfaces/IVestingLogic.sol";
-import "../Interfaces/IVestingRegistry.sol";
+import "../Interfaces/IVestingRegistryLogic.sol";
 
 /**
  * @title A holding contract for Locked Fund.
@@ -34,7 +34,7 @@ contract LockedFund is ILockedFund {
 	/// @notice The token contract.
 	IERC20 public token;
 	/// @notice The Vesting registry contract.
-	IVestingRegistry public vestingRegistry;
+	IVestingRegistryLogic public vestingRegistry;
 
 	/**
 	 * @notice The type of Unlock.
@@ -221,7 +221,7 @@ contract LockedFund is ILockedFund {
 
 		waitedTS = _waitedTS;
 		token = IERC20(_token);
-		vestingRegistry = IVestingRegistry(_vestingRegistry);
+		vestingRegistry = IVestingRegistryLogic(_vestingRegistry);
 		vestingCreationType = 1;
 
 		for (uint256 index = 0; index < _admins.length; index++) {
@@ -460,7 +460,7 @@ contract LockedFund is ILockedFund {
 	function _changeVestingRegistry(address _vestingRegistry) internal {
 		require(_vestingRegistry != address(0), "LockedFund: Vesting registry address is invalid.");
 
-		vestingRegistry = IVestingRegistry(_vestingRegistry);
+		vestingRegistry = IVestingRegistryLogic(_vestingRegistry);
 
 		emit VestingRegistryUpdated(msg.sender, _vestingRegistry);
 	}
