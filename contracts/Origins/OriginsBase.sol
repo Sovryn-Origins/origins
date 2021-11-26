@@ -176,7 +176,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _remainingTokens The maximum number of tokens allowed to be sold in the tier.
 	 * @param _sendTokens - True if tokens should be taken from caller, False otherwise.
 	 */
-	function setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens, bool _sendTokens) external onlyOwner {
+	function setTierTokenAmount(
+		uint256 _tierID,
+		uint256 _remainingTokens,
+		bool _sendTokens
+	) external onlyOwner {
 		_setTierTokenAmount(_tierID, _remainingTokens, _sendTokens);
 	}
 
@@ -411,14 +415,18 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _sendTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev This function assumes the admin is a trusted party (multisig).
 	 */
-	function _setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens, bool _sendTokens) internal {
+	function _setTierTokenAmount(
+		uint256 _tierID,
+		uint256 _remainingTokens,
+		bool _sendTokens
+	) internal {
 		require(_remainingTokens > 0, "OriginsBase: Total token to sell should be higher than zero.");
 		require(
 			tiers[_tierID].maxAmount.mul(tiers[_tierID].depositRate) <= _remainingTokens,
 			"OriginsBase: Max Amount to buy should not be higher than token availability."
 		);
 
-		if(_sendTokens) {
+		if (_sendTokens) {
 			uint256 currentBal = token.balanceOf(address(this));
 			uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
 

@@ -12,7 +12,7 @@ const {
 	transferTypeVested,
 	transferTypeWaitedUnlock,
 	depositTypeToken,
-	saleTypeFCFS
+	saleTypeFCFS,
 } = require("./constants");
 
 // Variables
@@ -53,7 +53,7 @@ let [
 	verificationTypeByAddress,
 	saleEndDurationOrTSDuration,
 	transferTypeVested,
-	saleTypeFCFS
+	saleTypeFCFS,
 ];
 
 let [
