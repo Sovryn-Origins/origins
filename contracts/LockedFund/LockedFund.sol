@@ -114,11 +114,7 @@ contract LockedFund is ILockedFund {
 	 * @param _userAddress The user to whose unlocked balance a new deposit was made.
 	 * @param _amount The amount of Token to be added to the unlocked balance.
 	 */
-	event UnlockedDeposited(
-		address indexed _initiator,
-		address indexed _userAddress,
-		uint256 _amount
-	);
+	event UnlockedDeposited(address indexed _initiator, address indexed _userAddress, uint256 _amount);
 
 	/**
 	 * @notice Emitted when a new waited unlocked deposit is made.
@@ -126,11 +122,7 @@ contract LockedFund is ILockedFund {
 	 * @param _userAddress The user to whose waited unlocked balance a new deposit was made.
 	 * @param _amount The amount of Token to be added to the waited unlocked balance.
 	 */
-	event WaitedUnlockedDeposited(
-		address indexed _initiator,
-		address indexed _userAddress,
-		uint256 _amount
-	);
+	event WaitedUnlockedDeposited(address indexed _initiator, address indexed _userAddress, uint256 _amount);
 
 	/**
 	 * @notice Emitted when a new vested deposit is made.
@@ -155,10 +147,7 @@ contract LockedFund is ILockedFund {
 	 * @param _initiator The address which initiated this event to be emitted.
 	 * @param _amount The amount of Token to be added to the un/locked balance.
 	 */
-	event MissingBalanceDeposited(
-		address indexed _initiator,
-		uint256 _amount
-	);
+	event MissingBalanceDeposited(address indexed _initiator, uint256 _amount);
 
 	/**
 	 * @notice Emitted when a new deposit is made.
@@ -909,7 +898,7 @@ contract LockedFund is ILockedFund {
 	 * @return The vesting schedules of a user.
 	 */
 	function getUserVestingsOf(address _addr) external view returns (bytes32[] memory) {
-		if(_addr == address(0)) {
+		if (_addr == address(0)) {
 			return userVestings[msg.sender];
 		} else {
 			return userVestings[_addr];

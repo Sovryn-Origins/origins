@@ -37,6 +37,9 @@ contract("OriginsAdmin (Owner Functions)", (accounts) => {
 	});
 
 	it("Creator should not be able to remove a verifier.", async () => {
-		await expectRevert(originsAdmin.removeVerifier(verifierOne, { from: creator }), "OriginsAdmin: Only owner or verifier himself can call this function.");
+		await expectRevert(
+			originsAdmin.removeVerifier(verifierOne, { from: creator }),
+			"OriginsAdmin: Only owner or verifier himself can call this function."
+		);
 	});
 });

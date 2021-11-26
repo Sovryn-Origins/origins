@@ -120,7 +120,10 @@ contract OriginsAdmin is OriginsStorage {
 	 * @dev Only callable by an Owner.
 	 */
 	function removeVerifier(address _verifierToRemove) public {
-		require(isOwner[msg.sender] || _verifierToRemove == msg.sender, "OriginsAdmin: Only owner or verifier himself can call this function.");
+		require(
+			isOwner[msg.sender] || _verifierToRemove == msg.sender,
+			"OriginsAdmin: Only owner or verifier himself can call this function."
+		);
 		_removeVerifier(_verifierToRemove);
 	}
 
