@@ -15,6 +15,7 @@ const { zero, zeroAddress } = require("../constants");
 
 let {
 	waitedTS,
+	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
 	firstSaleStartTS,
@@ -27,6 +28,7 @@ let {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 	secondMinAmount,
 	secondMaxAmount,
 	secondRemainingTokens,
@@ -82,6 +84,7 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -89,11 +92,10 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
@@ -119,6 +121,7 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
 			originsBase.createTier(
+				firstMinAmount,
 				firstMaxAmount,
 				firstRemainingTokens,
 				firstSaleStartTS,
@@ -126,11 +129,10 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 				firstUnlockedBP,
 				firstVestOrLockCliff,
 				firstVestOfLockDuration,
-				firstDepositRate,
-				firstDepositType,
 				firstVerificationType,
 				firstSaleEndDurationOrTS,
 				firstTransferType,
+				firstSaleType,
 				{ from: verifier }
 			),
 			"OriginsAdmin: Only owner can call this function."

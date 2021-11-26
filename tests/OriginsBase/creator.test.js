@@ -15,6 +15,7 @@ const { zero, zeroAddress } = require("../constants");
 
 let {
 	waitedTS,
+	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
 	firstSaleStartTS,
@@ -27,6 +28,7 @@ let {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 	secondMinAmount,
 	secondMaxAmount,
 	secondRemainingTokens,
@@ -40,6 +42,7 @@ let {
 	secondDepositType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
+	secondSaleType,
 } = require("../variable");
 
 contract("OriginsBase (Creator Functions)", (accounts) => {
@@ -78,6 +81,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens, { from: creator });
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -85,14 +89,14 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 	});
 
 	beforeEach("Updating the timestamp.", async () => {
@@ -128,6 +132,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		await token.approve(originsBase.address, firstRemainingTokens, { from: creator });
 		await expectRevert(
 			originsBase.createTier(
+				firstMinAmount,
 				firstMaxAmount,
 				firstRemainingTokens,
 				firstSaleStartTS,
@@ -135,11 +140,10 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 				firstUnlockedBP,
 				firstVestOrLockCliff,
 				firstVestOfLockDuration,
-				firstDepositRate,
-				firstDepositType,
 				firstVerificationType,
 				firstSaleEndDurationOrTS,
 				firstTransferType,
+				firstSaleType,
 				{ from: creator }
 			),
 			"OriginsAdmin: Only owner can call this function."

@@ -91,8 +91,9 @@ contract IOrigins {
 	 * @notice Function to set the Tier Token Amount Parameters.
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _remainingTokens The maximum number of tokens allowed to be sold in the tier.
+	 * @param _sendTokens - True if tokens should be taken from caller, False otherwise.
 	 */
-	function setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens) external;
+	function setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens, bool _sendTokens) external;
 
 	/**
 	 * @notice Function to set the Tier Vest/Lock Parameters.

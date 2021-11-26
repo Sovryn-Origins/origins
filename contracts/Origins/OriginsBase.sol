@@ -54,6 +54,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 	/**
 	 * @notice Function to create a new tier.
+	 * @param _minAmount The minimum amount of asset which can be deposited.
 	 * @param _maxAmount The maximum amount of asset which can be deposited.
 	 * @param _remainingTokens Contains the remaining tokens for sale.
 	 * @param _saleStartTS Contains the timestamp for the sale to start. Before which no user will be able to buy tokens.
@@ -61,16 +62,16 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _unlockedBP Contains the unlock amount in Basis Point for Vesting/Lock.
 	 * @param _vestOrLockCliff Contains the cliff of the vesting/lock for distribution.
 	 * @param _vestOrLockDuration Contains the duration of the vesting/lock for distribution.
-	 * @param _depositRate Contains the rate of the token w.r.t. the depositing asset.
 	 * @param _verificationType Contains the method by which verification happens.
 	 * @param _saleEndDurationOrTS Contains whether end of sale is by Duration or Timestamp.
 	 * @param _transferType Contains the type of token transfer after a user buys to get the tokens.
+	 * @param _saleType Contains the type of sale.
 	 * @return _tierID The newly created tier ID.
 	 * @dev In the future this should be decoupled.
 	 * Some are currently sent with default value due to Stack Too Deep problem.
 	 */
 	function createTier(
-		// uint256 _minAmount,
+		uint256 _minAmount,
 		uint256 _maxAmount,
 		uint256 _remainingTokens,
 		uint256 _saleStartTS,
@@ -78,11 +79,13 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 _unlockedBP,
 		uint256 _vestOrLockCliff,
 		uint256 _vestOrLockDuration,
-		uint256 _depositRate,
-		uint256 _depositType,
+		// uint256 _depositRate,
+		// uint256 _depositType,
+		// address _depositToken,
 		uint256 _verificationType,
 		uint256 _saleEndDurationOrTS,
-		uint256 _transferType
+		uint256 _transferType,
+		uint256 _saleType
 	)
 		external
 		// uint256 _saleType
@@ -94,22 +97,29 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 		_tierID = tierCount;
 
+		bool _sendTokens = true;
+		if (
+			TransferType(_transferType) == TransferType.NWaitedUnlock ||
+			TransferType(_transferType) == TransferType.NVested ||
+			TransferType(_transferType) == TransferType.NLocked
+		) {
+			_sendTokens = false;
+		}
+
 		/// @notice This will revert if any of the below fails. But if none fails, this event should fire first.
 		emit NewTierCreated(msg.sender, _tierID);
 
 		/// @notice Verification Parameter.
 		_setTierVerification(_tierID, VerificationType(_verificationType));
 
-		/// @notice Deposit Parameters. (IMPORTANT TODO, change deposit token address here.)
-		_setTierDeposit(_tierID, _depositRate, address(0), DepositType(_depositType));
+		/// @notice Deposit Parameters. (TODO: It exceeds the limit for the function. Optimization required.)
 		/// _setTierDeposit(_tierID, _depositRate, _depositToken, DepositType(_depositType));
 
 		/// @notice Token Amount Limit Parameters. (IMPORTANT TODO, change minimum amount.)
-		_setTierTokenLimit(_tierID, 0, _maxAmount);
-		/// _setTierTokenLimit(_tierID, _minAmount, _maxAmount);
+		_setTierTokenLimit(_tierID, _minAmount, _maxAmount);
 
 		/// @notice Tier Token Amount Parameters.
-		_setTierTokenAmount(_tierID, _remainingTokens);
+		_setTierTokenAmount(_tierID, _remainingTokens, _sendTokens);
 
 		/// @notice Vesting or Locking Parameters.
 		_setTierVestOrLock(_tierID, _vestOrLockCliff, _vestOrLockDuration, _unlockedBP, TransferType(_transferType));
@@ -117,8 +127,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		/// @notice Time Parameters.
 		_setTierTime(_tierID, _saleStartTS, _saleEnd, SaleEndDurationOrTS(_saleEndDurationOrTS));
 
-		/// @notice Sale Type Parameters. TODO: It exceeds the limit for the function. Optimization required.
-		/// _setTierSaleType(_tierID, SaleType(_saleType));
+		/// @notice Sale Type Parameters.
+		_setTierSaleType(_tierID, SaleType(_saleType));
 	}
 
 	/**
@@ -164,9 +174,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice Function to set the Tier Token Amount Parameters.
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _remainingTokens The maximum number of tokens allowed to be sold in the tier.
+	 * @param _sendTokens - True if tokens should be taken from caller, False otherwise.
 	 */
-	function setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens) external onlyOwner {
-		_setTierTokenAmount(_tierID, _remainingTokens);
+	function setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens, bool _sendTokens) external onlyOwner {
+		_setTierTokenAmount(_tierID, _remainingTokens, _sendTokens);
 	}
 
 	/**
@@ -397,27 +408,30 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @notice Internal function to set the Tier Token Amount Parameters.
 	 * @param _tierID The Tier ID which is being updated.
 	 * @param _remainingTokens The maximum number of tokens allowed to be sold in the tier.
+	 * @param _sendTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev This function assumes the admin is a trusted party (multisig).
 	 */
-	function _setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens) internal {
+	function _setTierTokenAmount(uint256 _tierID, uint256 _remainingTokens, bool _sendTokens) internal {
 		require(_remainingTokens > 0, "OriginsBase: Total token to sell should be higher than zero.");
 		require(
 			tiers[_tierID].maxAmount.mul(tiers[_tierID].depositRate) <= _remainingTokens,
 			"OriginsBase: Max Amount to buy should not be higher than token availability."
 		);
 
-		uint256 currentBal = token.balanceOf(address(this));
-		uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
+		if(_sendTokens) {
+			uint256 currentBal = token.balanceOf(address(this));
+			uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
 
-		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
-		if (requiredBal > currentBal) {
-			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
-			bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
-			require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
-		} else {
-			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].sub(currentBal.sub(requiredBal));
-			bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
-			require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
+			/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
+			if (requiredBal > currentBal) {
+				totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
+				bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
+				require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
+			} else {
+				totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].sub(currentBal.sub(requiredBal));
+				bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
+				require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
+			}
 		}
 
 		tiers[_tierID].remainingTokens = _remainingTokens;

@@ -47,6 +47,9 @@ const saleTypeNone = 0;
 const saleTypeFCFS = 1;
 const saleTypePooled = 2;
 
+const sendTokens = true;
+const dontSendTokens = false;
+
 const receiveTokens = true;
 const dontReceiveTokens = false;
 
@@ -55,24 +58,30 @@ module.exports = {
 	zeroAddress,
 	dummyAddress,
 	fourWeeks,
+
 	zeroBasisPoint,
 	twentyBasisPoint,
 	fiftyBasisPoint,
 	hundredBasisPoint,
 	invalidBasisPoint,
+
 	depositTypeRBTC,
 	depositTypeToken,
+
 	unlockTypeNone,
 	unlockTypeImmediate,
 	unlockTypeWaited,
+
 	saleEndDurationOrTSNone,
 	saleEndDurationOrTSUntilSupply,
 	saleEndDurationOrTSDuration,
 	saleEndDurationOrTSTimestamp,
+
 	verificationTypeNone,
 	verificationTypeEveryone,
 	verificationTypeByAddress,
 	verificationTypeByStake,
+
 	transferTypeNone,
 	transferTypeUnlocked,
 	transferTypeWaitedUnlock,
@@ -81,9 +90,14 @@ module.exports = {
 	transferTypeNWaitedUnlock,
 	transferTypeNVested,
 	transferTypeNLocked,
+
 	saleTypeNone,
 	saleTypeFCFS,
 	saleTypePooled,
+
+	sendTokens,
+	dontSendTokens,
+
 	receiveTokens,
 	dontReceiveTokens,
 };

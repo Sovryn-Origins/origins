@@ -12,6 +12,7 @@ const {
 	transferTypeVested,
 	transferTypeWaitedUnlock,
 	depositTypeToken,
+	saleTypeFCFS
 } = require("./constants");
 
 // Variables
@@ -36,8 +37,9 @@ let [
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 ] = [
-	1,
+	new BN(1),
 	new BN(50000),
 	new BN(6000000),
 	0,
@@ -51,6 +53,7 @@ let [
 	verificationTypeByAddress,
 	saleEndDurationOrTSDuration,
 	transferTypeVested,
+	saleTypeFCFS
 ];
 
 let [
@@ -68,8 +71,9 @@ let [
 	secondVerificationType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
+	secondSaleType,
 ] = [
-	1,
+	new BN(1),
 	new BN(75000),
 	new BN(10000000),
 	0,
@@ -83,6 +87,7 @@ let [
 	verificationTypeEveryone,
 	saleEndDurationOrTSDuration,
 	transferTypeVested,
+	saleTypeFCFS,
 ];
 
 let [
@@ -100,8 +105,9 @@ let [
 	thirdVerificationType,
 	thirdSaleEndDurationOrTS,
 	thirdTransferType,
+	thirdSaleType,
 ] = [
-	1,
+	new BN(1),
 	new BN(100000),
 	new BN(4000000),
 	0,
@@ -115,6 +121,7 @@ let [
 	verificationTypeByStake,
 	saleEndDurationOrTSDuration,
 	transferTypeWaitedUnlock,
+	saleTypeFCFS,
 ];
 
 let [thirdMinStake, thirdMaxStake, thirdBlockNumber, thirdDate] = [new BN(1), 0, [], []];
@@ -138,6 +145,7 @@ module.exports = {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 
 	secondMinAmount,
 	secondMaxAmount,
@@ -153,6 +161,7 @@ module.exports = {
 	secondVerificationType,
 	secondSaleEndDurationOrTS,
 	secondTransferType,
+	thirdSaleType,
 
 	thirdMinAmount,
 	thirdMaxAmount,
@@ -168,6 +177,7 @@ module.exports = {
 	thirdVerificationType,
 	thirdSaleEndDurationOrTS,
 	thirdTransferType,
+	thirdSaleType,
 
 	thirdMinStake,
 	thirdMaxStake,
