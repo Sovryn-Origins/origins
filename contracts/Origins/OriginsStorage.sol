@@ -57,6 +57,7 @@ contract OriginsStorage {
 	 * Everyone - This type is set to allow everyone.
 	 * ByAddress - This type is set to allow only verified addresses.
 	 * ByStake - This type is set to allow only addresses with minimum stake requirement.
+	 * TODO: ByVest - This type is set to allow only addresses with minimum vesting requirement.
 	 */
 	enum VerificationType {
 		None,
@@ -89,9 +90,9 @@ contract OriginsStorage {
 
 	/**
 	 * @notice The method by which the sale is happening.
-	 * None - TODO.
-	 * FCFS - TODO.
-	 * Pooled - TODO.
+	 * None - Sale Type is not set. Default value.
+	 * FCFS - Sale Type is First Come First Serve.
+	 * Pooled - Sale Type is Pooled.
 	 * @dev There could a new one called demand pooled or so, where there is no refund, and the token price is calculated based on demand.
 	 */
 	enum SaleType {
@@ -140,7 +141,11 @@ contract OriginsStorage {
 
 	/**
 	 * @notice The Stake Structure
-	 * TODO
+	 * @param minStake The minimum stake requirement.
+	 * @param maxStake The maximum stake requirement.
+	 * @param blockNumber The array of blocknumbers to check.
+	 * @param date The array of date (timestamps) to check.
+	 * @param staking The staking address.
 	 * @dev If the maxStake is set as zero, then there is no upper limit.
 	 */
 	struct Stake {

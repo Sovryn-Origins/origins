@@ -205,7 +205,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 	/**
 	 * @notice Function to set the Tier Stake Parameters.
-	 * TODO
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _minStake The minimum stake requirement.
+	 * @param _maxStake The maximum stake requirement.
+	 * @param _blockNumber The array of blocknumbers to check.
+	 * @param _date The array of date (timestamps) to check.
+	 * @param _stakeAddr The staking address.
 	 */
 	function setTierStakeCondition(
 		uint256 _tierID,
@@ -221,7 +226,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Function to set the Tier Sale Type Parameters.
 	 * @param _tierID The Tier ID which is being updated.
-	 * @param _saleType TODO.
+	 * @param _saleType The type of sale for this tier.
 	 */
 	function setTierSaleType(uint256 _tierID, uint256 _saleType) external onlyOwner {
 		_setTierSaleType(_tierID, SaleType(_saleType));
@@ -281,7 +286,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * TODO
+	 * @notice Function to claim the pooled sale type tokens.
+	 * @param _tierID The Tier ID from which the tokens has to be claimed.
 	 */
 	function claimPooled(uint256 _tierID) external {
 		_claimPooled(_tierID);
@@ -477,7 +483,12 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 	/**
 	 * @notice Internal function to set the Tier Stake Parameters.
-	 * TODO
+	 * @param _tierID The Tier ID which is being updated.
+	 * @param _minStake The minimum stake requirement.
+	 * @param _maxStake The maximum stake requirement.
+	 * @param _blockNumber The array of blocknumbers to check.
+	 * @param _date The array of date (timestamps) to check.
+	 * @param _stakeAddr The staking address.
 	 */
 	function _setTierStakeCondition(
 		uint256 _tierID,
@@ -514,7 +525,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Internal function to set the Tier Sale Type Parameters.
 	 * @param _tierID The Tier ID which is being updated.
-	 * @param _saleType TODO.
+	 * @param _saleType The type of sale for this tier.
 	 */
 	function _setTierSaleType(uint256 _tierID, SaleType _saleType) internal {
 		tiers[_tierID].saleType = _saleType;
@@ -569,7 +580,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * @notice TODO
+	 * @notice Internal function to check the stake data based on the tier and user address.
+	 * @param _tierID The tier id to get the stake requirement details.
+	 * @param _userAddress The user address whose stake has to be checked.
 	 */
 	function _checkStakesByTier(uint256 _tierID, address _userAddress) internal view returns (bool) {
 		/// @notice Checking if user has enough stake.
@@ -594,7 +607,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * @notice TODO
+	 * @notice Internal Function to check if the user is verified for the particular tier.
+	 * @return true if the user is verified, false otherwise.
 	 */
 	function _checkVerification(Tier memory _tierDetails, uint256 _tierID) internal view returns (bool) {
 		/// @notice Checking if verification is set and if user has permission.
@@ -659,7 +673,6 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	/**
 	 * @notice Internal Function to update the Tier Token Details.
 	 * @param _tierID The Tier ID whose Token Details are updated.
-	 * TODO: Update for a pooled system.
 	 */
 	function _updateTierTokenDetailsAfterBuy(uint256 _tierID) internal {
 		Tier memory _tierDetails = tiers[_tierID];
@@ -751,7 +764,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			/// @notice Checking what type of Transfer to do.
 			_tokenTransferOnBuy(tierDetails, tokensBought);
 
-			/// @notice Updating the tier token parameters.
+			/// @notice Updating the tier token parameters. Not applicable for Pooled Sale Type.
 			_updateTierTokenDetailsAfterBuy(_tierID);
 		}
 
@@ -772,7 +785,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * TODO
+	 * @notice Internal function to claim the pooled sale type tokens.
+	 * @param _tierID The Tier ID from which the tokens has to be claimed.
 	 */
 	function _claimPooled(uint256 _tierID) internal {
 		Tier memory _tierDetails = tiers[_tierID];
@@ -1031,7 +1045,10 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	}
 
 	/**
-	 * @notice TODO
+	 * @notice Function to view the stakes of `_userAddress` or caller.
+	 * @param _tierID The Tier for which the user stake has to be checked.
+	 * @param _userAddress The address of the user to check. If zero address, then caller stake will be checked.
+	 * @return true if the stake is enough, false otherwise.
 	 */
 	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns (bool) {
 		if (_userAddress == address(0)) {

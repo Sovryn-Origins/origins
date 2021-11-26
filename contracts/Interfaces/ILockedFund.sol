@@ -48,7 +48,7 @@ contract ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
-	 * @param _receiveTokens - TODO
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -69,7 +69,7 @@ contract ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
-	 * @param _receiveTokens - TODO
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositLocked(
@@ -87,7 +87,7 @@ contract ILockedFund {
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
-	 * @param _receiveTokens - TODO
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositWaitedUnlocked(
@@ -98,8 +98,8 @@ contract ILockedFund {
 	) public;
 
 	/**
-	 * @notice TODO.
-	 * @param _amount TODO.
+	 * @notice Function to call to deposit missing balance to create vesting/staking.
+	 * @param _amount The amount being sent.
 	 */
 	function depositMissingBalance(uint256 _amount) external;
 
@@ -124,7 +124,7 @@ contract ILockedFund {
 
 	/**
 	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
-	 * @param _vestingData TODO
+	 * @param _vestingData The vesting details like cliff & duration in short form.
 	 * @return _vestingAddress The New Vesting Contract Created.
 	 */
 	function createVesting(bytes32 _vestingData) external returns (address[] memory _vestingAddress);
@@ -139,7 +139,7 @@ contract ILockedFund {
 
 	/**
 	 * @notice Stakes tokens for a user who already have a vesting created.
-	 * @param _vestingData TODO
+	 * @param _vestingData The vesting details like cliff & duration in short form.
 	 * @dev The user should already have a vesting created, else this function will throw error.
 	 */
 	function stakeTokens(bytes32 _vestingData) external;

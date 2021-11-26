@@ -622,11 +622,13 @@ contract("OriginsBase (State Functions)", (accounts) => {
 	});
 
 	it("Owner should be able to withdraw the sale deposit to deposit address.", async () => {
-		await token.mint(owner, firstRemainingTokens);
-		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		let amount = 60000;
+		let buyAmount = amount/3;
+		await token.mint(owner, amount);
+		await token.approve(originsBase.address, amount, { from: owner });
 		await originsBase.createTier(
-			firstMaxAmount,
-			firstRemainingTokens,
+			buyAmount/firstDepositRate,
+			amount,
 			firstSaleStartTS,
 			firstSaleEnd,
 			firstUnlockedBP,
@@ -641,21 +643,12 @@ contract("OriginsBase (State Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		await originsBase.setTierSaleType(tierCount, saleTypeFCFS, { from: owner });
-		let amount = 20000;
-		await token.mint(userOne, amount);
-		await token.approve(originsBase.address, amount, { from: userOne });
-		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-		amount = 20000;
-		await token.mint(userTwo, amount);
-		await token.approve(originsBase.address, amount, { from: userTwo });
-		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount });
-		amount = 20000;
-		await token.mint(userThree, amount);
-		await token.approve(originsBase.address, amount, { from: userThree });
-		await originsBase.buy(tierCount, zero, { from: userThree, value: amount });
+		await originsBase.buy(tierCount, zero, { from: userOne, value: buyAmount });
+		await originsBase.buy(tierCount, zero, { from: userTwo, value: buyAmount });
+		await originsBase.buy(tierCount, zero, { from: userThree, value: buyAmount });
 		let oldBalance = await balance.current(depositAddr);
 		await originsBase.withdrawSaleDeposit({ from: owner });
 		let newBalance = await balance.current(depositAddr);
-		assert(newBalance.sub(oldBalance).eq(new BN(60000)), "Admin did not received the total sale proceedings.");
+		assert(newBalance.sub(oldBalance).eq(new BN(amount/firstDepositRate)), "Admin did not received the total sale proceedings.");
 	});
 });

@@ -120,7 +120,11 @@ contract OriginsEvents is OriginsAdmin {
 	 * @notice Emitted when the Tier Stake Condition for Verification are updated.
 	 * @param _initiator The one who initiates this event.
 	 * @param _tierID The Tier ID which is being updated.
-	 * TODO
+	 * @param _minStake The minimum stake requirement.
+	 * @param _maxStake The maximum stake requirement.
+	 * @param _blockNumber The array of blocknumbers to check.
+	 * @param _date The array of date (timestamps) to check.
+	 * @param _stakeAddr The staking address.
 	 */
 	event TierStakeConditionUpdated(
 		address indexed _initiator,

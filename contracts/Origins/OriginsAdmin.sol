@@ -119,8 +119,8 @@ contract OriginsAdmin is OriginsStorage {
 	 * @param _verifierToRemove The address of the verifier which should be removed.
 	 * @dev Only callable by an Owner.
 	 */
-	function removeVerifier(address _verifierToRemove) public onlyOwner {
-		//TODO: Should allow not just owner, but also a verifier to remove himself.
+	function removeVerifier(address _verifierToRemove) public {
+		require(isOwner[msg.sender] || _verifierToRemove == msg.sender, "OriginsAdmin: Only owner or verifier himself can call this function.");
 		_removeVerifier(_verifierToRemove);
 	}
 
