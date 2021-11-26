@@ -17,7 +17,11 @@ contract DevelopmentFund {
 	IERC20 public SOV;
 
 	/// @notice The current contract status.
-	enum Status { Deployed, Active, Expired }
+	enum Status {
+		Deployed,
+		Active,
+		Expired
+	}
 	Status public status;
 
 	/// @notice The owner of the locked tokens (usually Governance).

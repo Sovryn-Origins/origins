@@ -110,7 +110,16 @@ contract GovernorAlpha is SafeMath96 {
 	}
 
 	/// @notice Possible states that a proposal may be in.
-	enum ProposalState { Pending, Active, Canceled, Defeated, Succeeded, Queued, Expired, Executed }
+	enum ProposalState {
+		Pending,
+		Active,
+		Canceled,
+		Defeated,
+		Succeeded,
+		Queued,
+		Expired,
+		Executed
+	}
 
 	/// @notice The official record of all proposals ever proposed.
 	mapping(uint256 => Proposal) public proposals;
@@ -169,22 +178,20 @@ contract GovernorAlpha is SafeMath96 {
 
 	/// @notice The number of votes required in order for a voter to become a proposer.
 	function proposalThreshold() public view returns (uint96) {
-		uint96 totalVotingPower =
-			staking.getPriorTotalVotingPower(
-				safe32(block.number - 1, "GovernorAlpha::proposalThreshold: block number overflow"),
-				block.timestamp
-			);
+		uint96 totalVotingPower = staking.getPriorTotalVotingPower(
+			safe32(block.number - 1, "GovernorAlpha::proposalThreshold: block number overflow"),
+			block.timestamp
+		);
 		// 1% of current total voting power.
 		return totalVotingPower / 100;
 	}
 
 	/// @notice The number of votes in support of a proposal required in order for a quorum to be reached and for a vote to succeed.
 	function quorumVotes() public view returns (uint96) {
-		uint96 totalVotingPower =
-			staking.getPriorTotalVotingPower(
-				safe32(block.number - 1, "GovernorAlpha::quorumVotes: block number overflow"),
-				block.timestamp
-			);
+		uint96 totalVotingPower = staking.getPriorTotalVotingPower(
+			safe32(block.number - 1, "GovernorAlpha::quorumVotes: block number overflow"),
+			block.timestamp
+		);
 		// 4% of current total voting power.
 		return mul96(quorumPercentageVotes, totalVotingPower, "GovernorAlpha::quorumVotes:multiplication overflow") / 100;
 	}
@@ -239,29 +246,28 @@ contract GovernorAlpha is SafeMath96 {
 
 		/// @dev quorum: proposalThreshold is 1% of total votes, we can save gas using this pre calculated value.
 		/// @dev startTime: Required by the staking contract. not used by the governance contract itself.
-		Proposal memory newProposal =
-			Proposal({
-				id: proposalCount,
-				startBlock: safe32(startBlock, "GovernorAlpha::propose: start block number overflow"),
-				endBlock: safe32(endBlock, "GovernorAlpha::propose: end block number overflow"),
-				forVotes: 0,
-				againstVotes: 0,
-				quorum: mul96(quorumPercentageVotes, threshold, "GovernorAlpha::propose: overflow on quorum computation"),
-				majorityPercentage: mul96(
-					majorityPercentageVotes,
-					threshold,
-					"GovernorAlpha::propose: overflow on majorityPercentage computation"
-				),
-				eta: 0,
-				startTime: safe64(block.timestamp, "GovernorAlpha::propose: startTime overflow"),
-				canceled: false,
-				executed: false,
-				proposer: msg.sender,
-				targets: targets,
-				values: values,
-				signatures: signatures,
-				calldatas: calldatas
-			});
+		Proposal memory newProposal = Proposal({
+			id: proposalCount,
+			startBlock: safe32(startBlock, "GovernorAlpha::propose: start block number overflow"),
+			endBlock: safe32(endBlock, "GovernorAlpha::propose: end block number overflow"),
+			forVotes: 0,
+			againstVotes: 0,
+			quorum: mul96(quorumPercentageVotes, threshold, "GovernorAlpha::propose: overflow on quorum computation"),
+			majorityPercentage: mul96(
+				majorityPercentageVotes,
+				threshold,
+				"GovernorAlpha::propose: overflow on majorityPercentage computation"
+			),
+			eta: 0,
+			startTime: safe64(block.timestamp, "GovernorAlpha::propose: startTime overflow"),
+			canceled: false,
+			executed: false,
+			proposer: msg.sender,
+			targets: targets,
+			values: values,
+			signatures: signatures,
+			calldatas: calldatas
+		});
 
 		proposals[newProposal.id] = newProposal;
 		latestProposalIds[newProposal.proposer] = newProposal.id;
