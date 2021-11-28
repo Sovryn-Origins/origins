@@ -1,0 +1,20 @@
+{
+	"Reset": false,
+	"tokenName": "Origins",
+	"tokenSymbol": "OG",
+	"tokenDecimal": "18",
+	"tokenAmount": "100000000",
+	"waitedTimestamp": "",
+	"OGToken": "0xee40A0317525ff9dAc2d26A6FFcC0fe12e8AD590",
+	"StakingLogic": "",
+	"Staking": "0xCdeB44220CDE4887F7e67FF66889a584c4fdDFAB",
+	"Timelock": "0xabFD30E55662bB3f176e9c2baD3c629326b2A8F0",
+	"Governor": "0xEfB3E729DBC3B6872f4f5CE54d41E3685C182EB9",
+	"GovernorVault": "0x0fc0aA598CD52606C2ff4fD588c47EfcE66A8250",
+	"LockedFund": "0x7476d0245384C4106C2ebdF20b559a3Db85b1C6F",
+	"VestingLogic": "",
+	"VestingFactory": "0x92dBE88ACe997ea9970D12B5284358a2748757Ca",
+	"VestingRegistry": "0x2BB443FD8C046DB96db2CBb7122A5130eAc489bF",
+	"VestingCreator": "0xc50fa4cd02243Fe9c1447a61406B1F91F53a21CC",
+	"TokenSender": "0xc3057dCE0588Dbca969eA758242B7Db009eD16Ea"
+}
