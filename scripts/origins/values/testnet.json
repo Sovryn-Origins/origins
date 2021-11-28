@@ -13,8 +13,8 @@
 		"0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"
 	],
 	"multisigDepositAddress": "",
-	"originsVerifiers": ["0x9E0816a71B53ca67201a5088df960fE90910DE55", "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"],
 	"depositAddress": "0x52AD0a0b5Df441009fe1b1Ee83e41D74168928a0",
+	"originsVerifiers": ["0x9E0816a71B53ca67201a5088df960fE90910DE55", "0x0F98206E5F60f849FE2d7e059881478E7c7ECb12"],
 	"waitedTimestamp": "1629720200",
 	"vestingRegistry": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41",
 	"origins": "0xef0CF4969a9c0F55716327a63E05BCF9c7a7b472",
@@ -37,7 +37,8 @@
 			"depositType": "0",
 			"verificationType": "2",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		},
 		{
 			"minimumAmount": "2322874485378",
@@ -53,7 +54,8 @@
 			"depositType": "0",
 			"verificationType": "1",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		}
 	],
 	"toVerify": [

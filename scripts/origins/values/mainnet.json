@@ -36,7 +36,8 @@
 			"depositType": "0",
 			"verificationType": "2",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		},
 		{
 			"minimumAmount": "1",
@@ -52,7 +53,8 @@
 			"depositType": "0",
 			"verificationType": "1",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		}
 	],
 	"toVerify": [],
