@@ -4,7 +4,7 @@
 	"multisigOwners": ["", "", ""],
 	"multisig": "",
 	"multisigDepositAddressOwners": ["", "", ""],
-	"depositAddress": "",
+	"multisigDepositAddress": "",
 	"originsVerifiers": [""],
 	"waitedTimestamp": "",
 	"vestingRegistry": "",

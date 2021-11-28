@@ -53,7 +53,7 @@ def deployOriginsDepositAddressMultisig():
     print("=============================================================")
 
     # Updating the JSON Values.    
-    values["depositAddress"] = multisig.address
+    values["multisigDepositAddress"] = multisig.address
     writeToJSON()
 
     balanceAfter = acct.balance()

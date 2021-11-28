@@ -124,7 +124,7 @@ def choice():
 def deployOrigins():
     adminList = [values['multisig'], acct]
     token = values['token']
-    depositAddress = values['depositAddress']
+    depositAddress = values['multisigDepositAddress']
 
     print("\n=============================================================")
     print("Deployment Parameters for Origins")
@@ -148,10 +148,10 @@ def deployOrigins():
     lockedFund.addAdmin(values['origins'])
     print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
 
-    addMyselfAsVerifier()
+    # addMyselfAsVerifier()
 
     getOwnerList()
-    getVerifierList()
+    # getVerifierList()
 
     # For easy deployment uncomment below three lines.
     # createNewTier()
@@ -162,7 +162,7 @@ def deployOrigins():
 def updateDepositAddress():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     print("\nUpdating Deposit Address of Origins...\n")
-    origins.setDepositAddress(values['depositAddress'])
+    origins.setDepositAddress(values['multisigDepositAddress'])
     print("Updated Deposit Address as", values['depositAddress'], " of Origins...\n")
 
 # =========================================================================================================================================
@@ -339,6 +339,7 @@ def createNewTier():
         sys.exit()
     
     token = Contract.from_abi("Token", address=values['token'], abi=Token.abi, owner=acct)
+    # TODO Only check allowance if there requires a token transfer to create a tier.
     checkAllowance(token, origins.address, remainingTokens)
 
     balance = token.balanceOf(acct)
