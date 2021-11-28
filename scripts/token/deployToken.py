@@ -4,16 +4,7 @@ import time
 
 def main():
     loadConfig()
-
-    balanceBefore = acct.balance()
-    choice()
-    balanceAfter = acct.balance()
-
-    print("=============================================================")
-    print("Balance Before:  ", balanceBefore)
-    print("Balance After:   ", balanceAfter)
-    print("Gas Used:        ", balanceBefore - balanceAfter)
-    print("=============================================================")
+    makeChoice()
 
 # =========================================================================================================================================
 def loadConfig():
@@ -42,6 +33,18 @@ def loadConfig():
     # Load values & deployed contracts addresses.
     values = json.load(configFile)
     origins = json.load(originsFile)
+
+# =========================================================================================================================================
+def makeChoice():
+    balanceBefore = acct.balance()
+    choice()
+    balanceAfter = acct.balance()
+
+    print("=============================================================")
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
+    print("=============================================================")
 
 # =========================================================================================================================================
 def choice():

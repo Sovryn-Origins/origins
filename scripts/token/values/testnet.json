@@ -1,4 +1,5 @@
 {
+	"Reset": false,
 	"tokenName": "Babelfish",
 	"tokenSymbol": "FISH",
 	"tokenDecimal": "18",
@@ -15,5 +16,6 @@
 	"feeSharing": "0x0000000000000000000000000000000000000001",
 	"vestingLogic": "0x89C3fB61daAEeB25cE7c137D33C8c3c31702d1ED",
 	"vestingFactory": "0x843ad1a6494942Bec2B1423B322838FbeefC1331",
+	"vestingRegistryLogic": "",
 	"vestingRegistry": "0xFd8ea2e5e8591fA791d44731499cDF2e81CD6a41"
 }

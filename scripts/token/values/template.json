@@ -1,4 +1,5 @@
 {
+	"Reset": false,
 	"tokenName": "",
 	"tokenSymbol": "",
 	"tokenDecimal": "",
@@ -11,5 +12,6 @@
 	"feeSharing": "0x0000000000000000000000000000000000000001",
 	"vestingLogic": "",
 	"vestingFactory": "",
+	"vestingRegistryLogic": "",
 	"vestingRegistry": ""
 }
