@@ -1,7 +1,6 @@
 pragma solidity ^0.5.17;
 pragma experimental ABIEncoderV2;
 
-import "../../../Interfaces/IFeeSharingProxy.sol";
 import "../../../Interfaces/IVesting.sol";
 import "../../../Interfaces/ITeamVesting.sol";
 import "../../../Interfaces/IVestingLogic.sol";
@@ -35,20 +34,20 @@ contract VestingRegistryLogic is VestingRegistryStorage {
 		address _vestingFactory,
 		address _token,
 		address _staking,
-		address _feeSharingProxy,
+		address _feeSharing,
 		address _vestingOwner,
 		address _lockedFund
 	) external onlyOwner initializer {
 		require(_token != address(0), "token address invalid");
 		require(_staking != address(0), "staking address invalid");
-		require(_feeSharingProxy != address(0), "feeSharingProxy address invalid");
+		require(_feeSharing != address(0), "feeSharing address invalid");
 		require(_vestingOwner != address(0), "vestingOwner address invalid");
 		require(_lockedFund != address(0), "lockedFund address invalid");
 
 		_setVestingFactory(_vestingFactory);
 		token = _token;
 		staking = _staking;
-		feeSharingProxy = _feeSharingProxy;
+		feeSharing = _feeSharing;
 		vestingOwner = _vestingOwner;
 		lockedFund = ILockedFund(_lockedFund);
 	}
@@ -200,9 +199,9 @@ contract VestingRegistryLogic is VestingRegistryStorage {
 		uint256 uid = uint256(keccak256(abi.encodePacked(_tokenOwner, _type, _cliff, _duration, _vestingCreationType)));
 		if (vestings[uid].vestingAddress == address(0)) {
 			if (_type == 1) {
-				vesting = vestingFactory.deployVesting(token, staking, _tokenOwner, _cliff, _duration, feeSharingProxy, _tokenOwner);
+				vesting = vestingFactory.deployVesting(token, staking, _tokenOwner, _cliff, _duration, feeSharing, _tokenOwner);
 			} else {
-				vesting = vestingFactory.deployTeamVesting(token, staking, _tokenOwner, _cliff, _duration, feeSharingProxy, vestingOwner);
+				vesting = vestingFactory.deployTeamVesting(token, staking, _tokenOwner, _cliff, _duration, feeSharing, vestingOwner);
 			}
 			vestings[uid] = VestingDetail(_type, _vestingCreationType, vesting);
 			vestingsOf[_tokenOwner].push(uid);

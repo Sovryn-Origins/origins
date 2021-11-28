@@ -336,10 +336,8 @@ contract Staking is IStaking, WeightedStaking, ApprovalReceiver {
 			/// @dev punishedAmount can be 0 if block.timestamp are very close to 'until'
 			if (punishedAmount > 0) {
 				require(address(feeSharing) != address(0), "Staking::withdraw: FeeSharing address wasn't set");
-				/// @dev Move punished amount to fee sharing.
-				/// @dev Approve transfer here and let feeSharing do transfer and write checkpoint.
-				SOVToken.approve(address(feeSharing), punishedAmount);
-				feeSharing.transferTokens(address(SOVToken), punishedAmount);
+				/// @dev Move punished amount to fee sharing address.
+				SOVToken.transfer(feeSharing, punishedAmount);
 			}
 		}
 
@@ -624,13 +622,14 @@ contract Staking is IStaking, WeightedStaking, ApprovalReceiver {
 	}
 
 	/**
-	 * @notice Allow the owner to set a fee sharing proxy contract.
+	 * @notice Allow the owner to set a fee sharing address.
 	 * We need it for unstaking with slashing.
-	 * @param _feeSharing The address of FeeSharingProxy contract.
+	 * @param _feeSharing The address of FeeSharing (usually Governor Vault).
 	 * */
 	function setFeeSharing(address _feeSharing) public onlyOwner {
 		require(_feeSharing != address(0), "FeeSharing address shouldn't be 0");
-		feeSharing = IFeeSharingProxy(_feeSharing);
+		feeSharing = _feeSharing;
+		// TODO emit event
 	}
 
 	/**

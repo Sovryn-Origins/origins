@@ -26,8 +26,8 @@ contract Vesting is TeamVesting {
 		address _tokenOwner,
 		uint256 _cliff,
 		uint256 _duration,
-		address _feeSharingProxy
-	) public TeamVesting(_logic, _SOV, _stakingAddress, _tokenOwner, _cliff, _duration, _feeSharingProxy) {}
+		address _feeSharing
+	) public TeamVesting(_logic, _SOV, _stakingAddress, _tokenOwner, _cliff, _duration, _feeSharing) {}
 
 	/**
 	 * @dev We need to add this implementation to prevent proxy call VestingLogic.governanceWithdrawTokens

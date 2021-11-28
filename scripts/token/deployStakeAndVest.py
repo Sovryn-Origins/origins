@@ -46,7 +46,7 @@ def loadConfig():
 def deployStakingAndVesting():
     multisig = values["multisig"]
     token = values["token"]
-    feeSharing = values["feeSharing"]
+    feeSharing = values["multisig"]
     vestingFactory = ''
     stakingLogic = ''
     staking = ''
@@ -69,9 +69,10 @@ def deployStakingAndVesting():
         staking.setImplementation(stakingLogic.address)
         staking = Contract.from_abi("Staking", address=values["staking"], abi=Staking.abi, owner=acct)
 
-    if staking.feeSharing() != values["feeSharing"]:
-        print("Setting the Fee Sharing into Staking...\n")
-        staking.setFeeSharing(feeSharing)
+    # TODO: This needs to be changed to Governor Vault or similar to receive the early stake withdrawal slashing amount.
+    if staking.feeSharing() != values["multisig"]:
+        print("Setting the Fee Sharing into acct (TEMPORARY)...\n")
+        staking.setFeeSharing(values["multisig"])
 
     if values["vestingLogic"] == "":
         print("Deploying the vesting logic...\n")

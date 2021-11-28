@@ -4,7 +4,6 @@ pragma experimental ABIEncoderV2;
 import "../../../Openzeppelin/Ownable.sol";
 import "../../../Interfaces/IERC20.sol";
 import "../Staking/Staking.sol";
-import "../../../Interfaces/IFeeSharingProxy.sol";
 import "../../../Interfaces/IVesting.sol";
 import "../../Token/ApprovalReceiver.sol";
 import "./VestingStorage.sol";
@@ -20,7 +19,6 @@ contract VestingLogic is IVesting, VestingStorage, ApprovalReceiver {
 	event TokensStaked(address indexed caller, uint256 amount);
 	event VotesDelegated(address indexed caller, address delegatee);
 	event TokensWithdrawn(address indexed caller, address receiver);
-	event DividendsCollected(address indexed caller, address loanPoolToken, address receiver, uint32 maxCheckpoints);
 	event MigratedToNewStakingContract(address indexed caller, address newStakingContract);
 
 	/* Modifiers */
@@ -167,25 +165,6 @@ contract VestingLogic is IVesting, VestingStorage, ApprovalReceiver {
 		}
 
 		emit TokensWithdrawn(msg.sender, receiver);
-	}
-
-	/**
-	 * @notice Collect dividends from fee sharing proxy.
-	 * @param _loanPoolToken The loan pool token address.
-	 * @param _maxCheckpoints Maximum number of checkpoints to be processed.
-	 * @param _receiver The receiver of tokens or msg.sender
-	 * */
-	function collectDividends(
-		address _loanPoolToken,
-		uint32 _maxCheckpoints,
-		address _receiver
-	) public onlyOwners {
-		require(_receiver != address(0), "receiver address invalid");
-
-		/// @dev Invokes the fee sharing proxy.
-		feeSharingProxy.withdraw(_loanPoolToken, _maxCheckpoints, _receiver);
-
-		emit DividendsCollected(msg.sender, _loanPoolToken, _receiver, _maxCheckpoints);
 	}
 
 	/**

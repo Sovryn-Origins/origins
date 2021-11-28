@@ -3,7 +3,6 @@ pragma experimental ABIEncoderV2;
 
 import "../../../Openzeppelin/Ownable.sol";
 import "../../../Interfaces/IERC20.sol";
-import "../../../Interfaces/IFeeSharingProxy.sol";
 import "../../../Interfaces/IVestingRegistryLogic.sol";
 
 /**
@@ -108,8 +107,8 @@ contract StakingStorage is Ownable {
 
 	/*************************** Slashing *******************************/
 
-	/// @notice the address of FeeSharingProxy contract, we need it for unstaking with slashing.
-	IFeeSharingProxy public feeSharing;
+	/// @notice the address of FeeSharing (usually Governor Vault), we need it for unstaking with slashing.
+	address public feeSharing;
 
 	/// @notice used for weight scaling when unstaking with slashing.
 	uint96 public weightScaling = DEFAULT_WEIGHT_SCALING;

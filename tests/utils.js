@@ -58,9 +58,6 @@ async function createStakeVestAndLockedFund(creator, token, waitedTS, adminList)
 	await staking.setImplementation(stakingLogic.address, { from: creator });
 	staking = await StakingLogic.at(staking.address);
 
-	// Creating the FeeSharing Instance.
-	feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
-
 	// Creating the Vesting Instance.
 	vestingLogic = await VestingLogic.new({ from: creator });
 	vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
@@ -77,7 +74,7 @@ async function createStakeVestAndLockedFund(creator, token, waitedTS, adminList)
 		vestingFactory.address,
 		token.address,
 		staking.address,
-		feeSharingProxy.address,
+		creator, // This should be Governance Vault Contract.
 		creator, // This should be Governance Timelock Contract.
 		lockedFund.address,
 		{ from: creator }
@@ -279,7 +276,6 @@ const Token = artifacts.require("Token");
 const LockedFund = artifacts.require("LockedFund");
 const StakingLogic = artifacts.require("Staking");
 const StakingProxy = artifacts.require("StakingProxy");
-const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
 const VestingLogic = artifacts.require("VestingLogic");
 const VestingFactory = artifacts.require("VestingFactory");
 const VestingRegistryLogic = artifacts.require("VestingRegistryLogic");
@@ -311,7 +307,6 @@ module.exports = {
 	LockedFund,
 	StakingLogic,
 	StakingProxy,
-	FeeSharingProxy,
 	VestingLogic,
 	VestingFactory,
 	VestingRegistryLogic,
