@@ -426,17 +426,19 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			"OriginsBase: Max Amount to buy should not be higher than token availability."
 		);
 
-		if (_sendTokens) {
-			uint256 currentBal = token.balanceOf(address(this));
-			uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
+		uint256 currentBal = token.balanceOf(address(this));
+		uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
 
-			/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
-			if (requiredBal > currentBal) {
-				totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
+		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
+		if (requiredBal > currentBal) {
+			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
+			if (_sendTokens) {
 				bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
 				require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
-			} else {
-				totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].sub(currentBal.sub(requiredBal));
+			}
+		} else {
+			totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].sub(currentBal.sub(requiredBal));
+			if (_sendTokens) {
 				bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
 				require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
 			}
