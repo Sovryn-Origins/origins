@@ -1,62 +1,64 @@
 {
-	"token": "0x010C233B4F94d35CaDb71D12D7058aAb58789e8f",
-	"decimal": "18",
-	"multisigOwners": [
-		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
-		"0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
-		"0x60c84093d26246480f81F80B4d2A032411DC644D"
-	],
-	"multisig": "0x2b5548eAbfA1718e844164eD80E27dB11c2fa29A",
-	"multisigDepositAddressOwners": [
-		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
-		"0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
-		"0x60c84093d26246480f81F80B4d2A032411DC644D"
-	],
-	"multisigDepositAddress": "0xDe4D7e5C6e8473609D3bd781902cF430b791333C",
-	"originsVerifiers": [""],
-	"waitedTimestamp": "1638489600",
-	"vestingRegistry": "0xF5DBc29B1FA3Ce5467a22F93daF5bC45748B8C0E",
-	"origins": "0x26969E45895018283bC38E5AcF5F1f28c6c2E475",
-	"lockedFund": "0xF43f43aA08E93b9ec4A4c7009108b6c5BDcd148F",
-	"tiers": [
-		{
-			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
-		},
-		{
-			"minimumAmount": "0",
-			"maximumAmount": "250000000000000000000",
-			"tokensForSale": "11000000",
-			"saleStartTimestamp": "1638144000",
-			"saleEnd": "172800",
-			"unlockedBP": "0",
-			"vestOrLockCliff": "2",
-			"vestOrLockDuration": "18",
-			"depositRate": "90",
-			"depositToken": "0x6a9A07972D07E58f0daF5122D11e069288A375fB",
-			"depositType": "1",
-			"verificationType": "1",
-			"saleEndDurationOrTimestamp": "2",
-			"transferType": "6",
-			"saleType": "2"
-		},
-		{
-			"minimumAmount": "0",
-			"maximumAmount": "500000000000000000000",
-			"tokensForSale": "11000000",
-			"saleStartTimestamp": "1638316800",
-			"saleEnd": "172800",
-			"unlockedBP": "5000",
-			"vestOrLockCliff": "1",
-			"vestOrLockDuration": "12",
-			"depositRate": "66",
-			"depositToken": "0x6a9A07972D07E58f0daF5122D11e069288A375fB",
-			"depositType": "1",
-			"verificationType": "1",
-			"saleEndDurationOrTimestamp": "2",
-			"transferType": "6",
-			"saleType": "2"
-		}
-	],
-	"toVerify": [],
-	"verified": []
+    "token": "0x010C233B4F94d35CaDb71D12D7058aAb58789e8f",
+    "decimal": "18",
+    "multisigOwners": [
+        "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
+        "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
+        "0x60c84093d26246480f81F80B4d2A032411DC644D"
+    ],
+    "multisig": "0x2b5548eAbfA1718e844164eD80E27dB11c2fa29A",
+    "multisigDepositAddressOwners": [
+        "0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
+        "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
+        "0x60c84093d26246480f81F80B4d2A032411DC644D"
+    ],
+    "multisigDepositAddress": "0xDe4D7e5C6e8473609D3bd781902cF430b791333C",
+    "originsVerifiers": [
+        ""
+    ],
+    "waitedTimestamp": "1638489600",
+    "vestingRegistry": "0xF5DBc29B1FA3Ce5467a22F93daF5bC45748B8C0E",
+    "origins": "0x2269aCc85288c23E29B79A373240681eed66F82E",
+    "lockedFund": "0xF43f43aA08E93b9ec4A4c7009108b6c5BDcd148F",
+    "tiers": [
+        {
+            "DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
+        },
+        {
+            "minimumAmount": "0",
+            "maximumAmount": "250000000000000000000",
+            "tokensForSale": "1000",
+            "saleStartTimestamp": "1638316800",
+            "saleEnd": "86400",
+            "unlockedBP": "0",
+            "vestOrLockCliff": "2",
+            "vestOrLockDuration": "18",
+            "depositRate": "90",
+            "depositToken": "0x6a9A07972D07E58f0daF5122D11e069288A375fB",
+            "depositType": "1",
+            "verificationType": "1",
+            "saleEndDurationOrTimestamp": "2",
+            "transferType": "6",
+            "saleType": "2"
+        },
+        {
+            "minimumAmount": "0",
+            "maximumAmount": "500000000000000000000",
+            "tokensForSale": "1000",
+            "saleStartTimestamp": "1638403200",
+            "saleEnd": "86400",
+            "unlockedBP": "5000",
+            "vestOrLockCliff": "1",
+            "vestOrLockDuration": "12",
+            "depositRate": "66",
+            "depositToken": "0x6a9A07972D07E58f0daF5122D11e069288A375fB",
+            "depositType": "1",
+            "verificationType": "1",
+            "saleEndDurationOrTimestamp": "2",
+            "transferType": "6",
+            "saleType": "2"
+        }
+    ],
+    "toVerify": [],
+    "verified": []
 }
