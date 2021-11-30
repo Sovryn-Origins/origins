@@ -71,7 +71,14 @@ def choice():
         print("19 for getting the Tier Details.")
         print("20 for getting the Owner Details.")
         print("21 for getting the Verifier Details.")
-        print("22 to exit.")
+        print("22 for getting the tokens bought by an address.")
+        print("23 for getting the participating wallet count.")
+        print("24 for getting the tokens bought by an address on a particular tier.")
+        print("25 for getting the participating wallet count on a particular tier.")
+        print("26 for getting the total token allocation per tier.")
+        print("27 for getting the tokens sold per tier.")
+        print("28 for checking if the sale ended.")
+        print("29 to exit.")
         selection = int(input("Enter the choice: "))
         if(selection == 1):
             deployOrigins()
@@ -116,6 +123,20 @@ def choice():
         elif(selection == 21):
             getVerifierList()
         elif(selection == 22):
+            getTokensBoughtByAddress()
+        elif(selection == 23):
+            getParticipatingWalletCount()
+        elif(selection == 24):
+            getTokensBoughtByAddressOnTier()
+        elif(selection == 25):
+            getParticipatingWalletCountPerTier()
+        elif(selection == 26):
+            getTotalTokenAllocationPerTier()
+        elif(selection == 27):
+            getTokensSoldPerTier()
+        elif(selection == 28):
+            checkSaleEnded()
+        elif(selection == 29):
             repeat = False
         else:
             print("\nSmarter people have written this, enter valid selection ;)\n")
@@ -529,6 +550,64 @@ def getVerifierList():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     print("\n=============================================================")
     print("Verifier List: ",origins.getVerifiers())
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensBoughtByAddress():
+    print("\nPaste the address: ")
+    userAddress = input("Enter the address: ")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Tokens Bought by Address: ",origins.getTokensBoughtByAddress(userAddress))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getParticipatingWalletCount():
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Participating Wallet: ",origins.getParticipatingWalletCount())
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensBoughtByAddressOnTier():
+    tierID = readTier("read")
+    print("\nPaste the address: ")
+    userAddress = input("Enter the address: ")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Tokens Bought by Address on Tier",tierID,"is:",origins.getTokensBoughtByAddressOnTier(userAddress, tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getParticipatingWalletCountPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Participating Wallet Count on Tier",tierID,"is:",origins.getParticipatingWalletCountPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTotalTokenAllocationPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Token Allocation on Tier",tierID,"is:",origins.getTotalTokenAllocationPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensSoldPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Tokens Sold on Tier",tierID,"is:",origins.getTokensSoldPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def checkSaleEnded():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Sale Ended: ",origins.checkSaleEnded(tierID))
     print("=============================================================")
 
 # =========================================================================================================================================
