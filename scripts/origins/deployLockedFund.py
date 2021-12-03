@@ -138,8 +138,6 @@ def updateWaitedTS():
 
 # =========================================================================================================================================
 def updateWaitedTSMultisig():
-    values['waitedTimestamp'] = 1630173600
-
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nUpdating Waited Timestamp of LockedFund...\n")
 
