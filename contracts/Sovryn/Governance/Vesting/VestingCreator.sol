@@ -73,7 +73,8 @@ contract VestingCreator is AdminRole {
 			_tokenOwners.length == _amounts.length &&
 				_tokenOwners.length == _cliffs.length &&
 				_tokenOwners.length == _durations.length &&
-				_tokenOwners.length == _governanceControls.length,
+				_tokenOwners.length == _governanceControls.length &&
+				_tokenOwners.length == _vestingCreationTypes.length,
 			"arrays mismatch"
 		);
 
