@@ -153,15 +153,16 @@ contract ILockedFund {
 	/**
 	 * @notice Function to read the cliff, duration and Type of a Vesting.
 	 * @param _vestingData The address whose cliff and duration has to be found.
-	 * @return The cliff of the user vesting/lock.
-	 * @return The duration of the user vesting/lock.
+	 * @return _cliff The cliff of the user vesting.
+	 * @return _duration The duration of the user vesting.
+	 * @return _vestingType The Vesting Type of the user vesting.
 	 */
 	function getCliffDurationAndType(bytes32 _vestingData)
 		external
 		view
 		returns (
-			uint256,
-			uint256,
-			uint256
+			uint256 _cliff,
+			uint256 _duration,
+			uint256 vestingType
 		);
 }

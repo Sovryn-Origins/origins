@@ -489,9 +489,9 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Internal function to get vesting data using cliff and duration.
-	 * @return The vesting data of a certain vesting schedule.
+	 * @return _vestingData The vesting data of a certain vesting schedule.
 	 */
-	function _getVestingData(uint256 _cliff, uint256 _duration) internal pure returns (bytes32) {
+	function _getVestingData(uint256 _cliff, uint256 _duration) internal pure returns (bytes32 _vestingData) {
 		return keccak256(abi.encodePacked(_cliff, _duration));
 	}
 
@@ -864,16 +864,17 @@ contract LockedFund is ILockedFund {
 	/**
 	 * @notice Function to read the cliff, duration and Type of a Vesting.
 	 * @param _vestingData The address whose cliff and duration has to be found.
-	 * @return The cliff of the user vesting/lock.
-	 * @return The duration of the user vesting/lock.
+	 * @return _cliff The cliff of the user vesting.
+	 * @return _duration The duration of the user vesting.
+	 * @return _vestingType The Vesting Type of the user vesting.
 	 */
 	function getCliffDurationAndType(bytes32 _vestingData)
 		external
 		view
 		returns (
-			uint256,
-			uint256,
-			uint256
+			uint256 _cliff,
+			uint256 _duration,
+			uint256 vestingType
 		)
 	{
 		return (vestingDatas[_vestingData].cliff, vestingDatas[_vestingData].duration, vestingDatas[_vestingData].vestingType);
@@ -882,6 +883,9 @@ contract LockedFund is ILockedFund {
 	/**
 	 * @notice Returns the Vesting Contract Address.
 	 * @param _tokenOwner The owner of the vesting contract.
+	 * @param _cliff The cliff of the user vesting.
+	 * @param _duration The duration of the user vesting.
+	 * @param _vestingCreationType The Vesting Type of the user vesting.
 	 * @return _vestingAddress The Vesting Contract Address.
 	 */
 	function getVesting(
@@ -895,9 +899,10 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Function to get the user vestings of `_addr` or caller.
-	 * @return The vesting schedules of a user.
+	 * @param _addr The address of the user to get the vesting of.
+	 * @return _userVestings The vesting schedules of a user.
 	 */
-	function getUserVestingsOf(address _addr) external view returns (bytes32[] memory) {
+	function getUserVestingsOf(address _addr) external view returns (bytes32[] memory _userVestings) {
 		if (_addr == address(0)) {
 			return userVestings[msg.sender];
 		} else {
@@ -907,9 +912,11 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Function to check if a user has a particular vesting schedule.
-	 * @return The vesting schedules of a user.
+	 * @param _addr The address of the user to check the vesting of.
+	 * @param _vestingData The vesting details like cliff & duration in short form.
+	 * @return _status True if user has that vesting, False otherwise.
 	 */
-	function checkUserVestingsOf(address _addr, bytes32 _vestingData) external view returns (bool) {
+	function checkUserVestingsOf(address _addr, bytes32 _vestingData) external view returns (bool _status) {
 		for (uint256 i = 0; i < userVestings[_addr].length; i++) {
 			if (userVestings[_addr][i] == _vestingData) {
 				return true;
@@ -920,9 +927,11 @@ contract LockedFund is ILockedFund {
 
 	/**
 	 * @notice Function to create the vesting data from cliff and duration.
-	 * @return The vesting data of a certain vesting schedule.
+	 * @param _cliff The cliff of the user vesting.
+	 * @param _duration The duration of the user vesting.
+	 * @return _vestingData The vesting data of a certain vesting schedule.
 	 */
-	function getVestingData(uint256 _cliff, uint256 _duration) external pure returns (bytes32) {
+	function getVestingData(uint256 _cliff, uint256 _duration) external pure returns (bytes32 _vestingData) {
 		return _getVestingData(_cliff, _duration);
 	}
 }
