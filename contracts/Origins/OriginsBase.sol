@@ -896,7 +896,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _tierID The Tier ID which needs to be closed.
 	 */
 	function _closeSaleOf(uint256 _tierID) internal {
-		if(checkOwner(msg.sender)){
+		if (checkOwner(msg.sender)) {
 			tierSaleEnded[_tierID] = true;
 		} else if (tiers[_tierID].saleEnd < block.timestamp && tiers[_tierID].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
 			tierSaleEnded[_tierID] = true;
