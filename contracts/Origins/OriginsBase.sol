@@ -639,17 +639,22 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 	/**
 	 * @notice Internal Function to check if the user is verified for the particular tier.
+	 * @param _tierDetails The Tier from which the tokens were bought.
+	 * @param _tierID The Tier for which the user verification has to be checked.
+	 * @param _userAddress The address of the user to check.
 	 * @return true if the user is verified, false otherwise.
 	 */
-	function _checkVerification(Tier memory _tierDetails, uint256 _tierID) internal view returns (bool) {
+	function _checkVerification(Tier memory _tierDetails, uint256 _tierID, address _userAddress) internal view returns (bool) {
 		/// @notice Checking if verification is set and if user has permission.
 		if (_tierDetails.verificationType == VerificationType.None) {
-			revert("OriginsBase: No one is allowed for sale.");
+			/// @notice No one is allowed for sale.
+			return false;
 		} else if (_tierDetails.verificationType == VerificationType.ByAddress) {
 			/// @notice Checking if user is verified based on address.
-			require(addressApproved[msg.sender][_tierID], "OriginsBase: User not approved for sale.");
+			return addressApproved[_userAddress][_tierID];
 		} else if (_tierDetails.verificationType == VerificationType.ByStake) {
-			require(_checkStakesByTier(_tierID, msg.sender), "OriginsBase: Stake weight is not right.");
+			/// @notice Checking if user is verified based on stake.
+			return _checkStakesByTier(_tierID, _userAddress);
 		}
 		return true;
 	}
@@ -756,7 +761,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		Tier memory tierDetails = tiers[_tierID];
 
 		/// @notice Checking user verification.
-		_checkVerification(tierDetails, _tierID);
+		require(_checkVerification(tierDetails, _tierID, msg.sender), "OriginsBase: User not verified.");
 
 		/// @notice If user is verified on address or does not need verification, the following steps will be taken.
 		uint256 tokensBoughtByAddress = tokensBoughtByAddressOnTier[msg.sender][_tierID];
@@ -1111,4 +1116,17 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		address _userAddr = _userAddress == address(0) ? msg.sender : _userAddress;
 		_checkStakesByTier(_tierID, _userAddr);
 	}
+
+	/**
+	 * @notice Function to check if the user is verified for the particular tier.
+	 * @param _tierID The Tier for which the user verification has to be checked.
+	 * @param _userAddress The address of the user to check. If zero address, then caller verification will be checked.
+	 * @return true if the user is verified, false otherwise.
+	 */
+	function checkVerification(uint256 _tierID, address _userAddress) external view returns (bool) {
+		Tier memory _tierDetails = tiers[_tierID];
+		address _userAddr = _userAddress == address(0) ? msg.sender : _userAddress;
+		return _checkVerification(_tierDetails, _tierID, _userAddr);
+	}
+
 }

@@ -396,7 +396,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: No one is allowed for sale.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not verified.");
 	});
 
 	it("If verification is done by address, user should only be allowed if it is done by verified address.", async () => {
@@ -420,7 +420,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		);
 		tierCount = await originsBase.getTierCount();
 		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not approved for sale.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not verified.");
 	});
 
 	it("User should not be allowed to buy once the max reaches even if there is remaining tokens.", async () => {
