@@ -723,9 +723,9 @@ contract OriginsBase is IOrigins, OriginsEvents {
 
 	/**
 	 * @notice Internal function to update the wallet count and tier token sold stat.
-	 * @notice _tierID The Tier ID whose stat has to be updated.
-	 * @notice _tokensBoughtByAddress The amount of tokens bought by the user previously.
-	 * @notice _tokensBought The amount of tokens bought during the current buy.
+	 * @param _tierID The Tier ID whose stat has to be updated.
+	 * @param _tokensBoughtByAddress The amount of tokens bought by the user previously.
+	 * @param _tokensBought The amount of tokens bought during the current buy.
 	 */
 	function _updateWalletCount(
 		uint256 _tierID,
