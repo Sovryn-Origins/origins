@@ -1118,7 +1118,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns (bool) {
 		address _userAddr = _userAddress == address(0) ? msg.sender : _userAddress;
-		_checkStakesByTier(_tierID, _userAddr);
+		return _checkStakesByTier(_tierID, _userAddr);
 	}
 
 	/**
