@@ -619,7 +619,7 @@ contract LockedFund is ILockedFund {
 		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
 		missingBalance = missingBalance.sub(_transferAmount);
 
-		emit MissingBalanceDeposited(msg.sender, _amount);
+		emit MissingBalanceDeposited(msg.sender, _transferAmount);
 	}
 
 	/**
