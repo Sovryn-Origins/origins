@@ -644,7 +644,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _userAddress The address of the user to check.
 	 * @return true if the user is verified, false otherwise.
 	 */
-	function _checkVerification(Tier memory _tierDetails, uint256 _tierID, address _userAddress) internal view returns (bool) {
+	function _checkVerification(
+		Tier memory _tierDetails,
+		uint256 _tierID,
+		address _userAddress
+	) internal view returns (bool) {
 		/// @notice Checking if verification is set and if user has permission.
 		if (_tierDetails.verificationType == VerificationType.None) {
 			/// @notice No one is allowed for sale.
@@ -1128,5 +1132,4 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		address _userAddr = _userAddress == address(0) ? msg.sender : _userAddress;
 		return _checkVerification(_tierDetails, _tierID, _userAddr);
 	}
-
 }
