@@ -704,6 +704,9 @@ contract LockedFund is ILockedFund {
 	/**
 	 * @notice Returns the Vesting Contract Address.
 	 * @param _tokenOwner The owner of the vesting contract.
+	 * @param _cliff The cliff of the user vesting.
+	 * @param _duration The duration of the user vesting.
+	 * @param _vestingCreationType The Vesting Type of the user vesting.
 	 * @return _vestingAddress The Vesting Contract Address.
 	 */
 	function _getVesting(
