@@ -821,7 +821,8 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function _claimPooled(uint256 _tierID) internal {
 		Tier memory _tierDetails = tiers[_tierID];
-		require(!_saleAllowed(_tierID), "OriginsBase: Claim can only be done after sale.");
+		require(!_saleAllowed(_tierID), "OriginsBase: Claim cannot be allowed during sale.");
+		require(tierSaleEnded[_tierID], "OriginsBase: Claim can only be done after sale ended.");
 		require(_tierDetails.saleType == SaleType.Pooled, "OriginsBase: Sale Type should be Pooled.");
 		require(tokensBoughtByAddressOnTier[msg.sender][_tierID] > 0, "OriginsBase: No tokens to be claimed.");
 		require(!userPoolClaimed[msg.sender], "OriginsBase: User already claimed.");
