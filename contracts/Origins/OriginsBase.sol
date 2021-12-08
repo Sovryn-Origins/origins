@@ -1107,10 +1107,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @return true if the stake is enough, false otherwise.
 	 */
 	function checkStakesByTier(uint256 _tierID, address _userAddress) external view returns (bool) {
-		if (_userAddress == address(0)) {
-			_checkStakesByTier(_tierID, msg.sender);
-		} else {
-			_checkStakesByTier(_tierID, _userAddress);
-		}
+		address _userAddr = _userAddress == address(0) ? msg.sender : _userAddress;
+		_checkStakesByTier(_tierID, _userAddr);
 	}
 }
