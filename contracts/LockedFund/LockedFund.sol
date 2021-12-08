@@ -14,6 +14,7 @@ import "../Interfaces/IVestingRegistryLogic.sol";
  */
 contract LockedFund is ILockedFund {
 	using SafeMath for uint256;
+	using Address for address;
 
 	/* Storage */
 
@@ -216,8 +217,8 @@ contract LockedFund is ILockedFund {
 		address[] memory _admins
 	) public {
 		require(_waitedTS != 0, "LockedFund: Waited TS cannot be zero.");
-		require(_token != address(0), "LockedFund: Invalid Token Address.");
-		require(_vestingRegistry != address(0), "LockedFund: Vesting registry address is invalid.");
+		require(_token != address(0) && _token.isContract(), "LockedFund: Invalid Token Address.");
+		require(_vestingRegistry != address(0) && _vestingRegistry.isContract(), "LockedFund: Vesting registry address is invalid.");
 
 		waitedTS = _waitedTS;
 		token = IERC20(_token);
@@ -458,7 +459,7 @@ contract LockedFund is ILockedFund {
 	 * @param _vestingRegistry The Vesting Registry Address.
 	 */
 	function _changeVestingRegistry(address _vestingRegistry) internal {
-		require(_vestingRegistry != address(0), "LockedFund: Vesting registry address is invalid.");
+		require(_vestingRegistry != address(0) && _vestingRegistry.isContract(), "LockedFund: Vesting registry address is invalid.");
 
 		vestingRegistry = IVestingRegistryLogic(_vestingRegistry);
 
@@ -482,7 +483,7 @@ contract LockedFund is ILockedFund {
 	 * @param _token The address of the ERC20 Token.
 	 */
 	function _changeToken(address _token) internal {
-		require(_token != address(0), "LockedFund: Invalid Token Address.");
+		require(_token != address(0) && _token.isContract(), "LockedFund: Invalid Token Address.");
 		emit TokenUpdated(msg.sender, address(token), _token);
 		token = IERC20(_token);
 	}
