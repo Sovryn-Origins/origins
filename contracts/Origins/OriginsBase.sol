@@ -316,6 +316,15 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		_withdrawSaleDeposit();
 	}
 
+	/**
+	 * @notice The function used to close a sale of a particular tier.
+	 * @param _tierID The Tier ID which needs to be closed.
+	 * @dev If the owner calls, it will close no matter the circumstance, if user calls, it closes based on circumstance.
+	 */
+	function closeSaleOf(uint256 _tierID) external {
+		_closeSaleOf(_tierID);
+	}
+
 	/* Internal Functions */
 
 	/**
@@ -576,7 +585,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 * @param _id The Tier ID whose sale status has to be checked.
 	 * @return True if the sale is allowed on that tier, False otherwise.
 	 */
-	function _saleAllowed(uint256 _id) internal returns (bool) {
+	function _saleAllowed(uint256 _id) internal view returns (bool) {
 		/// @notice Sale has not started yet.
 		if (tiers[_id].saleStartTS == 0) {
 			return false;
@@ -593,7 +602,6 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		if (tiers[_id].saleEndDurationOrTS == SaleEndDurationOrTS.None) {
 			return false;
 		} else if (tiers[_id].saleEnd < block.timestamp && tiers[_id].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
-			tierSaleEnded[_id] = true;
 			return false;
 		}
 		/// @notice Here another case of else if could have come based on remaining token.
@@ -882,6 +890,21 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		}
 	}
 
+	/**
+	 * @notice The internal function used to close a sale of a particular tier.
+	 * @param _tierID The Tier ID which needs to be closed.
+	 */
+	function _closeSaleOf(uint256 _tierID) internal {
+		if(checkOwner(msg.sender)){
+			tierSaleEnded[_tierID] = true;
+		} else if (tiers[_tierID].saleEnd < block.timestamp && tiers[_tierID].saleEndDurationOrTS != SaleEndDurationOrTS.UntilSupply) {
+			tierSaleEnded[_tierID] = true;
+		} else {
+			revert("OriginsBase: Cannot close this tier right now.");
+		}
+		emit TierSaleEnded(msg.sender, _tierID);
+	}
+
 	/* Getter Functions */
 
 	/**
@@ -1045,6 +1068,16 @@ contract OriginsBase is IOrigins, OriginsEvents {
 	 */
 	function getTokensSoldPerTier(uint256 _tierID) external view returns (uint256) {
 		return tokensSoldPerTier[_tierID];
+	}
+
+	/**
+	 * @notice Function to check if a tier sale is allowed or not.
+	 * @param _tierID The Tier whose info is to be read.
+	 * @return True if sale allowed, False otherwise.
+	 * @dev A return of false does not necessary mean the sale is closed. In some cases calling of closeSaleOf is required.
+	 */
+	function checkSaleAllowed(uint256 _tierID) external view returns (bool _status) {
+		return _saleAllowed(_tierID);
 	}
 
 	/**
