@@ -496,6 +496,21 @@ contract LockedFund is ILockedFund {
 	}
 
 	/**
+	 * @notice Internal function to check if a user has a particular vesting schedule.
+	 * @param _addr The address of the user to check the vesting of.
+	 * @param _vestingData The vesting details like cliff & duration in short form.
+	 * @return _status True if user has that vesting, False otherwise.
+	 */
+	function _checkUserVestingsOf(address _addr, bytes32 _vestingData) internal view returns (bool _status) {
+		for (uint256 i = 0; i < userVestings[_addr].length; i++) {
+			if (userVestings[_addr][i] == _vestingData) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * @notice Internal function to add Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
@@ -542,13 +557,7 @@ contract LockedFund is ILockedFund {
 		bytes32 _vestingData = _getVestingData(_cliff, _duration);
 
 		/// @notice Checking if it already is in the list.
-		bool _vestingExist;
-		for (uint256 i = 0; i < userVestings[_userAddress].length; i++) {
-			if (userVestings[_userAddress][i] == _vestingData) {
-				_vestingExist = true;
-				break;
-			}
-		}
+		bool _vestingExist = _checkUserVestingsOf(_userAddress, _vestingData);
 
 		/// @notice If vesting does not exist in the user list, we add it.
 		if (!_vestingExist) {
@@ -918,12 +927,7 @@ contract LockedFund is ILockedFund {
 	 * @return _status True if user has that vesting, False otherwise.
 	 */
 	function checkUserVestingsOf(address _addr, bytes32 _vestingData) external view returns (bool _status) {
-		for (uint256 i = 0; i < userVestings[_addr].length; i++) {
-			if (userVestings[_addr][i] == _vestingData) {
-				return true;
-			}
-		}
-		return false;
+		return _checkUserVestingsOf(_addr, _vestingData);
 	}
 
 	/**
