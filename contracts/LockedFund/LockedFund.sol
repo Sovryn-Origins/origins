@@ -664,8 +664,8 @@ contract LockedFund is ILockedFund {
 	 * @dev Does not do anything if Vesting Contract was already created.
 	 */
 	function _createVesting(address _tokenOwner, bytes32 _vestingData) internal returns (address[] memory) {
-		address[] memory _vestingAddresses = new address[](userVestings[_tokenOwner].length);
 		if (_vestingData == bytes32(0)) {
+			address[] memory _vestingAddresses = new address[](userVestings[_tokenOwner].length);
 			for (uint256 i = 0; i < userVestings[_tokenOwner].length; i++) {
 				bytes32 vestingData = userVestings[_tokenOwner][i];
 				uint256 _cliff = vestingDatas[vestingData].cliff;
@@ -679,6 +679,8 @@ contract LockedFund is ILockedFund {
 		} else {
 			/// @notice Will only create if user has some vesting balance.
 			require(vestedBalances[_tokenOwner][_vestingData] > 0, "LockedFund: User has no vesting balance in this vesting schedule.");
+			/// @notice We only need one slot for saving the vestingAddress.
+			address[] memory _vestingAddresses = new address[](1);
 			uint256 _cliff = vestingDatas[_vestingData].cliff;
 			uint256 _duration = vestingDatas[_vestingData].duration;
 			uint256 _vestingType = vestingDatas[_vestingData].vestingType;
