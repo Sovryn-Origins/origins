@@ -556,9 +556,7 @@ contract LockedFund is ILockedFund {
 			/// @notice We only have to do this check if the vesting was not found in user list.
 			/// @dev If it exists with user, then this check is not required at all.
 			if (vestingDatas[_vestingData].vestingType == 0) {
-				vestingDatas[_vestingData].vestingType = vestingCreationType;
-				vestingDatas[_vestingData].cliff = _cliff * INTERVAL;
-				vestingDatas[_vestingData].duration = _duration * INTERVAL;
+				vestingDatas[_vestingData] = VestingData(vestingCreationType, _cliff * INTERVAL, _duration * INTERVAL);
 				vestingCreationType++;
 			}
 		}
