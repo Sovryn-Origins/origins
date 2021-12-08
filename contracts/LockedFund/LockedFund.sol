@@ -546,6 +546,7 @@ contract LockedFund is ILockedFund {
 		for (uint256 i = 0; i < userVestings[_userAddress].length; i++) {
 			if (userVestings[_userAddress][i] == _vestingData) {
 				_vestingExist = true;
+				break;
 			}
 		}
 
