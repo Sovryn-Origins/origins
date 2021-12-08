@@ -430,7 +430,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		uint256 requiredBal = _getTotalRemainingTokens().add(_remainingTokens).sub(tiers[_tierID].remainingTokens);
 
 		/// @notice Checking if we have enough token for all tiers. If we have more, then we refund the extra.
-		totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal.sub(currentBal));
+		totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal).sub(currentBal);
 		if (requiredBal > currentBal) {
 			if (_sendTokens) {
 				bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
