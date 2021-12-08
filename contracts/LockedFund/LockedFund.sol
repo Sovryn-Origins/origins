@@ -618,10 +618,7 @@ contract LockedFund is ILockedFund {
 		require(_amount > 0, "LockedFund: Amount to transfer should be higher than zero.");
 		require(_missingBalance > 0, "LockedFund: Missing Balance should be higher than zero.");
 
-		uint256 _transferAmount = _amount;
-		if (_amount >= _missingBalance) {
-			_transferAmount = _missingBalance;
-		}
+		uint256 _transferAmount = _amount > _missingBalance ? _missingBalance :  _amount;
 
 		bool txStatus = token.transferFrom(msg.sender, address(this), _transferAmount);
 		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
