@@ -686,6 +686,7 @@ contract LockedFund is ILockedFund {
 				_vestingAddresses[i] = _vestingAddress;
 				emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
 			}
+			return _vestingAddresses;
 		} else {
 			/// @notice Will only create if user has some vesting balance.
 			require(vestedBalances[_tokenOwner][_vestingData] > 0, "LockedFund: User has no vesting balance in this vesting schedule.");
@@ -698,6 +699,7 @@ contract LockedFund is ILockedFund {
 			address _vestingAddress = _getVesting(_tokenOwner, _cliff, _duration, _vestingType);
 			_vestingAddresses[0] = _vestingAddress;
 			emit VestingCreated(msg.sender, _tokenOwner, _vestingAddress);
+			return _vestingAddresses;
 		}
 	}
 
