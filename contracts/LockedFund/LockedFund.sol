@@ -4,7 +4,6 @@ import "../Interfaces/IERC20.sol";
 import "../Interfaces/ILockedFund.sol";
 import "../Openzeppelin/SafeMath.sol";
 import "../Openzeppelin/SafeERC20.sol";
-import "../Interfaces/IVestingLogic.sol";
 import "../Interfaces/IVestingRegistryLogic.sol";
 
 /**
