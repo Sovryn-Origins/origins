@@ -8,11 +8,6 @@ import math
 def main():
     thisNetwork = network.show_active()
 
-    # == Governance Params =================================================================================================================
-    # TODO set correct variables
-    quorumVotes = 10
-    majorityPercentageVotes = 50
-
     # == Load config =======================================================================================================================
     if thisNetwork == "development":
         acct = accounts[0]
@@ -25,7 +20,7 @@ def main():
     elif thisNetwork == "rsk-mainnet":
         acct = accounts.load("rskdeployer")
         configFile =  open('./scripts/custom/og/values/mainnet.json')
-        delay = 2*24*60*60
+        delay = 3*24*60*60
     else:
         raise Exception("network not supported")
 
@@ -34,17 +29,23 @@ def main():
 
     oneAddress = "0x0000000000000000000000000000000000000001"
 
-    # Change this in the future.
+    # TODO: Change this in the future. It should be proper RSK Multisig of Exchequer/Core.
     multisig = acct
+    
+    # TODO: Change this in the future. It should be the same address as above or another exchequer multisig.
     teamVestingOwner = multisig
 
-    # Change this in the future.
+    # TODO: Change this in the future. It should be Sovryn Governance Timelock Address.
     guardian = acct
 
-    balanceBefore = acct.balance()
+    # == Governance Params =================================================================================================================
+    quorumVotes = contracts["quorumVotes"]
+    majorityPercentageVotes = contracts["majorityPercentageVotes"]
+    delay = contracts["delay"]
+
+    balanceBefore = acct.balance() / 10**18
 
     # == OG ===============================================================================================================================
-    # Change this in the future
     # Deploy/Fetch OG
     print("Deploying/Fetching OG Token")
     if(contracts["OGToken"] == '' or contracts["Reset"]):
@@ -82,6 +83,7 @@ def main():
 
     print("Balance: ")
     print(OGToken.balanceOf(acct))
+    tokenBalanceBefore =  OGToken.balanceOf(acct) / 10**18
 
     MULTIPLIER = 10**16
 
@@ -89,10 +91,19 @@ def main():
     # Deploy the staking contracts
     print("Deploying/Fetching Staking")
     if(contracts["Staking"] == '' or contracts["Reset"]):
+        print("Deploying Staking Logic.")
         stakingLogic = acct.deploy(Staking)
         contracts["StakingLogic"] = stakingLogic.address
+        print("Staking Logic Deployed at:", stakingLogic.address)
+
+        print("Deploying Staking Proxy")
         staking = acct.deploy(StakingProxy, OGToken.address)
+        print("Staking Proxy Deployed at:", staking.address)
+
+        print("Setting Staking Implementation")
         staking.setImplementation(stakingLogic.address)
+        print("Staking Implementation set to Staking Proxy")
+
         staking = Contract.from_abi("Staking", address=staking.address, abi=Staking.abi, owner=acct)
         contracts["Staking"] = staking.address
         writeToJSON(contracts)
@@ -103,25 +114,32 @@ def main():
     # == Governor ====================================================================================================================
     # [timelockOwner]
     # params: owner, delay
-    print("Deploying/Fetching Governance")
+    print("Deploying/Fetching Timelock")
     if(contracts["Timelock"] == '' or contracts["Reset"]):
+        print("Deploying Timelock")
         timelock = acct.deploy(Timelock, acct, delay)
         contracts["Timelock"] = timelock.address
+        print("Timelock Deployed at:",timelock.address)
         writeToJSON(contracts)
     else:
         timelock = Contract.from_abi("Timelock", address=contracts["Timelock"], abi=Timelock.abi, owner=acct)
         print("Timelock already deployed at:",timelock.address)
 
     # params: timelockOwner. staking, guardian
+    print("Deploying/Fetching Governance")
     if(contracts["Governor"] == '' or contracts["Reset"]):
+        print("Deploying Governance")
         governor = acct.deploy(GovernorAlpha, timelock.address, staking.address, guardian, quorumVotes, majorityPercentageVotes)
+        print("Governance Deployed at:",governor.address)
 
+        print("Setting pending admin at Timelock")
         dataString = timelock.setPendingAdmin.encode_input(governor.address)
         # 2 days and 5 minutes from now
         eta = round(time.time()) + delay + 300
-        print("schedule ownership(admin) transfer for ", eta)
+        print("IMPORTANT: Schedule ownership(admin) transfer for:", eta)
         print(dataString[10:])
         timelock.queueTransaction(timelock.address, 0, "setPendingAdmin(address)", dataString[10:], eta)
+        print("Transaction queued in Timelock.")
 
         contracts["Governor"] = governor.address
         writeToJSON(contracts)
@@ -139,21 +157,10 @@ def main():
     else:
         governorVault = Contract.from_abi("GovernorVault", address=contracts["GovernorVault"], abi=GovernorVault.abi, owner=acct)
         print("GovernorVault already deployed at:",governorVault.address)
-
-    # Deploy LockedFund
-    print("Deploying/Fetching LockedFund")    
-    if(contracts["LockedFund"] == '' or contracts["Reset"]):
-        waitedTS = contracts['waitedTimestamp']
-        if thisNetwork == "development":
-            waitedTS = int(time.time()) + (2*60*60) # 2 Hours
-        elif (thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws") and waitedTS == "":
-            waitedTS = int(time.time()) + (3*24*60*60) # 3 Days
-        lockedFund = acct.deploy(LockedFund, waitedTS, OGToken.address, oneAddress, [multisig])
-        contracts["LockedFund"] = lockedFund.address
-        writeToJSON(contracts)
-    else:
-        lockedFund = Contract.from_abi("LockedFund", address=contracts["LockedFund"], abi=LockedFund.abi, owner=acct)
-        print("LockedFund already deployed at:",lockedFund.address)
+    
+    if(staking.feeSharing != governorVault.address):
+        print("Setting Governor Vault as the fee sharing address of Staking.")
+        staking.setFeeSharing(governorVault.address)
 
     # Deplot VestingRegistry
     print("Deploying/Fetching Vesting Registry")
@@ -174,7 +181,7 @@ def main():
             abi=VestingRegistryLogic.abi,
             owner=acct)
 
-        vestingRegistry.initialize(vestingFactory.address, OGToken.address, staking.address, governorVault.address, teamVestingOwner, lockedFund.address)
+        # Initialization is done after lockedFund is created.
 
         vestingRegistryProxy.addAdmin(multisig)
         contracts["VestingRegistry"] = vestingRegistry.address
@@ -183,15 +190,30 @@ def main():
         vestingRegistry = Contract.from_abi("VestingRegistry", address=contracts["VestingRegistry"], abi=VestingRegistryLogic.abi, owner=acct)
         print("VestingRegistry already deployed at:",vestingRegistry.address)
 
-    # Updating Vesting Registry in LockedFund
-    print("Checking/Updating Vesting Registry in LockedFund")
-    if(lockedFund.getVestingRegistry() != vestingRegistry.address):
-        lockedFund.changeVestingRegistry(vestingRegistry.address)
+    # Deploy LockedFund
+    print("Deploying/Fetching LockedFund")    
+    if(contracts["LockedFund"] == '' or contracts["Reset"]):
+        waitedTS = contracts['waitedTimestamp']
+        if thisNetwork == "development":
+            waitedTS = int(time.time()) + (2*60*60) # 2 Hours
+        elif (thisNetwork == "testnet" or thisNetwork == "rsk-testnet" or thisNetwork == "testnet-ws") and waitedTS == "":
+            waitedTS = int(time.time()) + (3*24*60*60) # 3 Days
+        lockedFund = acct.deploy(LockedFund, waitedTS, OGToken.address, vestingRegistry.address, [multisig])
+        contracts["LockedFund"] = lockedFund.address
+        writeToJSON(contracts)
     else:
-        print("VestingRegistry already set in lockedFund")
+        lockedFund = Contract.from_abi("LockedFund", address=contracts["LockedFund"], abi=LockedFund.abi, owner=acct)
+        print("LockedFund already deployed at:",lockedFund.address)
+    
+    # Initializing vesting registry
+    print("Initializing vesting registry.")
+    if(vestingRegistry.token() != OGToken.address):
+        vestingRegistry.initialize(vestingFactory.address, OGToken.address, staking.address, governorVault.address, teamVestingOwner, lockedFund.address)
+    else:
+        print("VestingRegistry already Initialized")
 
     # Deploy VestingCreator
-    print("Deploying/Fetching Vesting Creator")
+    print("\nDeploying/Fetching Vesting Creator")
     if(contracts["VestingCreator"] == '' or contracts["Reset"]):
         vestingCreator = acct.deploy(VestingCreator, OGToken.address, vestingRegistry)
 
@@ -208,63 +230,26 @@ def main():
         vestingCreator = Contract.from_abi("VestingCreator", address=contracts["VestingCreator"], abi=VestingCreator.abi, owner=acct)
         print("VestingCreator already deployed at:",vestingCreator.address)
 
-    # == Vesting contracts ===============================================================================================================
-    # TODO check vestings.csv
-
-    month = 24*60*60 * 28
-
-    # print("Adding Vesting")
-
-    # vestingCreator.addVestings(
-    #     ["0x2b6a4e5b0f648Fbca778c2e3f6D59D2F2ce6cbDA", "0x44a7Da048D4216A8edc944985B839b25aa9e6293", "0x0f39e7af6810a2B73a973C3167755930b1266811", "0x566f961081921045b32e2eBe0420eb77d74d2022", "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66", "0x61E1eaC4064564889a093EbC9939B118d5b8D415"],
-    #     [100e18,100e18,100e18,100e18,100e18,100e18],
-    #     [1 * month,2 * month,3 * month,4 * month,5 * month,6 * month],
-    #     [12 * month,15 * month,18 * month,21 * month,24 * month,27 * month],
-    #     [True, True, True, True, True, True],
-    #     [0, 0, 0, 0, 0, 0]
-    # )
-
-    # vestingCreator.addVestings(
-    #     ["0x2b6a4e5b0f648Fbca778c2e3f6D59D2F2ce6cbDA", "0x44a7Da048D4216A8edc944985B839b25aa9e6293", "0x0f39e7af6810a2B73a973C3167755930b1266811", "0x566f961081921045b32e2eBe0420eb77d74d2022", "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66", "0x61E1eaC4064564889a093EbC9939B118d5b8D415"],
-    #     [100e18,100e18,100e18,100e18,100e18,100e18],
-    #     [1 * month,2 * month,3 * month,4 * month,5 * month,6 * month],
-    #     [12 * month,15 * month,18 * month,21 * month,24 * month,27 * month],
-    #     [False, False, False, False, False, False],
-    #     [0, 0, 0, 0, 0, 0]
-    # )
-
-    # print("Transferring OG for Vesting")
-
-    # OGForVesting = vestingCreator.getMissingBalance()
-    # if(OGForVesting > 0):
-    #     # print(OGForVesting)
-    #     # print(vestingCreator.address)
-    #     # print(vestingCreator.isEnoughBalance())
-    #     # print(vestingCreator.SOV())
-    #     # print(OGToken.balanceOf(vestingCreator.address))
-    #     OGToken.transfer(vestingCreator.address, OGForVesting)
-
-    # print("Processing Vesting")
-
-    # print("Unprocessed Count:", vestingCreator.getUnprocessedCount())
-    # vestingCreator.processNextVesting()
-
     #  == Transfer ownership to owner governor =============================================================================================
-    # TODO transfer ownership of all these contracts to timelockOwner
+    # TODO: transfer ownership of all these contracts to timelockOwner
 
     # OGToken.transferOwnership(timelockOwner.address)
     # staking.transferOwnership(timelockOwner.address)
     # stakingProxy = Contract.from_abi("UpgradableProxy", address=staking.address, abi=UpgradableProxy.abi, owner=acct)
     # stakingProxy.setProxyOwner(timelockOwner.address)
 
-    print("OG Token Balance:", OGToken.balanceOf(acct) / 10**18)
+    tokenBalanceAfter = OGToken.balanceOf(acct) / 10**18
 
-    balanceAfter = acct.balance()
+    balanceAfter = acct.balance() / 10**18
 
     print("== RSK Gas Usage ============================================")
     print("Balance Before:  ", balanceBefore)
     print("Balance After:   ", balanceAfter)
     print("Gas Used:        ", balanceBefore - balanceAfter)
+    print("\n== Token Usage ==============================================")
+    print("Token Balance Before:    ", tokenBalanceBefore)
+    print("Token Balance After:     ", tokenBalanceAfter)
+    print("Token Used:              ", tokenBalanceBefore - tokenBalanceAfter)
     print("=============================================================")
 
 # =========================================================================================================================================
