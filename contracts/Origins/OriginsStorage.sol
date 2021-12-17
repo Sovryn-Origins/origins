@@ -2,6 +2,7 @@ pragma solidity ^0.5.17;
 
 import "../Interfaces/IERC20.sol";
 import "../Openzeppelin/SafeMath.sol";
+import "../Openzeppelin/SafeERC20.sol";
 import "../Interfaces/ILockedFund.sol";
 import "../Interfaces/IStaking.sol";
 
@@ -12,6 +13,7 @@ import "../Interfaces/IStaking.sol";
  */
 contract OriginsStorage {
 	using SafeMath for uint256;
+	using SafeERC20 for IERC20;
 
 	/* Storage */
 

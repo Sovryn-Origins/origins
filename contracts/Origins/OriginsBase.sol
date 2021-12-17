@@ -442,13 +442,11 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		totalTokenAllocationPerTier[_tierID] = totalTokenAllocationPerTier[_tierID].add(requiredBal).sub(currentBal);
 		if (requiredBal > currentBal) {
 			if (_sendTokens) {
-				bool txStatus = token.transferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
-				require(txStatus, "OriginsBase: Not enough token supplied for Token Distribution.");
+				token.safeTransferFrom(msg.sender, address(this), requiredBal.sub(currentBal));
 			}
 		} else {
 			if (_sendTokens) {
-				bool txStatus = token.transfer(msg.sender, currentBal.sub(requiredBal));
-				require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
+				token.safeTransfer(msg.sender, currentBal.sub(requiredBal));
 			}
 		}
 
@@ -672,8 +670,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		require(_tierDetails.transferType != TransferType.None, "OriginsBase: Transfer Type not set by owner.");
 
 		if (_tierDetails.transferType == TransferType.Unlocked) {
-			bool txStatus = token.transfer(msg.sender, _tokensBought);
-			require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
+			token.safeTransfer(msg.sender, _tokensBought);
 		} else {
 			bool _sendTokens;
 			if (
@@ -782,8 +779,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 		} else {
 			require(_amount != 0, "OriginsBase: Amount cannot be zero.");
 			require(address(tierDetails.depositToken) != address(0), "OriginsBase: Deposit Token not set by owner.");
-			bool txStatus = tierDetails.depositToken.transferFrom(msg.sender, address(this), _amount);
-			require(txStatus, "OriginsBase: Not enough token supplied by user for buying.");
+			tierDetails.depositToken.safeTransferFrom(msg.sender, address(this), _amount);
 			deposit = _amount;
 		}
 		require(deposit >= tierDetails.minAmount, "OriginsBase: Deposit is less than minimum allowed.");
@@ -816,8 +812,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			if (tierDetails.depositType == DepositType.RBTC) {
 				msg.sender.transfer(refund);
 			} else {
-				bool txStatus = tierDetails.depositToken.transfer(msg.sender, refund);
-				require(txStatus, "OriginsBase: Token refund not received by user correctly.");
+				tierDetails.depositToken.safeTransfer(msg.sender, refund);
 			}
 		}
 
@@ -847,8 +842,7 @@ contract OriginsBase is IOrigins, OriginsEvents {
 			if (_tierDetails.depositType == DepositType.RBTC) {
 				msg.sender.transfer(refund);
 			} else {
-				bool txStatus = _tierDetails.depositToken.transfer(msg.sender, refund);
-				require(txStatus, "OriginsBase: Token refund not received by user correctly.");
+				_tierDetails.depositToken.safeTransfer(msg.sender, refund);
 			}
 		}
 		emit PoolClaimed(msg.sender, _tierID, _tokensBought);
@@ -884,16 +878,14 @@ contract OriginsBase is IOrigins, OriginsEvents {
 					receiver.transfer(amount);
 					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.RBTC, amount);
 				} else {
-					bool txStatus = tiers[index].depositToken.transfer(receiver, amount);
-					require(txStatus, "OriginsBase: Admin didn't received the tokens correctly.");
+					tiers[index].depositToken.safeTransfer(receiver, amount);
 					emit ProceedingWithdrawn(msg.sender, receiver, index, DepositType.Token, amount);
 				}
 
 				uint256 remainingTokens = tiers[index].remainingTokens;
 				if (remainingTokens > 0) {
 					tiers[index].remainingTokens = 0;
-					bool txStatus = token.transfer(receiver, remainingTokens);
-					require(txStatus, "OriginsBase: User didn't received the tokens correctly.");
+					token.safeTransfer(receiver, remainingTokens);
 					emit RemainingTokenWithdrawn(msg.sender, receiver, index, remainingTokens);
 				}
 			}
