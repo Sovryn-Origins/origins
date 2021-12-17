@@ -3,6 +3,7 @@ pragma solidity ^0.5.17;
 import "../Interfaces/IERC20.sol";
 import "../Interfaces/ILockedFund.sol";
 import "../Openzeppelin/SafeMath.sol";
+import "../Openzeppelin/SafeERC20.sol";
 import "../Interfaces/IVestingLogic.sol";
 import "../Interfaces/IVestingRegistryLogic.sol";
 
@@ -15,6 +16,7 @@ import "../Interfaces/IVestingRegistryLogic.sol";
 contract LockedFund is ILockedFund {
 	using SafeMath for uint256;
 	using Address for address;
+	using SafeERC20 for IERC20;
 
 	/* Storage */
 
@@ -537,8 +539,7 @@ contract LockedFund is ILockedFund {
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
 		if (_receiveTokens) {
-			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
-			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+			token.safeTransferFrom(msg.sender, address(this), _amount);
 		} else {
 			missingBalance = missingBalance.add(_amount);
 		}
@@ -593,8 +594,7 @@ contract LockedFund is ILockedFund {
 		// MAX_BASIS_POINT is not included because if 100% is unlocked, then this function is not required to be used.
 		require(_basisPoint < MAX_BASIS_POINT, "LockedFund: Basis Point has to be less than 10000.");
 		if (_receiveTokens) {
-			bool txStatus = token.transferFrom(msg.sender, address(this), _amount);
-			require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+			token.safeTransferFrom(msg.sender, address(this), _amount);
 		} else {
 			missingBalance = missingBalance.add(_amount);
 		}
@@ -621,8 +621,7 @@ contract LockedFund is ILockedFund {
 
 		uint256 _transferAmount = _amount > _missingBalance ? _missingBalance : _amount;
 
-		bool txStatus = token.transferFrom(msg.sender, address(this), _transferAmount);
-		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		token.safeTransferFrom(msg.sender, address(this), _transferAmount);
 		missingBalance = missingBalance.sub(_transferAmount);
 
 		emit MissingBalanceDeposited(msg.sender, _transferAmount);
@@ -641,8 +640,7 @@ contract LockedFund is ILockedFund {
 		uint256 amount = waitedUnlockedBalances[_sender];
 		waitedUnlockedBalances[_sender] = 0;
 
-		bool txStatus = token.transfer(userAddr, amount);
-		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		token.safeTransfer(userAddr, amount);
 
 		emit WithdrawnWaitedUnlockedBalance(_sender, userAddr, amount);
 	}
@@ -658,8 +656,7 @@ contract LockedFund is ILockedFund {
 		uint256 amount = unlockedBalances[_sender];
 		unlockedBalances[_sender] = 0;
 
-		bool txStatus = token.transfer(userAddr, amount);
-		require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+		token.safeTransfer(userAddr, amount);
 
 		emit WithdrawnUnlockedBalance(_sender, userAddr, amount);
 	}
@@ -733,8 +730,7 @@ contract LockedFund is ILockedFund {
 				address _vesting = _getVesting(_sender, _cliff, _duration, _vestingType);
 				uint256 amount = vestedBalances[_sender][vestingData];
 				vestedBalances[_sender][vestingData] = 0;
-				bool txStatus = token.transfer(address(vestingRegistry), amount);
-				require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+				token.safeTransfer(address(vestingRegistry), amount);
 				vestingRegistry.stakeTokens(_vesting, amount);
 
 				emit TokenStaked(_sender, _vesting, amount);
@@ -757,8 +753,7 @@ contract LockedFund is ILockedFund {
 					require(amount > 0, "LockedFund: Amount should be greater than zero.");
 					vestedBalances[_sender][_vestingData] = 0;
 
-					bool txStatus = token.transfer(address(vestingRegistry), amount);
-					require(txStatus, "LockedFund: Token transfer was not successful. Check receiver address.");
+					token.safeTransfer(address(vestingRegistry), amount);
 					vestingRegistry.stakeTokens(_vesting, amount);
 
 					emit TokenStaked(_sender, _vesting, amount);
