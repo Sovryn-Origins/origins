@@ -27,7 +27,7 @@ contract GovernorAlpha is SafeMath96 {
 	/* Storage */
 
 	/// @notice The name of this contract.
-	string public constant NAME = "Origins Governor Alpha";
+	string public constant NAME = "Sovryn Origins Governor Alpha";
 
 	/// @notice The maximum number of actions that can be included in a proposal.
 	function proposalMaxOperations() public pure returns (uint256) {
