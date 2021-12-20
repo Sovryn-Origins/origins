@@ -31,7 +31,11 @@ contract OriginsToken is ERC20Detailed, Ownable {
 	/**
 	 * @notice Constructor called on deployment, initiates the contract.
 	 * */
-	constructor() public ERC20Detailed("Sovryn Origins", "OG", 18) {}
+	constructor(
+		string memory _name,
+		string memory _symbol,
+		uint8 _decimals
+	) public ERC20Detailed(_name, _symbol, _decimals) {}
 
 	/**
 	 * @notice setMarketMaker sets the token's market maker address
