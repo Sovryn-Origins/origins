@@ -93,7 +93,6 @@ contract("GovernanceIntegration", (accounts) => {
 			id: proposalId,
 		});
 	}
-
 });
 
 async function advanceBlocks(number) {
