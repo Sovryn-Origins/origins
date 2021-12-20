@@ -54,14 +54,7 @@ contract("VestingCreator", (accounts) => {
 
 		lockedFund = await LockedFund.new(waitedTS, SOV.address, vesting.address, [root]);
 
-		await vesting.initialize(
-			vestingFactory.address,
-			SOV.address,
-			staking.address,
-			governorVault,
-			account4,
-			lockedFund.address
-		);
+		await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account4, lockedFund.address);
 
 		await vesting.addAdmin(vestingCreator.address);
 	});
@@ -522,56 +515,8 @@ contract("VestingCreator", (accounts) => {
 					false,
 				],
 				[
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1, 
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
-					1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+					1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
 				]
 			);
 

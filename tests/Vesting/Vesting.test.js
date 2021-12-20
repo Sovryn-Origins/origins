@@ -102,15 +102,7 @@ contract("Vesting", (accounts) => {
 
 		it("fails if the 0 address is passed as token owner address", async () => {
 			await expectRevert(
-				Vesting.new(
-					vestingLogic.address,
-					token.address,
-					staking.address,
-					constants.ZERO_ADDRESS,
-					cliff,
-					duration,
-					governorVault
-				),
+				Vesting.new(vestingLogic.address, token.address, staking.address, constants.ZERO_ADDRESS, cliff, duration, governorVault),
 				"token owner address invalid"
 			);
 		});
@@ -124,15 +116,7 @@ contract("Vesting", (accounts) => {
 
 		it("fails if the vesting duration is bigger than the max staking duration", async () => {
 			await expectRevert(
-				Vesting.new(
-					vestingLogic.address,
-					token.address,
-					staking.address,
-					root,
-					cliff,
-					MAX_DURATION.add(new BN(1)),
-					governorVault
-				),
+				Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, MAX_DURATION.add(new BN(1)), governorVault),
 				"duration may not exceed the max duration"
 			);
 		});
@@ -156,15 +140,7 @@ contract("Vesting", (accounts) => {
 		let vesting;
 		it("should stake tokens 2 times and delegate voting power", async () => {
 			let toStake = ONE_MILLON;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				a2,
-				26 * WEEK,
-				106 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, a2, 26 * WEEK, 106 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -199,15 +175,7 @@ contract("Vesting", (accounts) => {
 
 		it("should stake tokens 1 time and delegate voting power (using vesting logic with bug in delegation)", async () => {
 			let toStake = ONE_MILLON;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				a2,
-				26 * WEEK,
-				106 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, a2, 26 * WEEK, 106 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -248,15 +216,7 @@ contract("Vesting", (accounts) => {
 	describe("stakeTokens; using Ganache", () => {
 		let vesting;
 		it("should stake 1,000,000 SOV with a duration of 104 weeks and a 26 week cliff", async () => {
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 			await token.approve(vesting.address, ONE_MILLON);
 			let tx = await vesting.stakeTokens(ONE_MILLON);
@@ -330,15 +290,7 @@ contract("Vesting", (accounts) => {
 			let amount = 1000;
 			let cliff = 28 * WEEK;
 			let duration = 104 * WEEK;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				cliff,
-				duration,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, duration, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, amount);
@@ -382,15 +334,7 @@ contract("Vesting", (accounts) => {
 			let amount = 1000;
 			let cliff = 26 * WEEK;
 			let duration = 34 * WEEK;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				cliff,
-				duration,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, duration, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, amount);
@@ -433,15 +377,7 @@ contract("Vesting", (accounts) => {
 			let amount = 1000;
 			let cliff = 26 * WEEK;
 			let duration = 34 * WEEK;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				cliff,
-				duration,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, duration, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 			await expectRevert(vesting.stakeTokensWithApproval(root, amount), "unauthorized");
 		});
@@ -450,15 +386,7 @@ contract("Vesting", (accounts) => {
 			let amount = 1000;
 			let cliff = 26 * WEEK;
 			let duration = 34 * WEEK;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				cliff,
-				duration,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, duration, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			let contract = new web3.eth.Contract(vesting.abi, vesting.address);
@@ -472,15 +400,7 @@ contract("Vesting", (accounts) => {
 			let amount = 1000;
 			let cliff = 26 * WEEK;
 			let duration = 34 * WEEK;
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				cliff,
-				duration,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, cliff, duration, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			let contract = new web3.eth.Contract(vesting.abi, vesting.address);
@@ -529,15 +449,7 @@ contract("Vesting", (accounts) => {
 			await increaseTime(3 * WEEK);
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				3 * WEEK,
-				3 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 3 * WEEK, 3 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -570,15 +482,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -611,15 +515,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -656,15 +552,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				4 * WEEK,
-				20 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 4 * WEEK, 20 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -701,15 +589,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				4 * WEEK,
-				20 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 4 * WEEK, 20 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -743,15 +623,7 @@ contract("Vesting", (accounts) => {
 		it("should do nothing if withdrawing before reaching the cliff", async () => {
 			let toStake = ONE_MILLON;
 
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				a1,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, a1, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			let previousAmount = await token.balanceOf(root);
@@ -783,15 +655,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -804,15 +668,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -825,15 +681,7 @@ contract("Vesting", (accounts) => {
 			let toStake = ONE_MILLON;
 
 			//Stake
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				root,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, root, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await token.approve(vesting.address, toStake);
@@ -891,15 +739,7 @@ contract("Vesting", (accounts) => {
 	describe("migrateToNewStakingContract", async () => {
 		let vesting;
 		it("should set the new staking contract", async () => {
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				staking.address,
-				a1,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, staking.address, a1, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 			//1. set new staking contract address on staking contract
 
@@ -924,15 +764,7 @@ contract("Vesting", (accounts) => {
 			await newStaking.setImplementation(stakingLogic.address);
 			newStaking = await StakingLogic.at(newStaking.address);
 
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				newStaking.address,
-				a1,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, newStaking.address, a1, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 			await expectRevert(vesting.migrateToNewStakingContract(), "there is no new staking contract set");
 		});
@@ -942,15 +774,7 @@ contract("Vesting", (accounts) => {
 			await newStaking.setImplementation(stakingLogic.address);
 			newStaking = await StakingLogic.at(newStaking.address);
 
-			vesting = await Vesting.new(
-				vestingLogic.address,
-				token.address,
-				newStaking.address,
-				a1,
-				26 * WEEK,
-				104 * WEEK,
-				governorVault
-			);
+			vesting = await Vesting.new(vestingLogic.address, token.address, newStaking.address, a1, 26 * WEEK, 104 * WEEK, governorVault);
 			vesting = await VestingLogic.at(vesting.address);
 
 			await newStaking.setNewStakingContract(newStaking.address);

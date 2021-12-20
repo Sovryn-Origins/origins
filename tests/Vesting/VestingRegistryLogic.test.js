@@ -55,7 +55,6 @@ contract("VestingRegistryLogic", (accounts) => {
 
 		lockedFund = await LockedFund.new(waitedTS, SOV.address, vesting.address, [root]);
 		await vesting.addAdmin(lockedFund.address);
-
 	});
 
 	describe("initialize", () => {
@@ -68,28 +67,14 @@ contract("VestingRegistryLogic", (accounts) => {
 
 		it("fails if the 0 address is passed as SOV address", async () => {
 			await expectRevert(
-				vesting.initialize(
-					vestingFactory.address,
-					ZERO_ADDRESS,
-					staking.address,
-					governorVault,
-					account1,
-					lockedFund.address,
-				),
+				vesting.initialize(vestingFactory.address, ZERO_ADDRESS, staking.address, governorVault, account1, lockedFund.address),
 				"token address invalid"
 			);
 		});
 
 		it("fails if the 0 address is passed as staking address", async () => {
 			await expectRevert(
-				vesting.initialize(
-					vestingFactory.address,
-					SOV.address,
-					ZERO_ADDRESS,
-					governorVault,
-					account1,
-					lockedFund.address,
-				),
+				vesting.initialize(vestingFactory.address, SOV.address, ZERO_ADDRESS, governorVault, account1, lockedFund.address),
 				"staking address invalid"
 			);
 		});
@@ -103,14 +88,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 		it("fails if the 0 address is passed as vestingOwner address", async () => {
 			await expectRevert(
-				vesting.initialize(
-					vestingFactory.address,
-					SOV.address,
-					staking.address,
-					governorVault,
-					ZERO_ADDRESS,
-					lockedFund.address,
-				),
+				vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, ZERO_ADDRESS, lockedFund.address),
 				"vestingOwner address invalid"
 			);
 		});
@@ -123,14 +101,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("sets the expected values", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let _sov = await vesting.token();
 			let _staking = await vesting.staking();
@@ -144,23 +115,9 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("fails if initialize is called twice", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 			await expectRevert(
-				vesting.initialize(
-					vestingFactory.address,
-					SOV.address,
-					staking.address,
-					governorVault,
-					account1,
-					lockedFund.address,
-				),
+				vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address),
 				"contract is already initialized"
 			);
 		});
@@ -220,14 +177,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 	describe("transferSOV", () => {
 		it("should be able to transfer SOV", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000);
 			await SOV.transfer(vesting.address, amount);
@@ -257,14 +207,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 	describe("createVesting", () => {
 		it("should be able to create vesting - Bug Bounty", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			await SOV.transfer(vesting.address, amount);
@@ -299,14 +242,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("should be able to create vesting - Team Salary", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			await SOV.transfer(vesting.address, amount);
@@ -341,14 +277,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("fails if vestingRegistryLogic doesn't have enough SOV", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			let cliff = FOUR_WEEKS;
@@ -362,14 +291,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("fails if sender is not an owner or admin", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			let cliff = TEAM_VESTING_CLIFF;
@@ -388,14 +310,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 	describe("createVesting and getVesting - LockedFund", () => {
 		it("Should create vesting and return the address for LockedFund", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			let basisPoint = 0;
@@ -458,14 +373,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		// });
 
 		it("fails if vestingRegistryLogic doesn't have enough SOV", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			let cliff = TEAM_VESTING_CLIFF;
@@ -479,14 +387,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("fails if sender is not an owner or admin", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			let cliff = TEAM_VESTING_CLIFF;
@@ -541,14 +442,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 	describe("getVestingsOf", () => {
 		it("gets vesting of a user", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			await SOV.transfer(vesting.address, amount);
@@ -574,14 +468,7 @@ contract("VestingRegistryLogic", (accounts) => {
 
 	describe("getVestingDetails", () => {
 		it("gets cliff, duration and amount for vesting address", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			await SOV.transfer(vesting.address, amount);
@@ -598,14 +485,7 @@ contract("VestingRegistryLogic", (accounts) => {
 		});
 
 		it("gets cliff, duration and amount for team vesting address", async () => {
-			await vesting.initialize(
-				vestingFactory.address,
-				SOV.address,
-				staking.address,
-				governorVault,
-				account1,
-				lockedFund.address,
-			);
+			await vesting.initialize(vestingFactory.address, SOV.address, staking.address, governorVault, account1, lockedFund.address);
 
 			let amount = new BN(1000000);
 			await SOV.transfer(vesting.address, amount);

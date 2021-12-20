@@ -847,7 +847,7 @@ contract("Staking", (accounts) => {
 				let returnedAvailableAmount = amounts[0];
 				let returnedPunishedAmount = amounts[1];
 
-				let earlierFeeSharingBalance = await token.balanceOf.call(governorVault)
+				let earlierFeeSharingBalance = await token.balanceOf.call(governorVault);
 
 				await staking.withdraw(amount, lockedTS, account2);
 
