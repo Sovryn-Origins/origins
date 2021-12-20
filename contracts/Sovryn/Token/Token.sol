@@ -14,7 +14,7 @@ import "../../Interfaces/IApproveAndCall.sol";
  *   The owner of the token contract can mint/burn tokens to/from any account
  *   based upon previous governance voting and approval.
  * */
-contract Token is ERC20, ERC20Detailed, Ownable {
+contract Token is ERC20Detailed, Ownable {
 	string public NAME;
 	string public SYMBOL;
 	uint8 public DECIMALS;

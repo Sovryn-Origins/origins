@@ -1,0 +1,23 @@
+{
+	"Reset": false,
+	"tokenName": "Origins",
+	"tokenSymbol": "OG",
+	"tokenDecimal": 18,
+	"tokenAmount": 100000000,
+	"waitedTimestamp": 0,
+	"quorumVotes": 10,
+	"majorityPercentageVotes": 50,
+	"delay": 259200,
+	"OGToken": "",
+	"StakingLogic": "",
+	"Staking": "",
+	"Timelock": "",
+	"Governor": "",
+	"GovernorVault": "",
+	"LockedFund": "",
+	"VestingLogic": "",
+	"VestingFactory": "",
+	"VestingRegistry": "",
+	"VestingCreator": "",
+	"TokenSender": ""
+}

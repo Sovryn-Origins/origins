@@ -5,12 +5,12 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
-	createLockedFund,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
-	VestingRegistry,
+	VestingRegistryLogic,
+	VestingRegistryProxy,
 } = require("../utils");
 
 const { zero, zeroAddress, zeroBasisPoint, unlockTypeWaited } = require("../constants");
@@ -31,11 +31,8 @@ contract("LockedFund (Creator Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await createLockedFund(waitedTS, token, vestingRegistry, [admin], creator);
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [admin]);
 
 		// Adding lockedFund as an admin in the Vesting Registry.
 		await vestingRegistry.addAdmin(lockedFund.address, { from: creator });
@@ -78,13 +75,11 @@ contract("LockedFund (Creator Functions)", (accounts) => {
 	});
 
 	it("Creator should not be able to change the vestingRegistry.", async () => {
-		let newVestingRegistry = await VestingRegistry.new(
-			vestingFactory.address,
-			token.address,
-			staking.address,
-			feeSharingProxy.address,
-			creator // This should be Governance Timelock Contract.
-		);
+		let vestingRegistryLogic = await VestingRegistryLogic.new();
+		let newVestingRegistry = await VestingRegistryProxy.new();
+		await newVestingRegistry.setImplementation(vestingRegistryLogic.address);
+		newVestingRegistry = await VestingRegistryLogic.at(newVestingRegistry.address);
+
 		await expectRevert(
 			lockedFund.changeVestingRegistry(newVestingRegistry.address, { from: creator }),
 			"LockedFund: Only admin can call this."

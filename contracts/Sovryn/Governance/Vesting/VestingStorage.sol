@@ -3,7 +3,6 @@ pragma solidity ^0.5.17;
 import "../../../Openzeppelin/Ownable.sol";
 import "../../../Interfaces/IERC20.sol";
 import "../Staking/Staking.sol";
-import "../../../Interfaces/IFeeSharingProxy.sol";
 
 /**
  * @title Vesting Storage Contract.
@@ -23,8 +22,8 @@ contract VestingStorage is Ownable {
 	/// @notice The owner of the vested tokens.
 	address public tokenOwner;
 
-	/// @notice Fee sharing Proxy.
-	IFeeSharingProxy public feeSharingProxy;
+	/// @notice Fee sharing Address (Usually Governor Vault).
+	address public feeSharing;
 
 	/// @notice The cliff. After this time period the tokens begin to unlock.
 	uint256 public cliff;

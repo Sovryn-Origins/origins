@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 import "./Context.sol";
-import "./IERC20_.sol";
+import "../Interfaces/IERC20.sol";
 import "./SafeMath.sol";
 
 /**
@@ -28,7 +28,7 @@ import "./SafeMath.sol";
  * functions have been added to mitigate the well-known issues around setting
  * allowances. See {IERC20-approve}.
  */
-contract ERC20 is Context, IERC20_ {
+contract ERC20 is Context, IERC20 {
 	using SafeMath for uint256;
 
 	mapping(address => uint256) private _balances;

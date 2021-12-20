@@ -7,16 +7,7 @@ import math
 
 def main():
     loadConfig()
-
-    balanceBefore = acct.balance()
-    choice()
-    balanceAfter = acct.balance()
-
-    print("=============================================================")
-    print("Balance Before:  ", balanceBefore)
-    print("Balance After:   ", balanceAfter)
-    print("Gas Used:        ", balanceBefore - balanceAfter)
-    print("=============================================================")
+    makeChoice()
 
 # =========================================================================================================================================
 def loadConfig():
@@ -40,6 +31,18 @@ def loadConfig():
 
     # Load deployment parameters and contracts addresses
     values = json.load(configFile)
+
+# =========================================================================================================================================
+def makeChoice():
+    balanceBefore = acct.balance()
+    choice()
+    balanceAfter = acct.balance()
+
+    print("=============================================================")
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
+    print("=============================================================")
 
 # =========================================================================================================================================
 def choice():
@@ -100,7 +103,7 @@ def deployLockedFund():
 
 # =========================================================================================================================================
 def addLockedFundAsVestingRegistryAdmin():
-    vestingRegistry = Contract.from_abi("VestingRegistry3", address=values['vestingRegistry'], abi=VestingRegistry3.abi, owner=acct)
+    vestingRegistry = Contract.from_abi("VestingRegistryLogic", address=values['vestingRegistry'], abi=VestingRegistryLogic.abi, owner=acct)
     print("\nAdding LockedFund as an admin of Vesting Registry.\n")
     vestingRegistry.addAdmin(values['lockedFund'])
     print("\nAdded Locked Fund:",values['lockedFund'],"as the admin of Vesting Registry:", values['vestingRegistry'])
@@ -135,8 +138,6 @@ def updateWaitedTS():
 
 # =========================================================================================================================================
 def updateWaitedTSMultisig():
-    values['waitedTimestamp'] = 1630173600
-
     lockedFund = Contract.from_abi("LockedFund", address=values['lockedFund'], abi=LockedFund.abi, owner=acct)
     print("\nUpdating Waited Timestamp of LockedFund...\n")
 

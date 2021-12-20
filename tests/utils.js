@@ -40,38 +40,47 @@ async function currentTimestamp() {
 	let timestamp = await time.latest();
 	return timestamp;
 }
+
 /**
- * Function to create staking and vesting details.
+ * Function to create staking, vesting and Locked Fund contracts.
  *
  * @param creator The address which creates all those staking and vesting addresses.
  * @param token The token address.
+ * @param waitedTS The time after which waited unlock will be unlocked.
+ * @param adminList The admin list for locked fund.
  *
- * @return [staking, vestingLogic, vestingRegistry] The objects of staking, vesting logics and vesting registry.
+ * @return [staking, vestingLogic, vestingRegistry, lockedFund] The objects of staking, vesting logics, vesting registry and LockedFund.
  */
-async function createStakeAndVest(creator, token) {
+async function createStakeVestAndLockedFund(creator, token, waitedTS, adminList) {
 	// Creating the Staking Instance.
 	stakingLogic = await StakingLogic.new(token.address, { from: creator });
 	staking = await StakingProxy.new(token.address, { from: creator });
 	await staking.setImplementation(stakingLogic.address, { from: creator });
 	staking = await StakingLogic.at(staking.address);
 
-	// Creating the FeeSharing Instance.
-	feeSharingProxy = await FeeSharingProxy.new(zeroAddress, staking.address, { from: creator });
-
 	// Creating the Vesting Instance.
 	vestingLogic = await VestingLogic.new({ from: creator });
 	vestingFactory = await VestingFactory.new(vestingLogic.address, { from: creator });
-	vestingRegistry = await VestingRegistry.new(
+
+	vestingRegistryLogic = await VestingRegistryLogic.new();
+	vestingRegistry = await VestingRegistryProxy.new();
+	await vestingRegistry.setImplementation(vestingRegistryLogic.address);
+	vestingRegistry = await VestingRegistryLogic.at(vestingRegistry.address);
+	vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
+
+	lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, adminList, { from: creator });
+
+	await vestingRegistry.initialize(
 		vestingFactory.address,
 		token.address,
 		staking.address,
-		feeSharingProxy.address,
+		creator, // This should be Governance Vault Contract.
 		creator, // This should be Governance Timelock Contract.
+		lockedFund.address,
 		{ from: creator }
 	);
-	vestingFactory.transferOwnership(vestingRegistry.address, { from: creator });
 
-	return [staking, vestingLogic, vestingRegistry];
+	return [staking, vestingLogic, vestingRegistry, lockedFund];
 }
 
 /**
@@ -106,6 +115,7 @@ async function checkStatus(
 	unlockedBalance,
 	isAdmin
 ) {
+	let _vestingData = await contractInstance.getVestingData(cliff, duration);
 	if (checkArray[0] == 1) {
 		let cValue = await contractInstance.getWaitedTS();
 		assert.equal(waitedTS, cValue.toNumber(), "The waited timestamp does not match.");
@@ -114,24 +124,21 @@ async function checkStatus(
 		let cValue = await contractInstance.getToken();
 		assert.strictEqual(token, cValue, "The token does not match.");
 	}
-	if (checkArray[2] == 1) {
-		let cValue = await contractInstance.cliff(userAddr);
-		assert.equal(cliff, cValue.toNumber() / fourWeeks, "The cliff does not match.");
-	}
-	if (checkArray[3] == 1) {
-		let cValue = await contractInstance.duration(userAddr);
-		assert.equal(duration, cValue.toNumber() / fourWeeks, "The duration does not match.");
+	if (checkArray[2] == 1 || checkArray[3] == 1) {
+		let cValue = await contractInstance.checkUserVestingsOf(userAddr, _vestingData);
+		assert.equal(true, cValue, "The cliff or duration does not match.");
 	}
 	if (checkArray[4] == 1) {
-		let cValue = await contractInstance.getVestingDetails();
+		let cValue = await contractInstance.getVestingRegistry();
 		assert.strictEqual(vestingRegistry, cValue, "The vesting registry does not match.");
 	}
 	if (checkArray[5] == 1) {
-		let cValue = await contractInstance.getVestedBalance(userAddr);
+		let cValue = await contractInstance.getVestedBalance(userAddr, _vestingData);
 		assert.equal(vestedBalance, cValue.toNumber(), "The vested balance does not match.");
 	}
 	if (checkArray[6] == 1) {
-		let cValue = await contractInstance.getLockedBalance(userAddr);
+		let _lockingData = "0x0"; // TODO: To be changed with the getLockedData content.
+		let cValue = await contractInstance.getLockedBalance(userAddr, _lockingData);
 		assert.equal(lockedBalance, cValue.toNumber(), "The locked balance does not match.");
 	}
 	if (checkArray[7] == 1) {
@@ -155,13 +162,17 @@ async function checkStatus(
  * @param addr The user/contract address.
  * @param tokenContract The Token Contract.
  * @param lockedFundContract The Locked Fund Contract.
+ * @param cliff TODO
+ * @param duration TODO
  *
  * @return [Token Balance, Vested Balance, Locked Balance, Waited Unlocked Balance, Unlocked Balance].
  */
-async function getTokenBalances(addr, tokenContract, lockedFundContract) {
+async function getTokenBalances(addr, tokenContract, lockedFundContract, cliff, duration) {
+	let _vestingData = await lockedFundContract.getVestingData(cliff, duration);
 	let tokenBal = (await tokenContract.balanceOf(addr)).toNumber();
-	let vestedBal = (await lockedFundContract.getVestedBalance(addr)).toNumber();
-	let lockedBal = (await lockedFundContract.getLockedBalance(addr)).toNumber();
+	let vestedBal = (await lockedFundContract.getVestedBalance(addr, _vestingData)).toNumber();
+	// TODO Update the locked data with actual data.
+	let lockedBal = (await lockedFundContract.getLockedBalance(addr, "0x0")).toNumber();
 	let waitedUnlockedBal = (await lockedFundContract.getWaitedUnlockedBalance(addr)).toNumber();
 	let unlockedBal = (await lockedFundContract.getUnlockedBalance(addr)).toNumber();
 	return [tokenBal, vestedBal, lockedBal, waitedUnlockedBal, unlockedBal];
@@ -265,10 +276,11 @@ const Token = artifacts.require("Token");
 const LockedFund = artifacts.require("LockedFund");
 const StakingLogic = artifacts.require("Staking");
 const StakingProxy = artifacts.require("StakingProxy");
-const FeeSharingProxy = artifacts.require("FeeSharingProxyMockup");
 const VestingLogic = artifacts.require("VestingLogic");
 const VestingFactory = artifacts.require("VestingFactory");
-const VestingRegistry = artifacts.require("VestingRegistry3");
+const VestingRegistryLogic = artifacts.require("VestingRegistryLogic");
+const VestingRegistryProxy = artifacts.require("VestingRegistryProxy");
+const UpgradableProxy = artifacts.require("UpgradableProxy");
 const OriginsAdmin = artifacts.require("OriginsAdmin");
 const OriginsBase = artifacts.require("OriginsBase");
 
@@ -284,7 +296,7 @@ module.exports = {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	checkStatus,
 	getTokenBalances,
 	userMintAndApprove,
@@ -295,10 +307,11 @@ module.exports = {
 	LockedFund,
 	StakingLogic,
 	StakingProxy,
-	FeeSharingProxy,
 	VestingLogic,
 	VestingFactory,
-	VestingRegistry,
+	VestingRegistryLogic,
+	VestingRegistryProxy,
+	UpgradableProxy,
 	OriginsAdmin,
 	OriginsBase,
 };

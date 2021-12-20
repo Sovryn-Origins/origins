@@ -4,7 +4,7 @@ const {
 	assert,
 	// Custom Functions
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
@@ -15,6 +15,7 @@ const { zero, zeroAddress } = require("../constants");
 
 let {
 	waitedTS,
+	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
 	firstSaleStartTS,
@@ -27,6 +28,7 @@ let {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 	secondMinAmount,
 	secondMaxAmount,
 	secondRemainingTokens,
@@ -58,11 +60,8 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
@@ -85,6 +84,7 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -92,11 +92,10 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
@@ -122,6 +121,7 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await expectRevert(
 			originsBase.createTier(
+				firstMinAmount,
 				firstMaxAmount,
 				firstRemainingTokens,
 				firstSaleStartTS,
@@ -129,11 +129,10 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 				firstUnlockedBP,
 				firstVestOrLockCliff,
 				firstVestOfLockDuration,
-				firstDepositRate,
-				firstDepositType,
 				firstVerificationType,
 				firstSaleEndDurationOrTS,
 				firstTransferType,
+				firstSaleType,
 				{ from: verifier }
 			),
 			"OriginsAdmin: Only owner can call this function."

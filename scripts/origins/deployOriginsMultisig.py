@@ -4,16 +4,8 @@ import json
 def main():
     loadConfig()
 
-    balanceBefore = acct.balance()
     # Function Call
     deployOriginsMultisig()
-    balanceAfter = acct.balance()
-
-    print("=============================================================")
-    print("Balance Before:  ", balanceBefore)
-    print("Balance After:   ", balanceAfter)
-    print("Gas Used:        ", balanceBefore - balanceAfter)
-    print("=============================================================")
 
 # =========================================================================================================================================
 def loadConfig():
@@ -40,6 +32,7 @@ def loadConfig():
 
 # == Multisig Deployment ==================================================================================================================
 def deployOriginsMultisig():
+    balanceBefore = acct.balance()
     owners = values["multisigOwners"]
     requiredConf = 1
     if network.show_active() == "rsk-mainnet" or network.show_active() == "mainnet":
@@ -60,8 +53,16 @@ def deployOriginsMultisig():
     print("=============================================================")
 
     # Updating the JSON Values.    
-    values["multisig"] = str(multisig)
+    values["multisig"] = multisig.address
     writeToJSON()
+
+    balanceAfter = acct.balance()
+
+    print("=============================================================")
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
+    print("=============================================================")
 
 # =========================================================================================================================================
 def writeToJSON():

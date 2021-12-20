@@ -22,7 +22,7 @@ Please fill the below details in mainnet.json (or the corresponding network JSON
 To create:
 
 ```
-brownie run scripts/origins/deployMultisig.py --network [ENTER DESIRED NETWORK]
+brownie run scripts/origins/deployOriginsMultisig.py --network [ENTER DESIRED NETWORK]
 ```
 
 2. Create the Locked Fund Contract.

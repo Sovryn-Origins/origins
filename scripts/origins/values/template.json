@@ -3,8 +3,9 @@
 	"decimal": "",
 	"multisigOwners": ["", "", ""],
 	"multisig": "",
+	"multisigDepositAddressOwners": ["", "", ""],
+	"multisigDepositAddress": "",
 	"originsVerifiers": [""],
-	"depositAddress": "",
 	"waitedTimestamp": "",
 	"vestingRegistry": "",
 	"origins": "",
@@ -27,7 +28,8 @@
 			"depositType": "",
 			"verificationType": "",
 			"saleEndDurationOrTimestamp": "",
-			"transferType": ""
+			"transferType": "",
+			"saleType": ""
 		},
 		{
 			"minimumAmount": "",
@@ -43,7 +45,8 @@
 			"depositType": "",
 			"verificationType": "",
 			"saleEndDurationOrTimestamp": "",
-			"transferType": ""
+			"transferType": "",
+			"saleType": ""
 		}
 	],
 	"toVerify": [],

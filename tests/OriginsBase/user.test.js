@@ -5,7 +5,7 @@ const {
 	// Custom Functions
 	randomValue,
 	currentTimestamp,
-	createStakeAndVest,
+	createStakeVestAndLockedFund,
 	// Contract Artifacts
 	Token,
 	LockedFund,
@@ -23,10 +23,13 @@ const {
 	transferTypeUnlocked,
 	transferTypeWaitedUnlock,
 	transferTypeLocked,
+	saleTypeFCFS,
+	zeroAddress,
 } = require("../constants");
 
 let {
 	waitedTS,
+	firstMinAmount,
 	firstMaxAmount,
 	firstRemainingTokens,
 	firstSaleStartTS,
@@ -39,6 +42,7 @@ let {
 	firstVerificationType,
 	firstSaleEndDurationOrTS,
 	firstTransferType,
+	firstSaleType,
 } = require("../variable");
 
 contract("OriginsBase (User Functions)", (accounts) => {
@@ -58,11 +62,8 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		// Creating the instance of Test Token.
 		token = await Token.new(zero, "Test Token", "TST", 18, { from: creator });
 
-		// Creating the Staking and Vesting
-		[staking, vestingLogic, vestingRegistry] = await createStakeAndVest(creator, token);
-
-		// Creating the instance of LockedFund Contract.
-		lockedFund = await LockedFund.new(waitedTS, token.address, vestingRegistry.address, [owner], { from: creator });
+		// Creating the Staking, Vesting and Locked Fund
+		[staking, vestingLogic, vestingRegistry, lockedFund] = await createStakeVestAndLockedFund(creator, token, waitedTS, [owner]);
 
 		// Creating the instance of OriginsBase Contract.
 		originsBase = await OriginsBase.new([owner], token.address, depositAddr, { from: creator });
@@ -80,6 +81,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens, { from: creator });
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -87,14 +89,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 	});
 
 	beforeEach("Updating the timestamp.", async () => {
@@ -129,6 +131,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -136,14 +139,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			transferTypeUnlocked,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -152,6 +155,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -159,14 +163,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			transferTypeWaitedUnlock,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -175,6 +179,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -182,14 +187,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			transferTypeLocked,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 	});
@@ -198,6 +203,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -205,14 +211,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			transferTypeNone,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
 		await expectRevert(
 			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
@@ -224,6 +230,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -231,14 +238,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			saleEndDurationOrTSNone,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
@@ -247,6 +254,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			zero,
@@ -254,16 +262,16 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			saleEndDurationOrTSDuration,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 10000;
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale has not started yet.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if the token sale has ended.", async () => {
@@ -271,6 +279,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, amount);
 		await token.approve(originsBase.address, amount, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			amount,
 			amount,
 			firstSaleStartTS,
@@ -278,16 +287,16 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			1,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, 1, zeroAddress, firstDepositType, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userTwo, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if sale end is not set.", async () => {
@@ -295,6 +304,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -302,14 +312,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: Sale not allowed.");
 	});
 
@@ -318,6 +328,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, amount);
 		await token.approve(originsBase.address, amount, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			amount / 2,
 			amount,
 			firstSaleStartTS,
@@ -325,17 +336,17 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			1,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, 1, zeroAddress, firstDepositType, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if total tokens are sold with Sale End as Until Supply.", async () => {
@@ -343,6 +354,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, amount);
 		await token.approve(originsBase.address, amount, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			amount,
 			amount,
 			firstSaleStartTS,
@@ -350,17 +362,17 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			1,
-			firstDepositType,
 			verificationTypeEveryone,
 			saleEndDurationOrTSUntilSupply,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, 1, zeroAddress, firstDepositType, { from: owner });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount / 2 });
 		await originsBase.buy(tierCount, zero, { from: userTwo, value: amount / 2 });
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale ended.");
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userThree, value: amount / 2 }), "OriginsBase: Sale not allowed.");
 	});
 
 	it("User should not be allowed to buy if Verification is not set.", async () => {
@@ -368,6 +380,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -375,15 +388,15 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeNone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: No one is allowed for sale.");
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not verified.");
 	});
 
 	it("If verification is done by address, user should only be allowed if it is done by verified address.", async () => {
@@ -391,6 +404,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -398,21 +412,22 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			firstVerificationType,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
-		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not approved for sale.");
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
+		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: amount }), "OriginsBase: User not verified.");
 	});
 
 	it("User should not be allowed to buy once the max reaches even if there is remaining tokens.", async () => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -420,14 +435,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		let amount = 25000;
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
 		await originsBase.buy(tierCount, zero, { from: userOne, value: amount });
@@ -445,6 +460,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -452,14 +468,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		await expectRevert(originsBase.buy(tierCount, zero, { from: userOne, value: zero }), "OriginsBase: Amount cannot be zero.");
 	});
 
@@ -468,6 +484,7 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		await token.mint(owner, firstRemainingTokens);
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
+			firstMinAmount,
 			firstMaxAmount,
 			firstRemainingTokens,
 			firstSaleStartTS,
@@ -475,14 +492,14 @@ contract("OriginsBase (User Functions)", (accounts) => {
 			firstUnlockedBP,
 			firstVestOrLockCliff,
 			firstVestOfLockDuration,
-			firstDepositRate,
-			firstDepositType,
 			verificationTypeEveryone,
 			firstSaleEndDurationOrTS,
 			firstTransferType,
+			firstSaleType,
 			{ from: owner }
 		);
 		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		await originsBase.setTierTokenLimit(tierCount, 10000, firstMaxAmount, { from: owner });
 		await expectRevert(
 			originsBase.buy(tierCount, zero, { from: userOne, value: amount }),
@@ -494,8 +511,16 @@ contract("OriginsBase (User Functions)", (accounts) => {
 		let tokenAddress = await originsBase.getToken({ from: userOne });
 	});
 
+	it("User should be able to get Tokens Bought By Address.", async () => {
+		let tokensBought = await originsBase.getTokensBoughtByAddress(userOne, { from: userOne });
+	});
+
 	it("User should be able to get Tokens Bought By Address On Tier.", async () => {
 		let tokensBought = await originsBase.getTokensBoughtByAddressOnTier(userOne, 1, { from: userOne });
+	});
+
+	it("User should be able to get Participating Wallet Count.", async () => {
+		let participatingWallet = await originsBase.getParticipatingWalletCount({ from: userOne });
 	});
 
 	it("User should be able to get Participating Wallet Count Per Tier.", async () => {

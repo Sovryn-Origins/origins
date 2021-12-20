@@ -1,18 +1,23 @@
 {
-	"token": "0xBcb61491F1859f53438918F1A5aFCA542Af9D397",
+	"token": "0x3194cBDC3dbcd3E11a07892e7bA5c3394048Cc87",
 	"decimal": "18",
 	"multisigOwners": [
 		"0x4C3d3505d34213751c4b4d621cB6bDe7E664E222",
 		"0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435",
 		"0xe1a148735f07bc5fe7cfb60499d325c8380488a8"
 	],
-	"multisig": "0x42E8D004c84E6B5Bad559D3b5CE7947AADb9E0bc",
+	"multisig": "0xBcb61491F1859f53438918F1A5aFCA542Af9D397",
+	"multisigDepositAddressOwners": [
+		"0x41Df960e40BC58A6150376522d39735EAc9c8928",
+		"0x0CBbbED82A0038d0f63C889Bb1296591136Be65D",
+		"0xCaE473b17917C9a3cC0562389433733137f95464"
+	],
+	"multisigDepositAddress": "0x741e3E1f81041c62C2A97d0b6E567AcaB09A6232",
 	"originsVerifiers": ["0x4C3d3505d34213751c4b4d621cB6bDe7E664E222", "0xb1c5C1B84E33CD32a153f1eB120e9Bd7109cc435"],
-	"depositAddress": "0x9Cf4CC7185E957C63f0BA6a4D793F594c702AD66",
 	"waitedTimestamp": "1626270000",
-	"vestingRegistry": "0xA95916C3D979400C7443961330b3092510a229Ba",
-	"origins": "0x34b97ffa01dc0DC959c5f1176273D0de3be914C1",
-	"lockedFund": "0xF06D5f5BfFFCB6a52c84cfebc03AD35637728E73",
+	"vestingRegistry": "0xe65A7a341978d59d40d30FC23F5014FACB4f575A",
+	"origins": "0x6057028AEb3086440A01577fcD18C5eC77305c47",
+	"lockedFund": "0x724Ca58E1e6e64BFB1E15d7Eec0fe1E5f581c7bD",
 	"tiers": [
 		{
 			"DONT_DELETE_THIS": "This acts as the zero index entry in SC which has to be skipped."
@@ -31,7 +36,8 @@
 			"depositType": "0",
 			"verificationType": "2",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		},
 		{
 			"minimumAmount": "1",
@@ -47,7 +53,8 @@
 			"depositType": "0",
 			"verificationType": "1",
 			"saleEndDurationOrTimestamp": "2",
-			"transferType": "3"
+			"transferType": "3",
+			"saleType": "1"
 		}
 	],
 	"toVerify": [

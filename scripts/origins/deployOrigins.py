@@ -8,16 +8,7 @@ import math
 
 def main():
     loadConfig()
-
-    balanceBefore = acct.balance()
-    choice()
-    balanceAfter = acct.balance()
-
-    print("=============================================================")
-    print("Balance Before:  ", balanceBefore)
-    print("Balance After:   ", balanceAfter)
-    print("Gas Used:        ", balanceBefore - balanceAfter)
-    print("=============================================================")
+    makeChoice()
 
 # =========================================================================================================================================
 def loadConfig():
@@ -43,6 +34,18 @@ def loadConfig():
     values = json.load(configFile)
 
 # =========================================================================================================================================
+def makeChoice():
+    balanceBefore = acct.balance()
+    choice()
+    balanceAfter = acct.balance()
+
+    print("=============================================================")
+    print("Balance Before:  ", balanceBefore)
+    print("Balance After:   ", balanceAfter)
+    print("Gas Used:        ", balanceBefore - balanceAfter)
+    print("=============================================================")
+
+# =========================================================================================================================================
 def choice():
     repeat = True
     while(repeat):
@@ -57,17 +60,25 @@ def choice():
         print("8 for Setting Tier Token Amount Parameters.")
         print("9 for Setting Tier Vest or Lock Parameters.")
         print("10 for Setting Tier Time Parameters.")
-        print("11 for Buying Tokens.")
-        print("12 for Adding Myself as a Verifier.")
-        print("13 for Verified my wallet with Tier ID")
-        print("14 for Verifying wallet addresses with Tier ID")
-        print("15 for Removing Myself as an Owner.")
-        print("16 for Removing Myself as a Verifier.")
-        print("17 for getting the Tier Count.")
-        print("18 for getting the Tier Details.")
-        print("19 for getting the Owner Details.")
-        print("20 for getting the Verifier Details.")
-        print("21 to exit.")
+        print("11 for Setting Tier Sale Type Parameters.")
+        print("12 for Buying Tokens.")
+        print("13 for Adding Myself as a Verifier.")
+        print("14 for Verified my wallet with Tier ID")
+        print("15 for Verifying wallet addresses with Tier ID")
+        print("16 for Removing Myself as an Owner.")
+        print("17 for Removing Myself as a Verifier.")
+        print("18 for getting the Tier Count.")
+        print("19 for getting the Tier Details.")
+        print("20 for getting the Owner Details.")
+        print("21 for getting the Verifier Details.")
+        print("22 for getting the tokens bought by an address.")
+        print("23 for getting the participating wallet count.")
+        print("24 for getting the tokens bought by an address on a particular tier.")
+        print("25 for getting the participating wallet count on a particular tier.")
+        print("26 for getting the total token allocation per tier.")
+        print("27 for getting the tokens sold per tier.")
+        print("28 for checking if the sale ended.")
+        print("29 to exit.")
         selection = int(input("Enter the choice: "))
         if(selection == 1):
             deployOrigins()
@@ -90,26 +101,42 @@ def choice():
         elif(selection == 10):
             setTierTime()
         elif(selection == 11):
-            buyTokens()
+            setTierSaleType()
         elif(selection == 12):
-            addMyselfAsVerifier()
+            buyTokens()
         elif(selection == 13):
-            verifyMyWallet()
+            addMyselfAsVerifier()
         elif(selection == 14):
-            verifyWalletList()
+            verifyMyWallet()
         elif(selection == 15):
-            removeMyselfAsOwner()
+            verifyWalletList()
         elif(selection == 16):
-            removeMyselfAsVerifier()
+            removeMyselfAsOwner()
         elif(selection == 17):
-            getTierCount()
+            removeMyselfAsVerifier()
         elif(selection == 18):
-            getTierDetails()
+            getTierCount()
         elif(selection == 19):
-            getOwnerList()
+            getTierDetails()
         elif(selection == 20):
-            getVerifierList()
+            getOwnerList()
         elif(selection == 21):
+            getVerifierList()
+        elif(selection == 22):
+            getTokensBoughtByAddress()
+        elif(selection == 23):
+            getParticipatingWalletCount()
+        elif(selection == 24):
+            getTokensBoughtByAddressOnTier()
+        elif(selection == 25):
+            getParticipatingWalletCountPerTier()
+        elif(selection == 26):
+            getTotalTokenAllocationPerTier()
+        elif(selection == 27):
+            getTokensSoldPerTier()
+        elif(selection == 28):
+            checkSaleEnded()
+        elif(selection == 29):
             repeat = False
         else:
             print("\nSmarter people have written this, enter valid selection ;)\n")
@@ -118,7 +145,7 @@ def choice():
 def deployOrigins():
     adminList = [values['multisig'], acct]
     token = values['token']
-    depositAddress = values['depositAddress']
+    depositAddress = values['multisigDepositAddress']
 
     print("\n=============================================================")
     print("Deployment Parameters for Origins")
@@ -142,10 +169,10 @@ def deployOrigins():
     lockedFund.addAdmin(values['origins'])
     print("Added Origins as", values['origins'], " as an admin of Locked Fund.")
 
-    addMyselfAsVerifier()
+    # addMyselfAsVerifier()
 
     getOwnerList()
-    getVerifierList()
+    # getVerifierList()
 
     # For easy deployment uncomment below three lines.
     # createNewTier()
@@ -156,7 +183,7 @@ def deployOrigins():
 def updateDepositAddress():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     print("\nUpdating Deposit Address of Origins...\n")
-    origins.setDepositAddress(values['depositAddress'])
+    origins.setDepositAddress(values['multisigDepositAddress'])
     print("Updated Deposit Address as", values['depositAddress'], " of Origins...\n")
 
 # =========================================================================================================================================
@@ -189,6 +216,8 @@ def getVerificationType(verificationType):
         return "Everyone"
     elif verificationType == 2:
         return "ByAddress"
+    elif verificationType == 3:
+        return "ByStake"
     else:
         return "Invalid Entry!"
 
@@ -217,6 +246,23 @@ def getTransferType(transferType):
         return "Vested"
     elif transferType == 4:
         return "Locked"
+    elif transferType == 5:
+        return "NWaitedUnlock"
+    elif transferType == 6:
+        return "NVested"
+    elif transferType == 7:
+        return "NLocked"
+    else:
+        return "Invalid Entry!"
+
+# =========================================================================================================================================
+def getSaleType(transferType):
+    if transferType == 0:
+        return "None"
+    elif transferType == 1:
+        return "FCFS"
+    elif transferType == 2:
+        return "Pooled"
     else:
         return "Invalid Entry!"
 
@@ -253,9 +299,9 @@ def createNewTier():
 
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
 
-    # IMPORTANT TODO: It is removed for the current sale, but has to be reimplemented in the future.
-    # minAmount = values['tiers'][tierID]['minimumAmount']
+    # IMPORTANT TODO: Some of it is removed for the current sale, but has to be reimplemented in the future.
 
+    minAmount = values['tiers'][tierID]['minimumAmount']
     maxAmount = values['tiers'][tierID]['maximumAmount']
     tokensForSale = int(values['tiers'][tierID]['tokensForSale'])
     decimal = int(values['decimal'])
@@ -270,13 +316,13 @@ def createNewTier():
     unlockedBP = values['tiers'][tierID]['unlockedBP']
     vestOrLockCliff = values['tiers'][tierID]['vestOrLockCliff']
     vestOrLockDuration = values['tiers'][tierID]['vestOrLockDuration']
-    depositRate = values['tiers'][tierID]['depositRate']
 
     # IMPORTANT TODO: It is removed for the current sale, but has to be reimplemented in the future.
+    # depositRate = values['tiers'][tierID]['depositRate']
+    # depositType = values['tiers'][tierID]['depositType']
+    # depositTypeReadable = getDepositType(int(depositType))
     # depositToken = values['tiers'][tierID]['depositToken']
 
-    depositType = values['tiers'][tierID]['depositType']
-    depositTypeReadable = getDepositType(int(depositType))
     verificationType = values['tiers'][tierID]['verificationType']
     verificationTypeReadable = getVerificationType(int(verificationType))
     saleEndDurationOrTimestamp = values['tiers'][tierID]['saleEndDurationOrTimestamp']
@@ -284,10 +330,13 @@ def createNewTier():
     transferType = values['tiers'][tierID]['transferType']
     transferTypeReadable = getTransferType(int(transferType))
 
+    saleType = values['tiers'][tierID]['saleType']
+    saleTypeReadable = getSaleType(int(saleType))
+
     print("\n=============================================================")
     print("Tier Parameters:")
     print("=============================================================")
-    # print("Minimum allowed asset:               ", minAmount)
+    print("Minimum allowed asset:               ", minAmount)
     print("Maximum allowed asset:               ", maxAmount)
     print("Tokens For Sale (with Decimal):      ", tokensForSale)
     print("Tokens For Sale (without Decimal):   ", remainingTokens)
@@ -297,19 +346,21 @@ def createNewTier():
     print("Unlocked Token Basis Point:          ", unlockedBP)
     print("Vest Or Lock Cliff:                  ", vestOrLockCliff)
     print("Vest Or Lock Duration:               ", vestOrLockDuration)
-    print("Deposit Rate:                        ", depositRate)
+    # print("Deposit Rate:                        ", depositRate)
+    # print("Deposit Type:                        ", depositTypeReadable)
     # print("Deposit Token:                       ", depositToken)
-    print("Deposit Type:                        ", depositTypeReadable)
     print("Verification Type:                   ", verificationTypeReadable)
     print("Sale End Duration or Timestamp:      ", saleEndDurationOrTimestampReadable)
     print("Transfer Type:                       ", transferTypeReadable)
+    print("Sale Type:                           ", saleTypeReadable)
     print("=============================================================")
 
-    if(depositTypeReadable == "Invalid Entry!" or verificationTypeReadable == "Invalid Entry!" or saleEndDurationOrTimestampReadable == "Invalid Entry!" or transferTypeReadable == "Invalid Entry!"):
+    if(saleTypeReadable == "Invalid Entry!" or verificationTypeReadable == "Invalid Entry!" or saleEndDurationOrTimestampReadable == "Invalid Entry!" or transferTypeReadable == "Invalid Entry!"):
         print("\nPlease check the types and tier parameters.")
         sys.exit()
     
     token = Contract.from_abi("Token", address=values['token'], abi=Token.abi, owner=acct)
+    # TODO Only check allowance if there requires a token transfer to create a tier.
     checkAllowance(token, origins.address, remainingTokens)
 
     balance = token.balanceOf(acct)
@@ -317,7 +368,7 @@ def createNewTier():
 
     print("\nCreating new tier...")
     # Based on the new parameters added on the TODO above, need to add the parameters here as well.
-    origins.createTier(maxAmount, remainingTokens, saleStartTimestamp, saleEnd, unlockedBP, vestOrLockCliff, vestOrLockDuration, depositRate, depositType, verificationType, saleEndDurationOrTimestamp, transferType)
+    origins.createTier(minAmount, maxAmount, remainingTokens, saleStartTimestamp, saleEnd, unlockedBP, vestOrLockCliff, vestOrLockDuration, verificationType, saleEndDurationOrTimestamp, transferType, saleType)
 
     balance = token.balanceOf(acct)
     print("Updated User Token Balance:",balance)
@@ -384,7 +435,13 @@ def setTierTimeMultisig():
     print(txId)
 
 # =========================================================================================================================================
+def setTierSaleType():
+    tierID = readTier("edit")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    origins.setTierSaleType(tierID, values['tiers'][tierID]['saleType'])
+    print("Tier Sale Type Updated.")
 
+# =========================================================================================================================================
 def buyTokens():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     tierID = readTier("buy tokens in")
@@ -493,6 +550,64 @@ def getVerifierList():
     origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
     print("\n=============================================================")
     print("Verifier List: ",origins.getVerifiers())
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensBoughtByAddress():
+    print("\nPaste the address: ")
+    userAddress = input("Enter the address: ")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Tokens Bought by Address: ",origins.getTokensBoughtByAddress(userAddress))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getParticipatingWalletCount():
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Participating Wallet: ",origins.getParticipatingWalletCount())
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensBoughtByAddressOnTier():
+    tierID = readTier("read")
+    print("\nPaste the address: ")
+    userAddress = input("Enter the address: ")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Tokens Bought by Address on Tier",tierID,"is:",origins.getTokensBoughtByAddressOnTier(userAddress, tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getParticipatingWalletCountPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Participating Wallet Count on Tier",tierID,"is:",origins.getParticipatingWalletCountPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTotalTokenAllocationPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Token Allocation on Tier",tierID,"is:",origins.getTotalTokenAllocationPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def getTokensSoldPerTier():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Total Tokens Sold on Tier",tierID,"is:",origins.getTokensSoldPerTier(tierID))
+    print("=============================================================")
+
+# =========================================================================================================================================
+def checkSaleEnded():
+    tierID = readTier("read")
+    origins = Contract.from_abi("OriginsBase", address=values['origins'], abi=OriginsBase.abi, owner=acct)
+    print("\n=============================================================")
+    print("Sale Ended: ",origins.checkSaleEnded(tierID))
     print("=============================================================")
 
 # =========================================================================================================================================

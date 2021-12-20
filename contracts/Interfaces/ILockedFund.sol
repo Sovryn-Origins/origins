@@ -2,7 +2,7 @@ pragma solidity ^0.5.17;
 
 /**
  *  @title An interface of Locked Fund Contract.
- *  @author Franklin Richards - powerhousefrank@protonmail.com
+ *  @author Shebin John - admin@remedcu.com
  */
 contract ILockedFund {
 	/* Functions */
@@ -34,6 +34,13 @@ contract ILockedFund {
 	function changeWaitedTS(uint256 _waitedTS) public;
 
 	/**
+	 * @notice The function used to update the Token.
+	 * @param _token The address of the ERC20 Token.
+	 * @dev This is in some cases when the token is not created before/during Origins Sale.
+	 */
+	function changeToken(address _token) public;
+
+	/**
 	 * @notice Adds Token to the user balance (Vested and Waited Unlocked Balance based on `_basisPoint`).
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
@@ -41,6 +48,7 @@ contract ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositVested(
@@ -49,7 +57,8 @@ contract ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		uint256 _unlockedOrWaited
+		uint256 _unlockedOrWaited,
+		bool _receiveTokens
 	) public;
 
 	/**
@@ -60,6 +69,7 @@ contract ILockedFund {
 	 * @param _duration The duration for vesting.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be (waited) unlocked immediately.
 	 * @param _unlockedOrWaited Determines if the Basis Point determines the Unlocked or Waited Unlock Balance.
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositLocked(
@@ -68,7 +78,8 @@ contract ILockedFund {
 		uint256 _cliff,
 		uint256 _duration,
 		uint256 _basisPoint,
-		uint256 _unlockedOrWaited
+		uint256 _unlockedOrWaited,
+		bool _receiveTokens
 	) public;
 
 	/**
@@ -76,13 +87,21 @@ contract ILockedFund {
 	 * @param _userAddress The user whose locked balance has to be updated with `_amount`.
 	 * @param _amount The amount of Token to be added to the locked and/or unlocked balance.
 	 * @param _basisPoint The % (in Basis Point) which determines how much will be unlocked immediately.
+	 * @param _receiveTokens - True if tokens should be taken from caller, False otherwise.
 	 * @dev Future iteration will have choice between waited unlock and immediate unlock.
 	 */
 	function depositWaitedUnlocked(
 		address _userAddress,
 		uint256 _amount,
-		uint256 _basisPoint
+		uint256 _basisPoint,
+		bool _receiveTokens
 	) public;
+
+	/**
+	 * @notice Function to call to deposit missing balance to create vesting/staking.
+	 * @param _amount The amount being sent.
+	 */
+	function depositMissingBalance(uint256 _amount) external;
 
 	/**
 	 * @notice A function to withdraw the waited unlocked balance.
@@ -98,19 +117,52 @@ contract ILockedFund {
 
 	/**
 	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
+	 * @return _vestingAddresses The New Vesting Contracts Created.
+	 * @dev Zero (0) is passed to denote all vesting for that user will be created.
+	 */
+	function createAllVesting() external returns (address[] memory _vestingAddresses);
+
+	/**
+	 * @notice Creates vesting contract (if it hasn't been created yet) for the calling user.
+	 * @param _vestingData The vesting details like cliff & duration in short form.
 	 * @return _vestingAddress The New Vesting Contract Created.
 	 */
-	function createVesting() external returns (address _vestingAddress);
+	function createVesting(bytes32 _vestingData) external returns (address[] memory _vestingAddress);
 
 	/**
 	 * @notice Stakes tokens for a user who already have a vesting created.
 	 * @dev The user should already have a vesting created, else this function will throw error.
+	 * @dev Zero (0) is passed to denote all vesting for that user will be created.
+	 * @dev This is not recommended function if there are many stakes to be created due to gas limit.
 	 */
-	function stakeTokens() external;
+	function stakeAllTokens() external;
+
+	/**
+	 * @notice Stakes tokens for a user who already have a vesting created.
+	 * @param _vestingData The vesting details like cliff & duration in short form.
+	 * @dev The user should already have a vesting created, else this function will throw error.
+	 */
+	function stakeTokens(bytes32 _vestingData) external;
 
 	/**
 	 * @notice Withdraws unlocked tokens and Stakes Locked tokens for a user who already have a vesting created.
 	 * @param _receiverAddress If specified, the unlocked balance will go to this address, else to msg.sender.
 	 */
 	function withdrawAndStakeTokens(address _receiverAddress) external;
+
+	/**
+	 * @notice Function to read the cliff, duration and Type of a Vesting.
+	 * @param _vestingData The address whose cliff and duration has to be found.
+	 * @return _cliff The cliff of the user vesting.
+	 * @return _duration The duration of the user vesting.
+	 * @return _vestingType The Vesting Type of the user vesting.
+	 */
+	function getCliffDurationAndType(bytes32 _vestingData)
+		external
+		view
+		returns (
+			uint256 _cliff,
+			uint256 _duration,
+			uint256 vestingType
+		);
 }

@@ -1,3 +1,3 @@
 module.exports = {
-	skipFiles: ["Sovryn", "Openzeppelin", "Interfaces"],
+	skipFiles: ["Sovryn/Helper", "Sovryn/Mockup", "Sovryn/RSK", "Interfaces"],
 };
