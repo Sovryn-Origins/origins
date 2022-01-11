@@ -18,6 +18,7 @@ contract("ERC20", function (accounts) {
 	beforeEach(async function () {
 		this.token = await ERC20Mock.new(name, symbol, decimal);
 		await this.token.setPresale(initialHolder);
+		await this.token.setMarketMaker(initialHolder);
 		await this.token.mint(initialHolder, initialSupply);
 	});
 
@@ -284,7 +285,49 @@ contract("ERC20", function (accounts) {
 		});
 	});
 
-	// Test IApproveAndCall
 	// Test marketMaker
-	// Test presale
+	describe("MarketMaker", function () {
+		it("rejects a null account for market maker", async function () {
+			await expectRevert(this.token.setMarketMaker(ZERO_ADDRESS), "OriginsToken: Invalid Address");
+		});
+
+		it("emits MarketMakerChanged Event", async function () {
+			const { logs } = await this.token.setMarketMaker(anotherAccount, { from: initialHolder });
+
+			expectEvent.inLogs(logs, "MarketMakerChanged", {
+				_address: anotherAccount
+			});
+		});
+
+		it("set market maker correctly for non-zero address", async function () {
+			await this.token.setMarketMaker(anotherAccount, { from: initialHolder });
+
+			expect(await this.token.getMarketMaker()).to.equal(anotherAccount);
+		});
+	});
+
+	// Test Presale
+	describe("Presale", function () {
+		it("rejects a null account for presale", async function () {
+			await expectRevert(this.token.setPresale(ZERO_ADDRESS), "OriginsToken: Invalid Address");
+		});
+
+		it("emits PresaleChanged Event", async function () {
+			const { logs } = await this.token.setPresale(anotherAccount, { from: initialHolder });
+
+			expectEvent.inLogs(logs, "PresaleChanged", {
+				_address: anotherAccount
+			});
+		});
+
+		it("set presale correctly for non-zero address", async function () {
+			await this.token.setPresale(anotherAccount, { from: initialHolder });
+
+			expect(await this.token.getPresale()).to.equal(anotherAccount);
+		});
+	});
+
+	// Test IApproveAndCall
+	describe("IApproveAndCall", function () {
+	});
 });
