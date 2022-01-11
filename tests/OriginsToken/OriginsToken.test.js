@@ -328,6 +328,6 @@ contract("ERC20", function (accounts) {
 	});
 
 	// Test IApproveAndCall
-	describe("IApproveAndCall", function () {
-	});
+	// describe("IApproveAndCall", function () {
+	// });
 });
