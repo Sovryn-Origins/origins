@@ -538,4 +538,25 @@ contract("OriginsBase (User Functions)", (accounts) => {
 	it("User should be able to check Sale Ended.", async () => {
 		let saleEnded = await originsBase.checkSaleEnded(1, { from: userOne });
 	});
+
+	///// checkVerification
+	it("User should be able to check if the user is verified for the particular tier", async () => {
+		// TODO  // with address specified
+	});
+	it("User should be able to check if himself/herself is verified for the particular tier", async () => {
+		// TODO  // with msg.sender
+	});
+
+	///// checkStakesByTier
+	it("User should be able to view the stakes of any other user", async () => {
+		// TODO
+	});
+	it("User should be able to view the stakes of him/her", async () => {
+		// TODO  // msg.sender
+	});
+
+	///// checkSaleAllowed
+	it("User should be able to check if a tier sale is allowed or not", async () => {
+		// TODO
+	});
 });

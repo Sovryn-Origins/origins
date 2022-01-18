@@ -488,4 +488,25 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await time.increase(firstSaleEnd + 100);
 		await originsBase.withdrawSaleDeposit({ from: owner });
 	});
+
+	///// checkVerification
+	it("Owner should be able to check if the user is verified for the particular tier", async () => {
+		// TODO
+	});
+	it("Owner should be able to check if he/she is verified for the particular tier", async () => {
+		// TODO  // msg.sender
+	});
+
+	///// checkStakesByTier
+	it("Owner should be able to view the stakes of any other user", async () => {
+		// TODO
+	});
+	it("Owner should be able to view the stakes of him/her", async () => {
+		// TODO  // msg.sender
+	});
+
+	///// checkSaleAllowed
+	it("Owner should be able to check if a tier sale is allowed or not", async () => {
+		// TODO
+	});
 });

@@ -295,7 +295,7 @@ contract("ERC20", function (accounts) {
 			const { logs } = await this.token.setMarketMaker(anotherAccount, { from: initialHolder });
 
 			expectEvent.inLogs(logs, "MarketMakerChanged", {
-				_address: anotherAccount
+				_address: anotherAccount,
 			});
 		});
 
@@ -316,7 +316,7 @@ contract("ERC20", function (accounts) {
 			const { logs } = await this.token.setPresale(anotherAccount, { from: initialHolder });
 
 			expectEvent.inLogs(logs, "PresaleChanged", {
-				_address: anotherAccount
+				_address: anotherAccount,
 			});
 		});
 

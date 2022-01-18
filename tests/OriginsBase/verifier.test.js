@@ -212,4 +212,25 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 			"OriginsBase: Address and Tier Array length mismatch."
 		);
 	});
+
+	///// checkVerification
+	it("Verifier should be able to check if the user is verified for the particular tier", async () => {
+		// TODO
+	});
+	it("Verifier should be able to check if he/she is verified for the particular tier", async () => {
+		// TODO // msg.sender
+	});
+
+	///// checkStakesByTier
+	it("Verifier should be able to view the stakes of any other user", async () => {
+		// TODO
+	});
+	it("Verifier should be able to view the stakes of him/her", async () => {
+		// TODO // msg.sender
+	});
+
+	///// checkSaleAllowed
+	it("Verifier should be able to check if a tier sale is allowed or not", async () => {
+		// TODO
+	});
 });

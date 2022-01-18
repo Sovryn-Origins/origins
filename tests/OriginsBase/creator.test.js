@@ -223,4 +223,35 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 			"OriginsAdmin: Only verifier can call this function."
 		);
 	});
+
+	it("Creator should be able to check verification for a particular tier.", async () => {
+		tierCount = 3;
+		await expectRevert(
+			originsBase.multipleAddressAndTierVerification([userOne, userTwo, userThree], [tierCount, tierCount - 1, tierCount - 2], {
+				from: creator,
+			}),
+			"OriginsAdmin: Only verifier can call this function."
+		);
+	});
+
+	///// checkVerification
+	it("Creator should be able to check if the user is verified for the particular tier", async () => {
+		// TODO
+	});
+	it("Creator should be able to check if he/she is verified for the particular tier", async () => {
+		// TODO  // msg.sender
+	});
+
+	///// checkStakesByTier
+	it("Creator should be able to view the stakes of any other user", async () => {
+		// TODO
+	});
+	it("Creator should be able to view the stakes of him/her", async () => {
+		// TODO  // msg.sender
+	});
+
+	///// checkSaleAllowed
+	it("Creator should be able to check if a tier sale is allowed or not", async () => {
+		// TODO
+	});
 });
