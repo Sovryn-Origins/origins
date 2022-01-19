@@ -488,4 +488,29 @@ contract("OriginsBase (Owner Functions)", (accounts) => {
 		await time.increase(firstSaleEnd + 100);
 		await originsBase.withdrawSaleDeposit({ from: owner });
 	});
+
+	it("Owner should be able to close sale of any tier.", async () => {
+		tierCount = await originsBase.getTierCount();
+		await originsBase.closeSaleOf(tierCount, { from: owner });
+	});
+
+	it("Owner should not be able to claim tier during the sale", async () => {
+		// TODO
+	});
+
+	it("Owner should not be able to claim unless the sale ended", async () => {
+		// TODO
+	});
+
+	it("Owner should not be able to claim unless the sale type is Pooled", async () => {
+		// TODO
+	});
+
+	it("Claim should be rejected if no tokens were bought for the tier for the specified user", async () => {
+		// TODO
+	});
+
+	it("Owner can not double claim", async () => {
+		// TODO
+	});
 });

@@ -223,4 +223,32 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 			"OriginsAdmin: Only verifier can call this function."
 		);
 	});
+
+	it("Creator should not be able to close sale of tier whose saleEnd is greater than block.timestamp", async () => {
+		// TODO
+	});
+	
+	it("Creator should not be able to close sale of tier whose saleEndDurationOrTS is SaleEndDurationOrTS.UntilSupply", async () => {
+		// TODO
+	});
+
+	it("Creator should not be able to claim tier during the sale", async () => {
+		// TODO
+	});
+
+	it("Creator should not be able to claim unless the sale ended", async () => {
+		// TODO
+	});
+
+	it("Creator should not be able to claim unless the sale type is Pooled", async () => {
+		// TODO
+	});
+
+	it("Claim should be rejected if no tokens were bought for the tier for the specified user", async () => {
+		// TODO
+	});
+
+	it("Creator can not double claim", async () => {
+		// TODO
+	});
 });
