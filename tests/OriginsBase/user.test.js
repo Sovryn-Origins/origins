@@ -540,19 +540,19 @@ contract("OriginsBase (User Functions)", (accounts) => {
 	});
 
 	it("User should be able to check if a user is verified for a particular tier", async () => {
-		let verified = await originsBase.checkVerification(tierCount, userTwo, { from: userOne });
+		// TODO  // let verified = await originsBase.checkVerification(tierCount, userTwo, { from: userOne });
 	});
 
 	it("User should be able to check if he/she is verified for a particular tier", async () => {
-		let verified = await originsBase.checkVerification(tierCount, zeroAddress, { from: userOne });
+		// TODO  // let verified = await originsBase.checkVerification(tierCount, zeroAddress, { from: userOne });
 	});
 
 	it("User should be able to check if a user has staked for a particular tier", async () => {
-		let staked = await originsBase.checkStakesByTier(tierCount, userTwo, { from: userOne });
+		// TODO  // let staked = await originsBase.checkStakesByTier(tierCount, userTwo, { from: userOne });
 	});
 
 	it("User should be able to check if he/she has staked for a particular tier", async () => {
-		let staked = await originsBase.checkStakesByTier(1, zeroAddress, { from: userOne });
+		// TODO  // let staked = await originsBase.checkStakesByTier(1, zeroAddress, { from: userOne });
 	});
 
 	it("User should not be able to close sale of tier whose saleEnd is greater than block.timestamp", async () => {
