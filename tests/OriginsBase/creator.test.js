@@ -227,7 +227,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 	it("Creator should not be able to close sale of tier whose saleEnd is greater than block.timestamp", async () => {
 		// TODO
 	});
-	
+
 	it("Creator should not be able to close sale of tier whose saleEndDurationOrTS is SaleEndDurationOrTS.UntilSupply", async () => {
 		// TODO
 	});
