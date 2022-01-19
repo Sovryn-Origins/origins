@@ -214,18 +214,18 @@ contract("OriginsBase (Verifier Functions)", (accounts) => {
 	});
 
 	it("Verifier should be able to check if a user is verified for a particular tier", async () => {
-		let verified = await originsBase.checkVerification(1, userTwo, { from: userOne });
+		let verified = await originsBase.checkVerification(tierCount, userTwo, { from: userOne });
 	});
 
 	it("Verifier should be able to check if he/she is verified for a particular tier", async () => {
-		let verified = await originsBase.checkVerification(1, zeroAddress, { from: userOne });
+		let verified = await originsBase.checkVerification(tierCount, 0, { from: userOne });
 	});
 
 	it("Verifier should be able to check if a user has staked for a particular tier", async () => {
-		let staked = await originsBase.checkStakesByTier(1, userTwo, { from: userOne });
+		let staked = await originsBase.checkStakesByTier(tierCount, userTwo, { from: userOne });
 	});
 
 	it("Verifier should be able to check if he/she has staked for a particular tier", async () => {
-		let staked = await originsBase.checkStakesByTier(1, zeroAddress, { from: userOne });
+		let staked = await originsBase.checkStakesByTier(tierCount, 0, { from: userOne });
 	});
 });
