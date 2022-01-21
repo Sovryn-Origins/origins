@@ -43,7 +43,7 @@ let {
 	secondSaleEndDurationOrTS,
 	secondTransferType,
 	secondSaleType,
-	saleEndDurationOrTSUntilSupply
+	saleEndDurationOrTSUntilSupply,
 } = require("../variable");
 
 contract("OriginsBase (Creator Functions)", (accounts) => {
@@ -255,7 +255,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 	});
 
 	it("Creator should not be able to close sale of tier whose saleEndDurationOrTS is SaleEndDurationOrTS.UntilSupply", async () => {
-		await token.mint(owner, firstRemainingTokens, {from: creator});
+		await token.mint(owner, firstRemainingTokens, { from: creator });
 		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
 		await originsBase.createTier(
 			firstMinAmount,
@@ -276,7 +276,7 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
 		await originsBase.addressVerification(creator, tierCount, { from: verifier });
 		await originsBase.buy(tierCount, zero, { from: creator, value: firstRemainingTokens / 2 });
-		
+
 		await expectRevert(
 			originsBase.closeSaleOf(tierCount, {
 				from: creator,

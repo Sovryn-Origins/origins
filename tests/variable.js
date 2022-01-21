@@ -13,7 +13,7 @@ const {
 	transferTypeVested,
 	transferTypeWaitedUnlock,
 	depositTypeToken,
-	saleTypeFCFS
+	saleTypeFCFS,
 } = require("./constants");
 
 // Variables
@@ -185,5 +185,5 @@ module.exports = {
 	thirdBlockNumber,
 	thirdDate,
 
-	saleEndDurationOrTSUntilSupply
+	saleEndDurationOrTSUntilSupply,
 };
