@@ -9,6 +9,7 @@ const {
 	verificationTypeByAddress,
 	verificationTypeByStake,
 	saleEndDurationOrTSDuration,
+	saleEndDurationOrTSUntilSupply,
 	transferTypeVested,
 	transferTypeWaitedUnlock,
 	depositTypeToken,
@@ -183,4 +184,6 @@ module.exports = {
 	thirdMaxStake,
 	thirdBlockNumber,
 	thirdDate,
+
+	saleEndDurationOrTSUntilSupply,
 };

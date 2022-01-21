@@ -536,6 +536,54 @@ contract("OriginsBase (User Functions)", (accounts) => {
 	});
 
 	it("User should be able to check Sale Ended.", async () => {
-		let saleEnded = await originsBase.checkSaleEnded(1, { from: userOne });
+		let saleEnded = await originsBase.checkSaleEnded(tierCount, { from: userOne });
+	});
+
+	it("User should be able to check if a user is verified for a particular tier", async () => {
+		// TODO  // let verified = await originsBase.checkVerification(tierCount, userTwo, { from: userOne });
+	});
+
+	it("User should be able to check if he/she is verified for a particular tier", async () => {
+		// TODO  // let verified = await originsBase.checkVerification(tierCount, zeroAddress, { from: userOne });
+	});
+
+	it("User should be able to check if a user has staked for a particular tier", async () => {
+		// TODO  // let staked = await originsBase.checkStakesByTier(tierCount, userTwo, { from: userOne });
+	});
+
+	it("User should be able to check if he/she has staked for a particular tier", async () => {
+		// TODO  // let staked = await originsBase.checkStakesByTier(1, zeroAddress, { from: userOne });
+	});
+
+	it("User should not be able to close sale of tier whose saleEnd is greater than block.timestamp", async () => {
+		// TODO
+	});
+
+	it("User should not be able to close sale of tier whose saleEndDurationOrTS is SaleEndDurationOrTS.UntilSupply", async () => {
+		// TODO
+	});
+
+	it("User should not be able to claim tier during the sale", async () => {
+		// TODO
+	});
+
+	it("User should not be able to claim unless the sale ended", async () => {
+		// TODO
+	});
+
+	it("User should not be able to claim unless the sale type is Pooled", async () => {
+		// TODO
+	});
+
+	it("Claim should be rejected if no tokens were bought for the tier for the specified user", async () => {
+		// TODO
+	});
+
+	it("User can not double claim", async () => {
+		// TODO
+	});
+
+	it("Claimed amount should be reflected on the balance", async () => {
+		// TODO
 	});
 });
