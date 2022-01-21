@@ -43,6 +43,7 @@ let {
 	secondSaleEndDurationOrTS,
 	secondTransferType,
 	secondSaleType,
+	saleEndDurationOrTSUntilSupply
 } = require("../variable");
 
 contract("OriginsBase (Creator Functions)", (accounts) => {
@@ -225,11 +226,63 @@ contract("OriginsBase (Creator Functions)", (accounts) => {
 	});
 
 	it("Creator should not be able to close sale of tier whose saleEnd is greater than block.timestamp", async () => {
-		// TODO
+		await token.mint(owner, firstRemainingTokens, { from: creator });
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMinAmount,
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleEnd,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstVerificationType,
+			firstSaleEndDurationOrTS,
+			firstTransferType,
+			firstSaleType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
+
+		await expectRevert(
+			originsBase.closeSaleOf(tierCount, {
+				from: creator,
+			}),
+			"OriginsBase: Cannot close this tier right now."
+		);
 	});
 
 	it("Creator should not be able to close sale of tier whose saleEndDurationOrTS is SaleEndDurationOrTS.UntilSupply", async () => {
-		// TODO
+		await token.mint(owner, firstRemainingTokens, {from: creator});
+		await token.approve(originsBase.address, firstRemainingTokens, { from: owner });
+		await originsBase.createTier(
+			firstMinAmount,
+			firstMaxAmount,
+			firstRemainingTokens,
+			firstSaleStartTS,
+			firstSaleStartTS,
+			firstUnlockedBP,
+			firstVestOrLockCliff,
+			firstVestOfLockDuration,
+			firstVerificationType,
+			saleEndDurationOrTSUntilSupply,
+			firstTransferType,
+			firstSaleType,
+			{ from: owner }
+		);
+		tierCount = await originsBase.getTierCount();
+		await originsBase.setTierDeposit(tierCount, firstDepositRate, zeroAddress, firstDepositType, { from: owner });
+		await originsBase.addressVerification(creator, tierCount, { from: verifier });
+		await originsBase.buy(tierCount, zero, { from: creator, value: firstRemainingTokens / 2 });
+		
+		await expectRevert(
+			originsBase.closeSaleOf(tierCount, {
+				from: creator,
+			}),
+			"OriginsBase: Cannot close this tier right now."
+		);
 	});
 
 	it("Creator should not be able to claim tier during the sale", async () => {

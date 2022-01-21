@@ -9,10 +9,11 @@ const {
 	verificationTypeByAddress,
 	verificationTypeByStake,
 	saleEndDurationOrTSDuration,
+	saleEndDurationOrTSUntilSupply,
 	transferTypeVested,
 	transferTypeWaitedUnlock,
 	depositTypeToken,
-	saleTypeFCFS,
+	saleTypeFCFS
 } = require("./constants");
 
 // Variables
@@ -183,4 +184,6 @@ module.exports = {
 	thirdMaxStake,
 	thirdBlockNumber,
 	thirdDate,
+
+	saleEndDurationOrTSUntilSupply
 };
